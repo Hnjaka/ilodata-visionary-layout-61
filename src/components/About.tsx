@@ -59,7 +59,7 @@ const About = () => {
               <Users className="h-6 w-6 text-ilodata-600" />
             </div>
           </div>
-          <h2 className="section-title text-center">À propos</h2>
+          <h2 className="section-title text-center">Qui sommes-nous ?</h2>
           <p className="section-subtitle">
             Découvrez notre passion pour la mise en page et notre expertise au service de vos projets éditoriaux.
           </p>
@@ -70,9 +70,8 @@ const About = () => {
             ref={sectionRef} 
             className="fade-in-section"
           >
-            <h3 className="text-2xl font-semibold mb-4 text-slate-800">Notre mission</h3>
             <p className="text-slate-600 mb-4">
-              Chez Ilodata, nous sommes passionnés par l'art de la mise en page et convaincus que la présentation d'un contenu est aussi importante que le contenu lui-même. Notre mission est de vous aider à créer des documents qui captent l'attention, facilitent la lecture et mettent en valeur vos idées.
+              Chez ilodata.com, nous accompagnons les auteurs indépendants et les éditeurs dans la création de livres professionnels. Notre mission : vous donner les outils et les connaissances pour réaliser vous-même votre mise en page, ou vous offrir un service sur mesure pour gagner du temps.
             </p>
             <p className="text-slate-600 mb-4">
               Fondée par une équipe d'experts en édition et en design, notre société s'appuie sur plus de 15 ans d'expérience dans l'industrie de l'édition et de la communication. Nous avons accompagné des centaines d'auteurs, d'entreprises et d'institutions dans la réalisation de leurs projets éditoriaux.
@@ -106,8 +105,8 @@ const About = () => {
               <div className="absolute -bottom-4 -right-4 w-32 h-32 bg-ilodata-100 rounded-lg"></div>
               <div className="glass-card overflow-hidden relative z-10">
                 <img 
-                  src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80" 
-                  alt="Notre équipe" 
+                  src="https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80" 
+                  alt="Auteur travaillant sur son ordinateur" 
                   className="w-full h-auto rounded-lg"
                 />
               </div>

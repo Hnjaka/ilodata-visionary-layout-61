@@ -13,14 +13,14 @@ interface PortfolioItem {
 const portfolioItems: PortfolioItem[] = [
   {
     id: 1,
-    title: "Livre de cuisine gastronomique",
-    description: "Mise en page d'un livre de recettes avec photographies",
+    title: "Roman contemporain",
+    description: "Mise en page d'un roman avec chapitres illustrés",
     image: "https://images.unsplash.com/photo-1544947950-fa07a98d237f?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80"
   },
   {
     id: 2,
-    title: "Rapport annuel d'entreprise",
-    description: "Design éditorial pour un rapport financier",
+    title: "Livre de cuisine gastronomique",
+    description: "Design éditorial pour recettes et photographies",
     image: "https://images.unsplash.com/photo-1583468813759-aa7122f15f2f?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1169&q=80"
   },
   {
@@ -31,14 +31,14 @@ const portfolioItems: PortfolioItem[] = [
   },
   {
     id: 4,
-    title: "Magazine littéraire",
-    description: "Design éditorial pour une revue culturelle",
+    title: "Livre d'art photographique",
+    description: "Mise en valeur de photographies en grand format",
     image: "https://images.unsplash.com/photo-1495465798138-718f86d1a4bc?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80"
   },
   {
     id: 5,
-    title: "Brochure d'entreprise",
-    description: "Design marketing pour présentation de produits",
+    title: "Guide de voyage illustré",
+    description: "Design éditorial combinant textes et images",
     image: "https://images.unsplash.com/photo-1519074069565-f03a771f2cf7?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=774&q=80"
   }
 ];
@@ -133,7 +133,7 @@ const Portfolio = () => {
           </div>
           <h2 className="section-title text-center">Nos réalisations</h2>
           <p className="section-subtitle">
-            Découvrez quelques exemples de nos mises en page et designs éditoriaux.
+            Découvrez quelques-uns des projets que nous avons accompagnés, de la mise en page à la publication finale.
           </p>
         </div>
 

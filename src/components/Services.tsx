@@ -1,7 +1,7 @@
 
 import React, { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
-import { Layout, FileText, PenTool, ArrowRight } from 'lucide-react';
+import { Layout, FileText, BookOpen, ArrowRight } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 interface ServiceCardProps {
@@ -92,7 +92,7 @@ const Services = () => {
               <Layout className="h-6 w-6 text-ilodata-600" />
             </div>
           </div>
-          <h2 className="section-title text-center">Nos Services</h2>
+          <h2 className="section-title text-center">Nos services pour une mise en page de livre réussie</h2>
           <p className="section-subtitle">
             Des solutions professionnelles pour tous vos besoins en matière de mise en page et de conception de documents.
           </p>
@@ -100,47 +100,47 @@ const Services = () => {
 
         <div className="grid md:grid-cols-3 gap-6 md:gap-8">
           <ServiceCard 
-            icon={Layout}
-            title="Mise en page professionnelle"
-            description="Transformez vos manuscrits en documents mis en page selon les standards professionnels de l'édition."
+            icon={FileText}
+            title="Modèles Word personnalisables"
+            description="Utilisez nos modèles de mise en page sous Word, faciles à adapter à votre texte."
             features={[
-              "Mise en page selon les normes éditoriales",
-              "Typographie soignée et optimisée pour la lecture",
-              "Structure cohérente de chapitres et sections",
-              "Format adapté pour impression et digital"
+              "Compatibles avec tous les éditeurs de texte",
+              "Faciles à personnaliser",
+              "Résultat professionnel garanti",
+              "Idéal pour les auteurs indépendants"
             ]}
-            buttonText="En savoir plus"
-            link="/services/mise-en-page"
+            buttonText="Voir les modèles"
+            link="/modeles"
             delay="delay-100"
           />
           
           <ServiceCard 
-            icon={FileText}
-            title="Correction et révision"
-            description="Perfectionnez vos textes grâce à nos services de correction et de révision linguistique."
+            icon={BookOpen}
+            title="Formation mise en page livre"
+            description="Apprenez à créer une mise en page professionnelle grâce à nos guides et tutoriels."
             features={[
-              "Correction orthographique et grammaticale",
-              "Révision stylistique et syntaxique",
-              "Uniformisation et cohérence du texte",
-              "Respect des règles typographiques"
+              "Formations en ligne accessibles 24/7",
+              "Tutoriels pas à pas détaillés",
+              "Assistance personnalisée",
+              "Parfait pour les auteurs indépendants"
             ]}
             buttonText="En savoir plus"
-            link="/services/correction"
+            link="/formation"
             delay="delay-200"
           />
           
           <ServiceCard 
-            icon={PenTool}
-            title="Design graphique"
-            description="Embellissez vos documents avec des éléments graphiques professionnels et une identité visuelle cohérente."
+            icon={Layout}
+            title="Service de mise en page sur mesure"
+            description="Confiez-nous votre projet et bénéficiez d'une mise en page professionnelle adaptée à vos besoins."
             features={[
-              "Création de couvertures personnalisées",
-              "Design d'éléments graphiques intérieurs",
-              "Illustrations et infographies sur mesure",
-              "Identité visuelle cohérente"
+              "Mises en page personnalisées",
+              "Prise en charge complète de votre projet",
+              "Qualité professionnelle garantie",
+              "Délais rapides et respectés"
             ]}
-            buttonText="En savoir plus"
-            link="/services/design"
+            buttonText="Demandez un devis"
+            link="/devis"
             delay="delay-300"
           />
         </div>

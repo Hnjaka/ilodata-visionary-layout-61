@@ -16,27 +16,27 @@ interface BlogPost {
 const blogPosts: BlogPost[] = [
   {
     id: 1,
-    title: "Les principes fondamentaux d'une mise en page efficace",
-    excerpt: "Découvrez les règles d'or qui font la différence entre une mise en page amateur et professionnelle.",
+    title: "5 astuces pour réussir la mise en page de votre livre",
+    excerpt: "Découvrez les techniques essentielles pour créer une mise en page professionnelle et attractive pour votre livre.",
     image: "https://images.unsplash.com/photo-1499750310107-5fef28a66643?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80",
     date: "15 avril 2023",
     category: "Design éditorial"
   },
   {
     id: 2,
-    title: "Comment choisir la typographie adaptée à votre contenu",
-    excerpt: "Le guide complet pour sélectionner les polices qui serviront au mieux votre message et votre identité.",
+    title: "Comment choisir le bon modèle de mise en page pour votre projet ?",
+    excerpt: "Guide complet pour sélectionner le modèle qui correspond parfaitement à votre type de livre et à vos objectifs.",
     image: "https://images.unsplash.com/photo-1494438639946-1ebd1d20bf85?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1167&q=80",
     date: "3 mai 2023",
-    category: "Typographie"
+    category: "Conseils pratiques"
   },
   {
     id: 3,
-    title: "Les tendances de mise en page pour livres numériques en 2023",
-    excerpt: "Explorez les innovations qui redéfinissent l'expérience de lecture sur supports digitaux.",
+    title: "Les erreurs à éviter lors de la création d'un livre numérique",
+    excerpt: "Évitez les pièges courants qui peuvent compromettre la qualité de votre ebook et nuire à l'expérience de lecture.",
     image: "https://images.unsplash.com/photo-1595373650160-963a12639e38?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80",
     date: "21 juin 2023",
-    category: "Tendances"
+    category: "Livres numériques"
   }
 ];
 
@@ -113,7 +113,7 @@ const Blog = () => {
               <BookOpen className="h-6 w-6 text-ilodata-600" />
             </div>
           </div>
-          <h2 className="section-title text-center">Notre Blog</h2>
+          <h2 className="section-title text-center">Conseils et actualités</h2>
           <p className="section-subtitle">
             Articles, conseils et inspiration pour vos projets éditoriaux.
           </p>

@@ -78,7 +78,7 @@ const Guides = () => {
               <Book className="h-6 w-6 text-ilodata-600" />
             </div>
           </div>
-          <h2 className="section-title text-center">Conseils et Guides</h2>
+          <h2 className="section-title text-center">Conseils et Guides pour réussir votre mise en page</h2>
           <p className="section-subtitle">
             Explorez notre collection de ressources pour parfaire vos compétences en mise en page et création de documents.
           </p>
@@ -88,7 +88,7 @@ const Guides = () => {
           <GuideCard 
             icon={Book}
             title="Modèles de livre"
-            description="Téléchargez des modèles Word professionnels prêts à l'emploi pour créer des livres, rapports et documents structurés."
+            description="Découvrez nos modèles de mise en page sous Word, faciles à utiliser et compatibles avec tous les éditeurs de texte. Remplacez simplement le texte existant par le vôtre et obtenez un résultat professionnel en quelques clics."
             buttonText="Voir les modèles"
             link="/modeles"
             delay="delay-100"
@@ -97,7 +97,7 @@ const Guides = () => {
           <GuideCard 
             icon={Video}
             title="Tutoriels et vidéos"
-            description="Apprenez à maîtriser la mise en page professionnelle grâce à nos tutoriels vidéo expliquant des techniques avancées."
+            description="Apprenez à maîtriser la mise en page de livre grâce à nos tutoriels pas à pas et nos vidéos explicatives. Parfait pour les auteurs qui souhaitent tout faire eux-mêmes."
             buttonText="Accéder aux tutoriels"
             link="/tutoriels"
             delay="delay-200"
@@ -106,7 +106,7 @@ const Guides = () => {
           <GuideCard 
             icon={FileText}
             title="Articles et conseils"
-            description="Découvrez nos articles détaillés sur les meilleures pratiques de mise en page, typographie et design éditorial."
+            description="Consultez nos articles pour des astuces et des conseils pratiques sur la mise en page, l'auto-édition et bien plus encore."
             buttonText="Lire les articles"
             link="/articles"
             delay="delay-300"

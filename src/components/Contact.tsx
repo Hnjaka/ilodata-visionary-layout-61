@@ -1,6 +1,6 @@
 
 import React, { useEffect, useRef, useState } from 'react';
-import { Mail, Phone, Send, MessageSquare } from 'lucide-react';
+import { Mail, Phone, Send, MessageSquare, MapPin } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useToast } from '@/hooks/use-toast';
 
@@ -76,7 +76,7 @@ const Contact = () => {
             <form ref={formRef} onSubmit={handleSubmit} className="space-y-5">
               <div>
                 <label htmlFor="name" className="block mb-2 text-sm font-medium text-slate-700">
-                  Nom complet
+                  Nom
                 </label>
                 <input
                   id="name"
@@ -91,7 +91,7 @@ const Contact = () => {
               
               <div>
                 <label htmlFor="email" className="block mb-2 text-sm font-medium text-slate-700">
-                  Adresse e-mail
+                  Email
                 </label>
                 <input
                   id="email"
@@ -135,7 +135,7 @@ const Contact = () => {
                 ) : (
                   <>
                     <Send size={18} />
-                    Envoyer le message
+                    Envoyer
                   </>
                 )}
               </button>
@@ -170,6 +170,19 @@ const Contact = () => {
                 </div>
               </div>
               
+              <div className="flex items-start">
+                <div className="p-3 rounded-lg bg-blue-50 mr-4">
+                  <MapPin className="h-5 w-5 text-ilodata-600" />
+                </div>
+                <div>
+                  <h4 className="font-medium text-slate-800 mb-1">Adresse</h4>
+                  <p className="text-slate-600">
+                    12 rue de la Mise en Page<br />
+                    75001 Paris, France
+                  </p>
+                </div>
+              </div>
+              
               <div className="pt-6 mt-6 border-t border-slate-200">
                 <h4 className="font-medium text-slate-800 mb-3">Horaires d'ouverture</h4>
                 <div className="space-y-2 text-slate-600">
@@ -182,8 +195,8 @@ const Contact = () => {
             
             <div className="mt-8 bg-slate-100 rounded-lg h-40 overflow-hidden">
               {/* Map placeholder - would be replaced with an actual Google Maps integration */}
-              <div className="w-full h-full flex items-center justify-center text-slate-400">
-                Carte Google Maps
+              <div className="w-full h-full flex items-center justify-center text-slate-400 bg-blue-50">
+                <MapPin className="mr-2" /> Carte Google Maps
               </div>
             </div>
           </div>

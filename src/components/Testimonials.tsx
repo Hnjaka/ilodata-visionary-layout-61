@@ -13,25 +13,25 @@ interface TestimonialProps {
 
 const testimonials: TestimonialProps[] = [
   {
-    quote: "Grâce à Ilodata, mon manuscrit a été transformé en un livre professionnel qui dépasse toutes mes attentes. La mise en page est élégante et parfaitement adaptée au contenu.",
-    author: "Marie Dupont",
+    quote: "Grâce aux modèles Word d'ilodata.com, j'ai pu finaliser la mise en page de mon roman en quelques heures seulement. Un gain de temps incroyable !",
+    author: "Marie",
     position: "Auteure indépendante",
     image: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
     rating: 5
   },
   {
-    quote: "Notre rapport annuel n'a jamais été aussi bien présenté. L'équipe d'Ilodata a su capturer l'essence de notre marque et créer un document qui impressionne nos investisseurs.",
-    author: "Thomas Martin",
-    position: "Directeur de communication, Entreprise XYZ",
+    quote: "Le service de mise en page sur mesure est top. Mon livre a une présentation professionnelle sans que j'aie à m'en préoccuper.",
+    author: "Pierre",
+    position: "Éditeur",
     image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
     rating: 5
   },
   {
-    quote: "Les modèles fournis par Ilodata m'ont fait gagner un temps précieux pour ma thèse. Les conseils personnalisés ont également été d'une grande aide pour finaliser ma mise en page.",
-    author: "Sophie Bernard",
-    position: "Doctorante en sciences sociales",
+    quote: "Les tutoriels d'ilodata m'ont permis d'apprendre à faire ma propre mise en page. Le résultat est bien meilleur que ce que j'espérais !",
+    author: "Sophie",
+    position: "Auteure auto-éditée",
     image: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
-    rating: 4
+    rating: 5
   }
 ];
 
@@ -91,7 +91,7 @@ const Testimonials = () => {
               <Quote className="h-6 w-6 text-ilodata-600" />
             </div>
           </div>
-          <h2 className="section-title text-center">Ce que disent nos clients</h2>
+          <h2 className="section-title text-center">Ils nous font confiance</h2>
           <p className="section-subtitle">
             Découvrez les expériences de ceux qui ont fait confiance à nos services.
           </p>

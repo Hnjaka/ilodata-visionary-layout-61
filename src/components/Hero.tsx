@@ -44,17 +44,17 @@ const Hero = () => {
           </div>
           
           <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold mb-6 tracking-tight text-slate-900 animate-fade-down delay-100">
-            <span className="block">Donnez vie à vos idées avec</span>
-            <span className="bg-clip-text text-transparent bg-gradient-to-r from-ilodata-600 to-ilodata-400">des mises en page parfaites</span>
+            <span className="block">Mise en page de livre :</span>
+            <span className="bg-clip-text text-transparent bg-gradient-to-r from-ilodata-600 to-ilodata-400">simplifiez-vous la vie !</span>
           </h1>
           
           <p className="text-xl text-slate-600 max-w-3xl mx-auto mb-10 animate-fade-down delay-200">
-            Des modèles de mise en page soignés, des conseils d'experts et des services personnalisés pour créer des documents impeccables qui captivent votre audience.
+            Que vous soyez auteur indépendant ou éditeur, ilodata.com vous accompagne pour créer des livres professionnels. Réalisez vous-même votre mise en page grâce à nos modèles et guides, ou confiez-nous votre projet.
           </p>
           
           <div className="flex flex-col sm:flex-row justify-center items-center gap-4 sm:gap-6 animate-fade-up delay-300">
             <Link to="/modeles" className="button-primary group flex items-center gap-2 w-full sm:w-auto">
-              Explorer les modèles
+              Trouver un modèle de mise en page
               <ArrowRight size={18} className="transition-transform group-hover:translate-x-1" />
             </Link>
             <Link to="#services" className="button-secondary w-full sm:w-auto">
@@ -66,7 +66,7 @@ const Hero = () => {
       
       {/* Visual element: Floating document */}
       <div className="absolute bottom-40 right-[10%] w-64 h-80 hidden md:block animate-fade-in" style={{ perspective: "1000px" }}>
-        <div className="relative w-full h-full animate-[float_6s_ease-in-out_infinite]" style={{ transformStyle: "preserve-3d", animation: "float 6s ease-in-out infinite" }}>
+        <div className="relative w-full h-full" style={{ transformStyle: "preserve-3d", animation: "float 6s ease-in-out infinite" }}>
           <div className="absolute w-full h-full glass-card p-3 shadow-lg rotate-6">
             <div className="h-1/3 bg-blue-50 mb-2 rounded"></div>
             <div className="h-3 bg-gray-200 w-3/4 mb-2 rounded"></div>
@@ -86,12 +86,14 @@ const Hero = () => {
         </div>
       </div>
 
-      <style jsx>{`
+      <style>
+        {`
         @keyframes float {
           0%, 100% { transform: translateY(0) rotate(6deg); }
           50% { transform: translateY(-20px) rotate(9deg); }
         }
-      `}</style>
+        `}
+      </style>
     </section>
   );
 };

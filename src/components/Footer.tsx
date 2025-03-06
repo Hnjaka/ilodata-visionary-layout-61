@@ -68,18 +68,18 @@ const Footer = () => {
                 </Link>
               </li>
               <li>
-                <Link to="/services/correction" className="text-slate-300 hover:text-white transition-colors">
-                  Correction et révision
+                <Link to="/modeles" className="text-slate-300 hover:text-white transition-colors">
+                  Modèles Word personnalisables
                 </Link>
               </li>
               <li>
-                <Link to="/services/design" className="text-slate-300 hover:text-white transition-colors">
-                  Design graphique
+                <Link to="/formation" className="text-slate-300 hover:text-white transition-colors">
+                  Formation mise en page
                 </Link>
               </li>
               <li>
-                <Link to="/services/formation" className="text-slate-300 hover:text-white transition-colors">
-                  Formation et coaching
+                <Link to="/devis" className="text-slate-300 hover:text-white transition-colors">
+                  Demande de devis
                 </Link>
               </li>
             </ul>
@@ -112,18 +112,8 @@ const Footer = () => {
           </div>
           
           <div>
-            <h4 className="font-semibold text-lg mb-4">Entreprise</h4>
+            <h4 className="font-semibold text-lg mb-4">Légal</h4>
             <ul className="space-y-2">
-              <li>
-                <Link to="/about" className="text-slate-300 hover:text-white transition-colors">
-                  À propos
-                </Link>
-              </li>
-              <li>
-                <Link to="/contact" className="text-slate-300 hover:text-white transition-colors">
-                  Contact
-                </Link>
-              </li>
               <li>
                 <Link to="/legal/cgu" className="text-slate-300 hover:text-white transition-colors">
                   CGU
@@ -134,12 +124,22 @@ const Footer = () => {
                   Politique de confidentialité
                 </Link>
               </li>
+              <li>
+                <Link to="/legal/mentions-legales" className="text-slate-300 hover:text-white transition-colors">
+                  Mentions légales
+                </Link>
+              </li>
+              <li>
+                <Link to="/contact" className="text-slate-300 hover:text-white transition-colors">
+                  Contact
+                </Link>
+              </li>
             </ul>
           </div>
         </div>
         
         <div className="pt-8 border-t border-slate-800 text-center text-slate-400 text-sm">
-          <p>&copy; {currentYear} Ilodata. Tous droits réservés.</p>
+          <p>&copy; {currentYear} ilodata.com – Tous droits réservés.</p>
         </div>
       </div>
     </footer>

@@ -35,6 +35,29 @@ const Index = () => {
     };
   }, []);
 
+  // Set meta tags for SEO
+  useEffect(() => {
+    document.title = "Mise en page de livre pour auteurs indépendants et éditeurs | ilodata.com";
+    
+    // Update meta description
+    let metaDescription = document.querySelector('meta[name="description"]');
+    if (!metaDescription) {
+      metaDescription = document.createElement('meta');
+      metaDescription.setAttribute('name', 'description');
+      document.head.appendChild(metaDescription);
+    }
+    metaDescription.setAttribute('content', 'Découvrez nos modèles Word, formations et services de mise en page pour créer des livres professionnels. Réalisez vous-même ou confiez-nous votre projet.');
+    
+    // Add keywords meta tag
+    let metaKeywords = document.querySelector('meta[name="keywords"]');
+    if (!metaKeywords) {
+      metaKeywords = document.createElement('meta');
+      metaKeywords.setAttribute('name', 'keywords');
+      document.head.appendChild(metaKeywords);
+    }
+    metaKeywords.setAttribute('content', 'Mise en page livre, Formation mise en page livre, Réaliser soi-même mise en page livre');
+  }, []);
+
   return (
     <div className="min-h-screen flex flex-col overflow-x-hidden">
       <Header />
