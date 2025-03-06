@@ -24,9 +24,13 @@ const Hero = () => {
   }, []);
 
   return (
-    <section className="relative w-full min-h-screen flex items-center justify-center overflow-hidden pt-16">
+    <section className="relative w-full min-h-screen flex items-center justify-center overflow-hidden pt-16 bg-cover bg-center" 
+      style={{ backgroundImage: "url('https://images.unsplash.com/photo-1649972904349-6e44c42644a7?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80')" }}>
+      {/* Dark overlay for better text contrast */}
+      <div className="absolute inset-0 bg-black opacity-50 z-0"></div>
+      
       {/* Background gradient overlay */}
-      <div className="absolute inset-0 bg-gradient-to-br from-blue-50 to-white opacity-80 z-0"></div>
+      <div className="absolute inset-0 bg-gradient-to-br from-blue-900/50 to-black/70 opacity-80 z-0"></div>
       
       {/* Soft pattern overlay */}
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_rgba(99,102,241,0.15)_0,_transparent_40%)] z-0"></div>
@@ -43,12 +47,12 @@ const Hero = () => {
             </span>
           </div>
           
-          <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold mb-6 tracking-tight text-slate-900 animate-fade-down delay-100">
+          <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold mb-6 tracking-tight text-white animate-fade-down delay-100">
             <span className="block">Mise en page de livre :</span>
-            <span className="bg-clip-text text-transparent bg-gradient-to-r from-ilodata-600 to-ilodata-400">simplifiez-vous la vie !</span>
+            <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-200 to-blue-50">simplifiez-vous la vie !</span>
           </h1>
           
-          <p className="text-xl text-slate-600 max-w-3xl mx-auto mb-10 animate-fade-down delay-200">
+          <p className="text-xl text-gray-100 max-w-3xl mx-auto mb-10 animate-fade-down delay-200">
             Que vous soyez auteur indépendant ou éditeur, ilodata.com vous accompagne pour créer des livres professionnels. Réalisez vous-même votre mise en page grâce à nos modèles et guides, ou confiez-nous votre projet.
           </p>
           
