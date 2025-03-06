@@ -99,7 +99,7 @@ const Guides = () => {
             title="Tutoriels et vidéos"
             description="Apprenez à maîtriser la mise en page de livre grâce à nos tutoriels pas à pas et nos vidéos explicatives. Parfait pour les auteurs qui souhaitent tout faire eux-mêmes."
             buttonText="Accéder aux tutoriels"
-            link="/tutoriels"
+            link="/guides"
             delay="delay-200"
           />
           
@@ -108,7 +108,7 @@ const Guides = () => {
             title="Articles et conseils"
             description="Consultez nos articles pour des astuces et des conseils pratiques sur la mise en page, l'auto-édition et bien plus encore."
             buttonText="Lire les articles"
-            link="/articles"
+            link="/guides"
             delay="delay-300"
           />
         </div>
