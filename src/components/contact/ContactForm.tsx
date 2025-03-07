@@ -3,6 +3,7 @@ import React, { useRef, useState } from 'react';
 import { Send } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useToast } from '@/hooks/use-toast';
+import emailjs from 'emailjs-com';
 
 interface ContactFormProps {
   recipientEmail: string;
@@ -25,17 +26,41 @@ const ContactForm = ({ recipientEmail }: ContactFormProps) => {
     console.log(`From: ${name} (${email})`);
     console.log(`Message: ${message}`);
     
-    // Simulate form submission
-    setTimeout(() => {
-      toast({
-        title: "Message envoyé",
-        description: `Votre message a été envoyé à ${recipientEmail}. Nous vous répondrons dans les plus brefs délais.`,
+    // Prepare template parameters
+    const templateParams = {
+      from_name: name,
+      from_email: email,
+      message: message,
+      to_email: recipientEmail,
+    };
+    
+    // Send email using EmailJS
+    emailjs.send(
+      'service_contactform', // Your EmailJS service ID
+      'template_contactform', // Your EmailJS template ID
+      templateParams,
+      'YOUR_USER_ID' // Your EmailJS public key
+    )
+      .then(() => {
+        toast({
+          title: "Message envoyé",
+          description: `Votre message a été envoyé à ${recipientEmail}. Nous vous répondrons dans les plus brefs délais.`,
+        });
+        setName('');
+        setEmail('');
+        setMessage('');
+      })
+      .catch((error) => {
+        console.error('Email sending failed:', error);
+        toast({
+          title: "Erreur d'envoi",
+          description: "Nous n'avons pas pu envoyer votre message. Veuillez réessayer plus tard.",
+          variant: "destructive",
+        });
+      })
+      .finally(() => {
+        setIsSubmitting(false);
       });
-      setName('');
-      setEmail('');
-      setMessage('');
-      setIsSubmitting(false);
-    }, 1500);
   };
 
   return (
