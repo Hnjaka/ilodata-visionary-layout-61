@@ -12,6 +12,9 @@ const Contact = () => {
   const sectionRef = useRef<HTMLDivElement>(null);
   const formRef = useRef<HTMLFormElement>(null);
   const { toast } = useToast();
+  
+  // Set the recipient email
+  const recipientEmail = "contact@ilodata.com";
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -40,11 +43,16 @@ const Contact = () => {
     e.preventDefault();
     setIsSubmitting(true);
     
+    // Log the recipient email
+    console.log(`Sending message to: ${recipientEmail}`);
+    console.log(`From: ${name} (${email})`);
+    console.log(`Message: ${message}`);
+    
     // Simulate form submission
     setTimeout(() => {
       toast({
         title: "Message envoyé",
-        description: "Nous vous répondrons dans les plus brefs délais.",
+        description: `Votre message a été envoyé à ${recipientEmail}. Nous vous répondrons dans les plus brefs délais.`,
       });
       setName('');
       setEmail('');
