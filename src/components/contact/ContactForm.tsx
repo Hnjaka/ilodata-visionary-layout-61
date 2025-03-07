@@ -36,10 +36,10 @@ const ContactForm = ({ recipientEmail }: ContactFormProps) => {
     
     // Send email using EmailJS
     emailjs.send(
-      'service_contactform', // Your EmailJS service ID
-      'template_contactform', // Your EmailJS template ID
+      'service_l4ulggs', // Your EmailJS service ID
+      'template_as81t7j', // Your EmailJS template ID
       templateParams,
-      'YOUR_USER_ID' // Your EmailJS public key
+      'NotuTShrYkY4u9tg2' // Your EmailJS public key
     )
       .then(() => {
         toast({
