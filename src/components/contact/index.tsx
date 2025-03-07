@@ -1,37 +1,16 @@
 
-import React, { useEffect, useRef } from 'react';
+import React from 'react';
 import { MessageSquare } from 'lucide-react';
 import ContactForm from './ContactForm';
 import ContactInfo from './ContactInfo';
+import { useIntersectionObserver } from '@/hooks/useIntersectionObserver';
 
 const Contact = () => {
-  const sectionRef = useRef<HTMLDivElement>(null);
-  
   // Set the recipient email
   const recipientEmail = "contact@ilodata.com";
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add('is-visible');
-          }
-        });
-      },
-      { threshold: 0.1 }
-    );
-
-    if (sectionRef.current) {
-      observer.observe(sectionRef.current);
-    }
-
-    return () => {
-      if (sectionRef.current) {
-        observer.unobserve(sectionRef.current);
-      }
-    };
-  }, []);
+  
+  // Use our custom intersection observer hook
+  const sectionRef = useIntersectionObserver();
 
   return (
     <section id="contact" className="section-padding bg-gradient-to-b from-blue-50 to-white">
