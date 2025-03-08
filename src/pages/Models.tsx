@@ -1,7 +1,6 @@
 
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect } from 'react';
 import { ArrowDownToLine, Book, FileText, ArrowRight, Check } from 'lucide-react';
-import { useIntersectionObserver } from '@/hooks/useIntersectionObserver';
 import { cn } from '@/lib/utils';
 import { Link } from 'react-router-dom';
 import Header from '@/components/Header';
@@ -96,11 +95,6 @@ const Testimonial = ({ quote, author, position, delay }: { quote: string, author
 };
 
 const Models = () => {
-  const sectionRef1 = useRef<HTMLDivElement>(null);
-  const sectionRef2 = useRef<HTMLDivElement>(null);
-  const sectionRef3 = useRef<HTMLDivElement>(null);
-  const sectionRef4 = useRef<HTMLDivElement>(null);
-
   useEffect(() => {
     // Set document title for SEO
     document.title = "Modèles de mise en page pour livres | ilodata.com";
@@ -113,6 +107,12 @@ const Models = () => {
       document.head.appendChild(metaDescription);
     }
     metaDescription.setAttribute('content', 'Téléchargez des modèles Word gratuits et payants pour créer une mise en page de livre professionnelle. Parfait pour les auteurs indépendants et les éditeurs.');
+    
+    // Make sections visible immediately instead of waiting for intersection
+    const sections = document.querySelectorAll('.fade-in-section');
+    sections.forEach(section => {
+      section.classList.add('is-visible');
+    });
   }, []);
 
   return (
@@ -149,10 +149,7 @@ const Models = () => {
       
       {/* Section 1: Présentation des Modèles */}
       <section className="py-16 md:py-24 bg-white">
-        <div 
-          ref={sectionRef1} 
-          className="container mx-auto px-4 md:px-6 fade-in-section"
-        >
+        <div className="container mx-auto px-4 md:px-6 fade-in-section is-visible">
           <div className="text-center mb-16">
             <div className="flex justify-center mb-4">
               <div className="p-3 rounded-full bg-blue-100">
@@ -217,10 +214,7 @@ const Models = () => {
       
       {/* Section 2: Exemples de Modèles à Télécharger */}
       <section id="models" className="py-16 md:py-24 bg-gradient-to-b from-white to-blue-50">
-        <div 
-          ref={sectionRef2} 
-          className="container mx-auto px-4 md:px-6 fade-in-section"
-        >
+        <div className="container mx-auto px-4 md:px-6 fade-in-section is-visible">
           <div className="text-center mb-16">
             <div className="flex justify-center mb-4">
               <div className="p-3 rounded-full bg-blue-100">
@@ -275,10 +269,7 @@ const Models = () => {
       
       {/* Section 3: Comment Utiliser les Modèles */}
       <section id="how-to-use" className="py-16 md:py-24 bg-white">
-        <div 
-          ref={sectionRef3} 
-          className="container mx-auto px-4 md:px-6 fade-in-section"
-        >
+        <div className="container mx-auto px-4 md:px-6 fade-in-section is-visible">
           <div className="text-center mb-16">
             <h2 className="section-title text-center">Comment personnaliser nos modèles Word ?</h2>
             <p className="section-subtitle">
@@ -330,10 +321,7 @@ const Models = () => {
       
       {/* Section 4: Témoignages */}
       <section className="py-16 md:py-24 bg-gradient-to-b from-blue-50 to-white">
-        <div 
-          ref={sectionRef4} 
-          className="container mx-auto px-4 md:px-6 fade-in-section"
-        >
+        <div className="container mx-auto px-4 md:px-6 fade-in-section is-visible">
           <div className="text-center mb-16">
             <h2 className="section-title text-center">Ils ont utilisé nos modèles</h2>
             <p className="section-subtitle">
@@ -396,3 +384,4 @@ const Models = () => {
 };
 
 export default Models;
+
