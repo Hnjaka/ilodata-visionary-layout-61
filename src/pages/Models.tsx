@@ -112,7 +112,7 @@ const Models = () => {
             <ModelCard 
               title="Modèle Roman"
               description="Parfait pour les romans et récits de fiction. Mise en page élégante avec chapitres numérotés, en-têtes et pieds de page professionnels."
-              imageSrc="https://images.unsplash.com/photo-1488590528505-98d2b5aba04b?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+              imageSrc="/images/model-roman.jpg"
               downloadLink="/downloads/modele-roman.docx"
               delay="delay-100"
             />
@@ -120,7 +120,7 @@ const Models = () => {
             <ModelCard 
               title="Modèle Essai Académique"
               description="Idéal pour les ouvrages universitaires et académiques. Inclut des styles pour citations, notes de bas de page et bibliographie."
-              imageSrc="https://images.unsplash.com/photo-1461749280684-dccba630e2f6?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+              imageSrc="/images/model-academic.jpg"
               downloadLink="/downloads/modele-essai-academique.docx"
               delay="delay-200"
             />
@@ -128,7 +128,7 @@ const Models = () => {
             <ModelCard 
               title="Modèle Livre Illustré"
               description="Conçu pour les livres avec images et illustrations. Mise en page adaptée avec espaces pour légendes et positionnement optimal des images."
-              imageSrc="https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+              imageSrc="/images/model-illustrated.jpg"
               downloadLink="/downloads/modele-livre-illustre.docx"
               delay="delay-300"
             />
@@ -136,7 +136,7 @@ const Models = () => {
             <ModelCard 
               title="Modèle Livre Technique"
               description="Optimisé pour les manuels techniques et guides pratiques. Inclut des styles pour encadrés, listes à puces et tableaux."
-              imageSrc="https://images.unsplash.com/photo-1498050108023-c5249f4df085?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+              imageSrc="/images/model-technical.jpg"
               downloadLink="/downloads/modele-livre-technique.docx"
               delay="delay-100"
             />
@@ -144,7 +144,7 @@ const Models = () => {
             <ModelCard 
               title="Modèle Poésie"
               description="Spécialement conçu pour les recueils de poésie. Mise en page épurée avec une attention particulière aux espaces et à la typographie."
-              imageSrc="https://images.unsplash.com/photo-1455390582262-044cdead277a?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+              imageSrc="/images/model-poetry.jpg"
               downloadLink="/downloads/modele-poesie.docx"
               delay="delay-200"
             />
@@ -152,7 +152,7 @@ const Models = () => {
             <ModelCard 
               title="Modèle Livre de Cuisine"
               description="Parfait pour les livres de recettes. Inclut des sections pour ingrédients, étapes, temps de préparation et de cuisson."
-              imageSrc="https://images.unsplash.com/photo-1556909114-44e3ef2efe0e?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+              imageSrc="/images/model-cookbook.jpg"
               downloadLink="/downloads/modele-livre-cuisine.docx"
               delay="delay-300"
             />
