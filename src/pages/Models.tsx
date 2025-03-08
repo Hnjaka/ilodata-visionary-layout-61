@@ -1,28 +1,21 @@
+
 import React, { useState } from 'react';
 import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
-import { useToast } from "@/hooks/use-toast"
+import { useToast } from "@/hooks/use-toast";
 
 const Models = () => {
   const [modelName, setModelName] = useState("Modèle de livre");
-  const [price, setPrice] = useState("29.00");
-  const { toast } = useToast()
+  const [price, setPrice] = useState("1.00");
+  const { toast } = useToast();
 
-  // Inside the Models component where the PayPal options are defined:
-  const paypalOptions = {
-    "client-id": "test", // Use your actual client ID in production
-    currency: "EUR",
-    intent: "CAPTURE" // Add the required 'intent' property
-  };
-
-  // For the PayPalScriptProvider component props:
   return (
-    <div>
-      <h1>Nos Modèles</h1>
-      <p>Choisissez votre modèle de livre préféré :</p>
+    <div className="container mx-auto px-4 py-8">
+      <h1 className="text-3xl font-bold mb-6">Nos Modèles</h1>
+      <p className="text-lg mb-8">Choisissez votre modèle de livre préféré :</p>
 
-      <div>
-        <h2>{modelName}</h2>
-        <p>Prix: {price} €</p>
+      <div className="bg-white shadow-md rounded-lg p-6 mb-8">
+        <h2 className="text-xl font-semibold mb-2">{modelName}</h2>
+        <p className="text-gray-700 mb-4">Prix: {price} €</p>
 
         <PayPalScriptProvider options={{
           clientId: "test", // Use your actual client ID in production
@@ -30,9 +23,9 @@ const Models = () => {
           intent: "CAPTURE"
         }}>
           <PayPalButtons
-            createOrder={(data: any, actions: any) => {
+            createOrder={(data, actions) => {
               return actions.order.create({
-                intent: "CAPTURE", // Add the required 'intent' property
+                intent: "CAPTURE",
                 purchase_units: [{
                   description: modelName,
                   amount: {
@@ -45,12 +38,12 @@ const Models = () => {
                 }]
               });
             }}
-            onApprove={(data: any, actions: any) => {
-              return actions.order.capture().then((details: any) => {
+            onApprove={(data, actions) => {
+              return actions.order.capture().then((details) => {
                 toast({
                   title: "Paiement réussi!",
                   description: `Transaction complétée pour ${details.payer.name.given_name}!`,
-                })
+                });
               });
             }}
           />
