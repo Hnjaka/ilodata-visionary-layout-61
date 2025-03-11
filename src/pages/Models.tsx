@@ -1,4 +1,3 @@
-
 import React, { useEffect } from 'react';
 import { ArrowDownToLine, Book, FileText, ArrowRight, Check } from 'lucide-react';
 import { cn } from '@/lib/utils';
@@ -96,10 +95,8 @@ const Testimonial = ({ quote, author, position, delay }: { quote: string, author
 
 const Models = () => {
   useEffect(() => {
-    // Set document title for SEO
     document.title = "Modèles de mise en page pour livres | ilodata.com";
     
-    // Update meta description
     let metaDescription = document.querySelector('meta[name="description"]');
     if (!metaDescription) {
       metaDescription = document.createElement('meta');
@@ -108,7 +105,6 @@ const Models = () => {
     }
     metaDescription.setAttribute('content', 'Téléchargez des modèles Word gratuits et payants pour créer une mise en page de livre professionnelle. Parfait pour les auteurs indépendants et les éditeurs.');
     
-    // Make sections visible immediately instead of waiting for intersection
     const sections = document.querySelectorAll('.fade-in-section');
     sections.forEach(section => {
       section.classList.add('is-visible');
@@ -119,7 +115,6 @@ const Models = () => {
     <div className="min-h-screen flex flex-col">
       <Header />
       
-      {/* Hero Section */}
       <section className="relative pt-20 pb-16 bg-gradient-to-b from-blue-900 to-blue-800">
         <div className="absolute inset-0 bg-pattern-overlay opacity-10"></div>
         <div className="container mx-auto px-4 md:px-6 relative z-10">
@@ -147,7 +142,6 @@ const Models = () => {
         </div>
       </section>
       
-      {/* Section 1: Présentation des Modèles */}
       <section className="py-16 md:py-24 bg-white">
         <div className="container mx-auto px-4 md:px-6 fade-in-section is-visible">
           <div className="text-center mb-16">
@@ -166,7 +160,7 @@ const Models = () => {
           <div className="grid md:grid-cols-2 gap-10 items-center">
             <div>
               <img 
-                src="/images/model-showcase.jpg" 
+                src="https://images.unsplash.com/photo-1532012197267-da84d127e765?q=80&w=2787&auto=format&fit=crop"
                 alt="Exemple de mise en page" 
                 className="rounded-lg shadow-xl animate-fade-right"
               />
@@ -212,7 +206,6 @@ const Models = () => {
         </div>
       </section>
       
-      {/* Section 2: Exemples de Modèles à Télécharger */}
       <section id="models" className="py-16 md:py-24 bg-gradient-to-b from-white to-blue-50">
         <div className="container mx-auto px-4 md:px-6 fade-in-section is-visible">
           <div className="text-center mb-16">
@@ -231,7 +224,7 @@ const Models = () => {
             <ModelCard 
               title="Modèle Roman"
               description="Idéal pour les romans et les nouvelles. Ce modèle inclut des styles prédéfinis pour les titres, les paragraphes et les dialogues."
-              imageSrc="/images/model-roman.jpg"
+              imageSrc="https://images.unsplash.com/photo-1543002588-bfa74002ed7e?q=80&w=2730&auto=format&fit=crop"
               downloadLink="/downloads/modele-roman.docx"
               isFree={true}
               delay="delay-100"
@@ -240,7 +233,7 @@ const Models = () => {
             <ModelCard 
               title="Modèle Essai"
               description="Parfait pour les essais, les mémoires et les ouvrages académiques. Ce modèle propose une structure claire avec des notes de bas de page."
-              imageSrc="/images/model-academic.jpg"
+              imageSrc="https://images.unsplash.com/photo-1476081718509-d5d0b661a376?q=80&w=2533&auto=format&fit=crop"
               downloadLink="/downloads/modele-essai-academique.docx"
               isFree={true}
               delay="delay-200"
@@ -249,7 +242,7 @@ const Models = () => {
             <ModelCard 
               title="Modèle Livre Illustré"
               description="Conçu pour les livres contenant des images, des graphiques ou des illustrations. Ce modèle gère parfaitement l'insertion d'éléments visuels."
-              imageSrc="/images/model-illustrated.jpg"
+              imageSrc="https://images.unsplash.com/photo-1544947950-fa07a98d237f?q=80&w=2787&auto=format&fit=crop"
               downloadLink="/downloads/modele-livre-illustre.docx"
               price="9,99 €"
               delay="delay-300"
@@ -258,7 +251,7 @@ const Models = () => {
             <ModelCard 
               title="Modèle Guide Pratique"
               description="Adapté aux guides, manuels et livres pratiques. Ce modèle inclut des styles pour les listes, les tableaux et les encadrés."
-              imageSrc="/images/model-technical.jpg"
+              imageSrc="https://images.unsplash.com/photo-1553729459-efe14ef6055d?q=80&w=2070&auto=format&fit=crop"
               downloadLink="/downloads/modele-livre-technique.docx"
               price="7,99 €"
               delay="delay-400"
@@ -267,7 +260,6 @@ const Models = () => {
         </div>
       </section>
       
-      {/* Section 3: Comment Utiliser les Modèles */}
       <section id="how-to-use" className="py-16 md:py-24 bg-white">
         <div className="container mx-auto px-4 md:px-6 fade-in-section is-visible">
           <div className="text-center mb-16">
@@ -319,7 +311,6 @@ const Models = () => {
         </div>
       </section>
       
-      {/* Section 4: Témoignages */}
       <section className="py-16 md:py-24 bg-gradient-to-b from-blue-50 to-white">
         <div className="container mx-auto px-4 md:px-6 fade-in-section is-visible">
           <div className="text-center mb-16">
@@ -352,7 +343,6 @@ const Models = () => {
         </div>
       </section>
       
-      {/* Section 5: Appel à l'Action (CTA) */}
       <section className="py-16 bg-ilodata-600 text-white">
         <div className="container mx-auto px-4 md:px-6">
           <div className="max-w-3xl mx-auto text-center">
@@ -384,4 +374,3 @@ const Models = () => {
 };
 
 export default Models;
-
