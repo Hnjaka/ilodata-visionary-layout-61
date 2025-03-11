@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { ArrowRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
@@ -31,12 +30,19 @@ const ServiceHero = () => {
               </Link>
             </div>
           </div>
-          <div className="hidden md:block animate-fade-left">
-            <img 
-              src="https://images.unsplash.com/photo-1531347886214-5072706113ce?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.0.3"
-              alt="Mise en page professionnelle" 
-              className="rounded-lg shadow-xl transform hover:scale-105 transition-transform duration-500"
-            />
+          <div className="hidden md:block animate-fade-left relative rounded-lg overflow-hidden shadow-2xl">
+            <video 
+              autoPlay 
+              muted 
+              loop 
+              className="w-full h-full object-cover rounded-lg transform hover:scale-105 transition-transform duration-500"
+            >
+              <source 
+                src="https://cdn.coverr.co/videos/coverr-someone-typing-on-laptop-2633/1080p.mp4" 
+                type="video/mp4" 
+              />
+              Votre navigateur ne supporte pas la lecture de vidéos.
+            </video>
           </div>
         </div>
       </div>
