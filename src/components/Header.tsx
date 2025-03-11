@@ -57,6 +57,14 @@ const Header = () => {
             <Link to="#blog" className="text-slate-800 font-medium hover:text-ilodata-600 transition-colors">
               Blog
             </Link>
+            <a 
+              href="https://www.layoutforall.com/shop/" 
+              className="text-slate-800 font-medium hover:text-ilodata-600 transition-colors"
+              target="_blank" 
+              rel="noopener noreferrer"
+            >
+              Boutique
+            </a>
           </nav>
 
           {/* CTA Button */}
@@ -123,6 +131,15 @@ const Header = () => {
               >
                 Blog
               </Link>
+              <a 
+                href="https://www.layoutforall.com/shop/" 
+                className="text-slate-800 font-medium hover:text-ilodata-600 transition-colors py-2"
+                target="_blank" 
+                rel="noopener noreferrer"
+                onClick={() => setIsMobileMenuOpen(false)}
+              >
+                Boutique
+              </a>
               <Link 
                 to="/modeles" 
                 className="button-primary w-full text-center mt-2"
