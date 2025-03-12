@@ -48,7 +48,7 @@ const Header = () => {
             <Link to="/services" className="text-slate-800 font-medium hover:text-ilodata-600 transition-colors">
               Services
             </Link>
-            <Link to="#about" className="text-slate-800 font-medium hover:text-ilodata-600 transition-colors">
+            <Link to="/about" className="text-slate-800 font-medium hover:text-ilodata-600 transition-colors">
               À propos
             </Link>
             <Link to="/contact" className="text-slate-800 font-medium hover:text-ilodata-600 transition-colors">
@@ -111,7 +111,7 @@ const Header = () => {
                 Services
               </Link>
               <Link 
-                to="#about" 
+                to="/about" 
                 className="text-slate-800 font-medium hover:text-ilodata-600 transition-colors py-2"
                 onClick={() => setIsMobileMenuOpen(false)}
               >
