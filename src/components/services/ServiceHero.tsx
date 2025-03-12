@@ -26,7 +26,7 @@ const ServiceHero = () => {
                 Découvrir nos services
                 <ArrowRight size={16} className="transition-transform group-hover:translate-x-1" />
               </a>
-              <Link to="/devis" className="button-secondary">
+              <Link to="/contact" className="button-secondary">
                 Demandez un devis
               </Link>
             </div>

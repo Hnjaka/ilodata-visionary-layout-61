@@ -19,7 +19,7 @@ const CtaSection = () => {
               Contactez-nous
             </Link>
             <Link 
-              to="#services" 
+              to="/services" 
               className="px-6 py-3 rounded-full bg-transparent border-2 border-white text-white font-medium hover:bg-white/10 transition-colors"
             >
               Découvrir nos services

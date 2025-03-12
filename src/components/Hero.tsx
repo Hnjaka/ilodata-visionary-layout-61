@@ -1,4 +1,3 @@
-
 import React, { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight } from 'lucide-react';
@@ -61,14 +60,14 @@ const Hero = () => {
               Trouver un modèle de mise en page
               <ArrowRight size={18} className="transition-transform group-hover:translate-x-1" />
             </Link>
-            <Link to="#services" className="button-secondary w-full sm:w-auto">
+            <Link to="/services" className="button-secondary w-full sm:w-auto">
               Découvrir nos services
             </Link>
           </div>
         </div>
       </div>
       
-      {/* Visual element: Floating document */}
+      {/* Visual elements */}
       <div className="absolute bottom-40 right-[10%] w-64 h-80 hidden md:block animate-fade-in" style={{ perspective: "1000px" }}>
         <div className="relative w-full h-full" style={{ transformStyle: "preserve-3d", animation: "float 6s ease-in-out infinite" }}>
           <div className="absolute w-full h-full glass-card p-3 shadow-lg rotate-6">
@@ -81,7 +80,6 @@ const Hero = () => {
         </div>
       </div>
       
-      {/* Visual element: Floating pen */}
       <div className="absolute top-32 left-[15%] w-24 h-24 hidden md:block">
         <div className="relative w-full h-full" style={{ animation: "float 5s ease-in-out infinite 1s" }}>
           <div className="absolute w-full h-full glass-card rounded-full p-5 shadow-lg">

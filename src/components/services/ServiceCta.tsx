@@ -14,7 +14,7 @@ const ServiceCta = () => {
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link 
-              to="/devis" 
+              to="/contact" 
               className="px-6 py-3 rounded-full bg-white text-ilodata-600 font-medium hover:bg-blue-50 transition-colors"
             >
               Demandez un devis

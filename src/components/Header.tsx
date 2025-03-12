@@ -51,7 +51,7 @@ const Header = () => {
             <Link to="#about" className="text-slate-800 font-medium hover:text-ilodata-600 transition-colors">
               À propos
             </Link>
-            <Link to="#contact" className="text-slate-800 font-medium hover:text-ilodata-600 transition-colors">
+            <Link to="/contact" className="text-slate-800 font-medium hover:text-ilodata-600 transition-colors">
               Contact
             </Link>
             <Link to="#blog" className="text-slate-800 font-medium hover:text-ilodata-600 transition-colors">
@@ -69,7 +69,7 @@ const Header = () => {
 
           {/* CTA Button */}
           <div className="hidden md:block">
-            <Link to="/devis" className="button-primary">
+            <Link to="/contact" className="button-primary">
               Demandez un devis
             </Link>
           </div>
@@ -118,7 +118,7 @@ const Header = () => {
                 À propos
               </Link>
               <Link 
-                to="#contact" 
+                to="/contact" 
                 className="text-slate-800 font-medium hover:text-ilodata-600 transition-colors py-2"
                 onClick={() => setIsMobileMenuOpen(false)}
               >
@@ -141,7 +141,7 @@ const Header = () => {
                 Boutique
               </a>
               <Link 
-                to="/devis" 
+                to="/contact" 
                 className="button-primary w-full text-center mt-2"
                 onClick={() => setIsMobileMenuOpen(false)}
               >
