@@ -14,7 +14,7 @@ const FondamentauxMiseEnPage = () => {
       metaDescription.setAttribute('name', 'description');
       document.head.appendChild(metaDescription);
     }
-    metaDescription.setAttribute('content', 'Découvrez les éléments fondamentaux d'une mise en page professionnelle : marges, interlignes et polices. Conseils pour améliorer la lisibilité et l'esthétique de votre livre.');
+    metaDescription.setAttribute("content", "Découvrez les éléments fondamentaux d'une mise en page professionnelle : marges, interlignes et polices. Conseils pour améliorer la lisibilité et l'esthétique de votre livre.");
   }, []);
 
   const breadcrumbs = [
