@@ -71,33 +71,17 @@ const ArticleLayout = ({ title, breadcrumbs, children }: ArticleLayoutProps) => 
               <div className="lg:w-1/3">
                 <div className="sticky top-24">
                   <div className="glass-card p-6">
-                    <h2 className="text-xl font-semibold mb-4 text-slate-800">Table des matières</h2>
+                    <h2 className="text-xl font-semibold mb-4 text-slate-800">Articles similaires</h2>
                     <nav className="space-y-1">
-                      {/* This would be dynamically generated based on the article headings */}
-                      <a href="#introduction" className="block py-1 px-2 text-slate-600 hover:text-ilodata-600 hover:bg-blue-50 rounded transition-colors">
-                        Introduction à la mise en page professionnelle
-                      </a>
-                      <a href="#pourquoi" className="block py-1 px-2 text-slate-600 hover:text-ilodata-600 hover:bg-blue-50 rounded transition-colors">
-                        Pourquoi une bonne mise en page est essentielle ?
-                      </a>
-                      <a href="#marges" className="block py-1 px-2 text-slate-600 hover:text-ilodata-600 hover:bg-blue-50 rounded transition-colors">
-                        Les marges : un élément clé
-                      </a>
-                      <a href="#interligne" className="block py-1 px-2 text-slate-600 hover:text-ilodata-600 hover:bg-blue-50 rounded transition-colors">
-                        L'interligne : facteur de lisibilité
-                      </a>
-                      <a href="#polices" className="block py-1 px-2 text-slate-600 hover:text-ilodata-600 hover:bg-blue-50 rounded transition-colors">
-                        Les polices : choisir le bon style
-                      </a>
-                      <a href="#alignement" className="block py-1 px-2 text-slate-600 hover:text-ilodata-600 hover:bg-blue-50 rounded transition-colors">
-                        Alignement et justification du texte
-                      </a>
-                      <a href="#faq" className="block py-1 px-2 text-slate-600 hover:text-ilodata-600 hover:bg-blue-50 rounded transition-colors">
-                        FAQ sur la mise en page
-                      </a>
-                      <a href="#conclusion" className="block py-1 px-2 text-slate-600 hover:text-ilodata-600 hover:bg-blue-50 rounded transition-colors">
-                        Conclusion
-                      </a>
+                      <Link to="/guides/fondamentaux-mise-en-page" className="block py-1 px-2 text-slate-600 hover:text-ilodata-600 hover:bg-blue-50 rounded transition-colors">
+                        Guide de mise en page professionnelle
+                      </Link>
+                      <Link to="/guides/choisir-taille-police" className="block py-1 px-2 text-slate-600 hover:text-ilodata-600 hover:bg-blue-50 rounded transition-colors">
+                        Comment choisir la bonne taille de police pour votre livre ?
+                      </Link>
+                      <Link to="/guides/erreurs-mise-en-page" className="block py-1 px-2 text-slate-600 hover:text-ilodata-600 hover:bg-blue-50 rounded transition-colors">
+                        Les erreurs courantes à éviter lors de la mise en page
+                      </Link>
                     </nav>
                   </div>
                   

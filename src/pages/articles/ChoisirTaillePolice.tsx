@@ -37,7 +37,7 @@ const ChoisirTaillePolice = () => {
 
   const tocItems = [
     { id: 'introduction', title: 'Introduction' },
-    { id: 'importance', title: 'Pourquoi la taille de police est essentielle pour un livre ?' },
+    { id: 'importance', title: "Pourquoi la taille de police est essentielle pour un livre ?" },
     { id: 'facteurs', title: 'Les facteurs à considérer pour choisir la taille de police' },
     { id: 'tailles-recommandees', title: 'Tailles de police recommandées selon le type de livre' },
     { id: 'meilleures-polices', title: 'Les meilleures polices pour une mise en page professionnelle' },

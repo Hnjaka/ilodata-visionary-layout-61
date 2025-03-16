@@ -36,8 +36,8 @@ const FondamentauxMiseEnPage = () => {
   const tocItems = [
     { id: 'introduction', title: 'Introduction à la mise en page professionnelle' },
     { id: 'importance', title: 'Pourquoi une bonne mise en page est essentielle pour un livre ?' },
-    { id: 'marges', title: 'Les marges : un élément clé de l\'équilibre visuel' },
-    { id: 'interligne', title: 'L\'interligne : un facteur de lisibilité primordial' },
+    { id: 'marges', title: "Les marges : un élément clé de l'équilibre visuel" },
+    { id: 'interligne', title: "L'interligne : un facteur de lisibilité primordial" },
     { id: 'polices', title: 'Les polices : choisir le bon style typographique' },
     { id: 'alignement', title: 'Alignement et justification du texte' },
     { id: 'faq', title: 'FAQ sur la mise en page professionnelle' },
