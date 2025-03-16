@@ -20,13 +20,13 @@ const TableOfContents = ({ items }: TableOfContentsProps) => {
   };
 
   return (
-    <div className="sticky top-8 mb-8">
-      <div className="glass-card p-5">
+    <div className="sticky top-24 mb-8">
+      <div className="glass-card p-5 shadow-md">
         <div className="flex items-center gap-2 mb-4">
           <List className="h-5 w-5 text-ilodata-600" />
           <h2 className="text-xl font-semibold text-slate-800">Table des matières</h2>
         </div>
-        <ul className="space-y-2 text-slate-600">
+        <ul className="space-y-2 text-slate-600 max-h-[calc(100vh-200px)] overflow-y-auto pr-2">
           {items.map((item, index) => (
             <li key={index} className="border-l-2 border-transparent hover:border-ilodata-400 pl-3 transition-all">
               <a 
