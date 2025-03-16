@@ -41,10 +41,10 @@ const ChoisirTaillePolice = () => {
     { id: 'facteurs', title: 'Les facteurs à considérer pour choisir la taille de police' },
     { id: 'tailles-recommandees', title: 'Tailles de police recommandées selon le type de livre' },
     { id: 'meilleures-polices', title: 'Les meilleures polices pour une mise en page professionnelle' },
-    { id: 'tester-lisibilite', title: 'Comment tester la lisibilité d'une taille de police ?' },
+    { id: 'tester-lisibilite', title: "Comment tester la lisibilité d'une taille de police ?" },
     { id: 'interlignage', title: 'Taille de police et interlignage : trouver le bon équilibre' },
     { id: 'erreurs', title: 'Les erreurs courantes à éviter' },
-    { id: 'faq', title: 'FAQ sur la taille de police d'un livre' },
+    { id: 'faq', title: "FAQ sur la taille de police d'un livre" },
     { id: 'conclusion', title: 'Conclusion' }
   ];
 
