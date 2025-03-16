@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { ArrowLeft, ChevronRight } from 'lucide-react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
+import TableOfContents from '@/components/article/TableOfContents';
 
 interface Breadcrumb {
   label: string;
@@ -14,9 +15,10 @@ interface ArticleLayoutProps {
   title: string;
   breadcrumbs: Breadcrumb[];
   children: React.ReactNode;
+  tocItems?: { id: string; title: string }[];
 }
 
-const ArticleLayout = ({ title, breadcrumbs, children }: ArticleLayoutProps) => {
+const ArticleLayout = ({ title, breadcrumbs, children, tocItems }: ArticleLayoutProps) => {
   return (
     <div className="min-h-screen flex flex-col">
       <Header />
@@ -69,61 +71,61 @@ const ArticleLayout = ({ title, breadcrumbs, children }: ArticleLayoutProps) => 
               
               {/* Sidebar */}
               <div className="lg:w-1/3">
-                <div className="sticky top-24">
-                  <div className="glass-card p-6">
-                    <h2 className="text-xl font-semibold mb-4 text-slate-800">Articles similaires</h2>
-                    <nav className="space-y-1">
-                      <Link to="/guides/fondamentaux-mise-en-page" className="block py-1 px-2 text-slate-600 hover:text-ilodata-600 hover:bg-blue-50 rounded transition-colors">
-                        Guide de mise en page professionnelle
-                      </Link>
-                      <Link to="/guides/choisir-taille-police" className="block py-1 px-2 text-slate-600 hover:text-ilodata-600 hover:bg-blue-50 rounded transition-colors">
-                        Comment choisir la bonne taille de police pour votre livre ?
-                      </Link>
-                      <Link to="/guides/erreurs-mise-en-page" className="block py-1 px-2 text-slate-600 hover:text-ilodata-600 hover:bg-blue-50 rounded transition-colors">
-                        Les erreurs courantes à éviter lors de la mise en page
-                      </Link>
-                    </nav>
-                  </div>
+                <div className="space-y-6">
+                  {/* Table des matières */}
+                  {tocItems && <TableOfContents items={tocItems} />}
                   
-                  <div className="glass-card p-6 mt-6">
-                    <h3 className="text-lg font-semibold mb-3 text-slate-800">Besoin d'aide pour votre livre ?</h3>
-                    <p className="text-slate-600 mb-4">Nos experts peuvent vous aider avec la mise en page professionnelle de votre livre.</p>
-                    <Link 
-                      to="/contact" 
-                      className="button-primary w-full text-center block"
-                    >
-                      Demandez un devis
-                    </Link>
-                  </div>
-                  
-                  <div className="glass-card p-6 mt-6">
-                    <h3 className="text-lg font-semibold mb-3 text-slate-800">Articles similaires</h3>
-                    <ul className="space-y-3">
-                      <li>
-                        <Link 
-                          to="/guides/choisir-taille-police" 
-                          className="text-slate-600 hover:text-ilodata-600 transition-colors"
-                        >
-                          Comment choisir la bonne taille de police pour votre livre ?
-                        </Link>
-                      </li>
-                      <li>
-                        <Link 
-                          to="/guides/erreurs-mise-en-page" 
-                          className="text-slate-600 hover:text-ilodata-600 transition-colors"
-                        >
-                          Les erreurs courantes à éviter lors de la mise en page d'un livre
-                        </Link>
-                      </li>
-                      <li>
-                        <Link 
-                          to="/guides/preparer-fichier-impression" 
-                          className="text-slate-600 hover:text-ilodata-600 transition-colors"
-                        >
-                          Comment préparer votre fichier pour l'impression
-                        </Link>
-                      </li>
-                    </ul>
+                  <div className="sticky top-24">
+                    {/* Demande de devis */}
+                    <div className="glass-card p-6 mb-6">
+                      <h3 className="text-lg font-semibold mb-3 text-slate-800">Besoin d'aide pour votre livre ?</h3>
+                      <p className="text-slate-600 mb-4">Nos experts peuvent vous aider avec la mise en page professionnelle de votre livre.</p>
+                      <Link 
+                        to="/contact" 
+                        className="button-primary w-full text-center block"
+                      >
+                        Demandez un devis
+                      </Link>
+                    </div>
+                    
+                    {/* Articles similaires */}
+                    <div className="glass-card p-6">
+                      <h3 className="text-lg font-semibold mb-3 text-slate-800">Articles similaires</h3>
+                      <ul className="space-y-3">
+                        <li>
+                          <Link 
+                            to="/guides/fondamentaux-mise-en-page" 
+                            className="block py-1 px-2 text-slate-600 hover:text-ilodata-600 hover:bg-blue-50 rounded transition-colors"
+                          >
+                            Guide de mise en page professionnelle
+                          </Link>
+                        </li>
+                        <li>
+                          <Link 
+                            to="/guides/choisir-taille-police" 
+                            className="block py-1 px-2 text-slate-600 hover:text-ilodata-600 hover:bg-blue-50 rounded transition-colors"
+                          >
+                            Comment choisir la bonne taille de police pour votre livre ?
+                          </Link>
+                        </li>
+                        <li>
+                          <Link 
+                            to="/guides/erreurs-mise-en-page" 
+                            className="block py-1 px-2 text-slate-600 hover:text-ilodata-600 hover:bg-blue-50 rounded transition-colors"
+                          >
+                            Les erreurs courantes à éviter lors de la mise en page
+                          </Link>
+                        </li>
+                        <li>
+                          <Link 
+                            to="/guides/preparer-fichier-impression" 
+                            className="block py-1 px-2 text-slate-600 hover:text-ilodata-600 hover:bg-blue-50 rounded transition-colors"
+                          >
+                            Comment préparer votre fichier pour l'impression
+                          </Link>
+                        </li>
+                      </ul>
+                    </div>
                   </div>
                 </div>
               </div>

@@ -2,7 +2,6 @@
 import React, { useEffect } from 'react';
 import ArticleLayout from '@/components/article/ArticleLayout';
 import { Separator } from "@/components/ui/separator";
-import TableOfContents from '@/components/article/TableOfContents';
 import FontSizeIntroSection from '@/components/article/FontSizeIntroSection';
 import FontSizeImportanceSection from '@/components/article/FontSizeImportanceSection';
 import FontSizeFactorsSection from '@/components/article/FontSizeFactorsSection';
@@ -75,11 +74,8 @@ const ChoisirTaillePolice = () => {
     <ArticleLayout
       title="Comment choisir la bonne taille de police pour votre livre ?"
       breadcrumbs={breadcrumbs}
+      tocItems={tocItems}
     >
-      <section>
-        <TableOfContents items={tocItems} />
-      </section>
-
       <Separator className="my-8" />
 
       <FontSizeIntroSection />

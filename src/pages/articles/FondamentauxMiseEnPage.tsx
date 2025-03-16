@@ -2,7 +2,6 @@
 import React, { useEffect } from 'react';
 import ArticleLayout from '@/components/article/ArticleLayout';
 import { Separator } from "@/components/ui/separator";
-import TableOfContents from '@/components/article/TableOfContents';
 import IntroductionSection from '@/components/article/IntroductionSection';
 import ImportanceSection from '@/components/article/ImportanceSection';
 import MarginsSection from '@/components/article/MarginsSection';
@@ -71,11 +70,8 @@ const FondamentauxMiseEnPage = () => {
     <ArticleLayout
       title="Guide de mise en page professionnelle"
       breadcrumbs={breadcrumbs}
+      tocItems={tocItems}
     >
-      <section>
-        <TableOfContents items={tocItems} />
-      </section>
-
       <Separator className="my-8" />
 
       <IntroductionSection />
