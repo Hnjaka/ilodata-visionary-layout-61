@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
-import { ArrowDownToLine, ChevronLeft, ChevronRight, ZoomIn } from 'lucide-react';
+import { ArrowDownToLine, ZoomIn } from 'lucide-react';
 import { Tables } from '@/integrations/supabase/types';
 import {
   Dialog,
@@ -10,7 +10,6 @@ import {
   DialogDescription,
 } from '@/components/ui/dialog';
 import { cn } from '@/lib/utils';
-import { Button } from '@/components/ui/button';
 
 type Template = Tables<"templates">;
 
@@ -30,6 +29,9 @@ const TemplateDetailModal = ({
   
   useEffect(() => {
     if (!template) return;
+    
+    // Reset current image index when template changes
+    setCurrentImageIndex(0);
     
     // Prepare all image paths
     const images: string[] = [];
@@ -90,7 +92,7 @@ const TemplateDetailModal = ({
               )}
             </div>
             
-            {/* Thumbnails */}
+            {/* Thumbnails - Only shown if there's more than one image */}
             {allImages.length > 1 && (
               <div className="flex gap-2 overflow-x-auto pb-2">
                 {allImages.map((image, index) => (

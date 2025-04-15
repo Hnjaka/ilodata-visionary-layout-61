@@ -33,14 +33,8 @@ const ModelCard = ({
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   
-  // In a real app, we would fetch these from the backend
-  // For this example, let's create dummy images
-  const images = [
-    imageSrc, 
-    // Add dummy extra images for demonstration purposes
-    "https://images.unsplash.com/photo-1543002588-bfa74002ed7e?q=80&w=2730&auto=format&fit=crop",
-    "https://images.unsplash.com/photo-1614332287897-cdc485fa562d?q=80&w=3570&auto=format&fit=crop"
-  ];
+  // Only use the main image without any dummy images
+  const images = [imageSrc];
 
   const selectImage = (index: number) => {
     setCurrentImageIndex(index);
@@ -109,47 +103,49 @@ const ModelCard = ({
                 </div>
               </div>
               
-              {/* Thumbnails */}
-              <div className="flex gap-2 overflow-x-auto pb-2">
-                {images.map((image, index) => (
-                  <div 
-                    key={index}
-                    onClick={() => selectImage(index)}
-                    className={cn(
-                      "relative cursor-pointer border-2 rounded overflow-hidden group transition-all",
-                      index === currentImageIndex 
-                        ? "border-blue-500" 
-                        : "border-transparent hover:border-blue-300"
-                    )}
-                  >
-                    {/* Thumbnail Image */}
-                    <div className="w-16 h-16 overflow-hidden">
-                      <img 
-                        src={image}
-                        alt={`Miniature ${index + 1}`}
-                        className="w-full h-full object-cover"
-                      />
-                    </div>
-                    
-                    {/* Zoom Overlay */}
-                    <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity z-10">
-                      <ZoomIn className="text-white" size={14} />
-                    </div>
-                    
-                    {/* Zoom Preview (appears on hover) */}
-                    <div className="hidden group-hover:block absolute bottom-full left-1/2 -translate-x-1/2 mb-2 z-20">
-                      <div className="bg-white p-1 rounded-md shadow-lg">
+              {/* Thumbnails - Only shown if there's more than one image */}
+              {images.length > 1 && (
+                <div className="flex gap-2 overflow-x-auto pb-2">
+                  {images.map((image, index) => (
+                    <div 
+                      key={index}
+                      onClick={() => selectImage(index)}
+                      className={cn(
+                        "relative cursor-pointer border-2 rounded overflow-hidden group transition-all",
+                        index === currentImageIndex 
+                          ? "border-blue-500" 
+                          : "border-transparent hover:border-blue-300"
+                      )}
+                    >
+                      {/* Thumbnail Image */}
+                      <div className="w-16 h-16 overflow-hidden">
                         <img 
                           src={image}
-                          alt={`Aperçu ${index + 1}`} 
-                          className="w-48 h-auto max-h-48 object-contain"
+                          alt={`Miniature ${index + 1}`}
+                          className="w-full h-full object-cover"
                         />
                       </div>
-                      <div className="absolute top-full left-1/2 -translate-x-1/2 w-3 h-3 -mt-1.5 bg-white transform rotate-45" />
+                      
+                      {/* Zoom Overlay */}
+                      <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity z-10">
+                        <ZoomIn className="text-white" size={14} />
+                      </div>
+                      
+                      {/* Zoom Preview (appears on hover) */}
+                      <div className="hidden group-hover:block absolute bottom-full left-1/2 -translate-x-1/2 mb-2 z-20">
+                        <div className="bg-white p-1 rounded-md shadow-lg">
+                          <img 
+                            src={image}
+                            alt={`Aperçu ${index + 1}`} 
+                            className="w-48 h-auto max-h-48 object-contain"
+                          />
+                        </div>
+                        <div className="absolute top-full left-1/2 -translate-x-1/2 w-3 h-3 -mt-1.5 bg-white transform rotate-45" />
+                      </div>
                     </div>
-                  </div>
-                ))}
-              </div>
+                  ))}
+                </div>
+              )}
             </div>
             
             {/* Template Details */}
