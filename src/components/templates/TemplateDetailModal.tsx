@@ -1,6 +1,6 @@
 
-import React, { useState } from 'react';
-import { ArrowDownToLine, ChevronLeft, ChevronRight, X } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { ArrowDownToLine, ChevronLeft, ChevronRight } from 'lucide-react';
 import { Tables } from '@/integrations/supabase/types';
 import {
   Dialog,
@@ -24,28 +24,33 @@ const TemplateDetailModal = ({
   onClose 
 }: TemplateDetailModalProps) => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [allImages, setAllImages] = useState<string[]>([]);
   
-  if (!template) return null;
-  
-  // Prepare all image paths
-  const allImages: string[] = [];
-  
-  // Add main image if it exists
-  if (template.image_apercu) {
-    allImages.push(template.image_apercu);
-  }
-  
-  // Add extra images if they exist
-  if (template.image_extras) {
-    try {
-      const extraImages = JSON.parse(template.image_extras);
-      if (Array.isArray(extraImages)) {
-        allImages.push(...extraImages);
-      }
-    } catch (error) {
-      console.error('Error parsing image_extras:', error);
+  useEffect(() => {
+    if (!template) return;
+    
+    // Prepare all image paths
+    const images: string[] = [];
+    
+    // Add main image if it exists
+    if (template.image_apercu) {
+      images.push(template.image_apercu);
     }
-  }
+    
+    // Add extra images if they exist
+    if (template.image_extras) {
+      try {
+        const extraImages = JSON.parse(template.image_extras);
+        if (Array.isArray(extraImages)) {
+          images.push(...extraImages);
+        }
+      } catch (error) {
+        console.error('Error parsing image_extras:', error);
+      }
+    }
+    
+    setAllImages(images);
+  }, [template]);
 
   const nextImage = () => {
     setCurrentImageIndex((prev) => (prev + 1) % allImages.length);
@@ -54,6 +59,8 @@ const TemplateDetailModal = ({
   const prevImage = () => {
     setCurrentImageIndex((prev) => (prev - 1 + allImages.length) % allImages.length);
   };
+
+  if (!template) return null;
 
   return (
     <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>

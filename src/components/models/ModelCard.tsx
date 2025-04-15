@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import { ArrowDownToLine, Check } from 'lucide-react';
+import { ArrowDownToLine, Check, ChevronLeft, ChevronRight } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { 
   Dialog,
@@ -29,6 +29,21 @@ const ModelCard = ({
   delay
 }: ModelCardProps) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  
+  // Pour gérer plusieurs images dans le futur
+  const [images, setImages] = useState<string[]>(() => {
+    // Pour l'instant, nous n'avons qu'une seule image
+    return [imageSrc];
+  });
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+
+  const nextImage = () => {
+    setCurrentImageIndex((prevIndex) => (prevIndex + 1) % images.length);
+  };
+
+  const prevImage = () => {
+    setCurrentImageIndex((prevIndex) => (prevIndex - 1 + images.length) % images.length);
+  };
   
   return (
     <>
@@ -81,14 +96,51 @@ const ModelCard = ({
           
           <div className="grid md:grid-cols-2 gap-6 mt-4">
             {/* Image */}
-            <div className="overflow-hidden rounded-lg bg-slate-100">
+            <div className="overflow-hidden rounded-lg bg-slate-100 relative">
               <div className="aspect-square">
                 <img 
-                  src={imageSrc}
+                  src={images[currentImageIndex]}
                   alt={title}
                   className="w-full h-full object-contain"
                 />
               </div>
+              
+              {images.length > 1 && (
+                <>
+                  {/* Boutons de navigation */}
+                  <button 
+                    onClick={prevImage}
+                    className="absolute left-2 top-1/2 -translate-y-1/2 bg-black/30 text-white rounded-full p-1.5 hover:bg-black/50 transition-colors"
+                    aria-label="Image précédente"
+                  >
+                    <ChevronLeft size={20} />
+                  </button>
+                  <button 
+                    onClick={nextImage}
+                    className="absolute right-2 top-1/2 -translate-y-1/2 bg-black/30 text-white rounded-full p-1.5 hover:bg-black/50 transition-colors"
+                    aria-label="Image suivante"
+                  >
+                    <ChevronRight size={20} />
+                  </button>
+                  
+                  {/* Indicateurs d'image */}
+                  <div className="absolute bottom-2 left-0 right-0 flex justify-center gap-1.5">
+                    {images.map((_, index) => (
+                      <button
+                        key={index}
+                        className={cn(
+                          "w-2 h-2 rounded-full transition-all",
+                          index === currentImageIndex 
+                            ? "bg-white scale-125" 
+                            : "bg-white/50 hover:bg-white/80"
+                        )}
+                        onClick={() => setCurrentImageIndex(index)}
+                        aria-label={`Voir l'image ${index + 1}`}
+                      />
+                    ))}
+                  </div>
+                </>
+              )}
             </div>
             
             {/* Details */}
