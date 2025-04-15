@@ -114,7 +114,7 @@ const Templates = () => {
                     <SelectValue placeholder="Filtrer par catégorie" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="">Toutes catégories</SelectItem>
+                    <SelectItem value="all">Toutes catégories</SelectItem>
                     <SelectItem value="Livres">Livres</SelectItem>
                     <SelectItem value="Magazines">Magazines</SelectItem>
                     <SelectItem value="CV">CV</SelectItem>
