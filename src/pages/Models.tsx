@@ -58,6 +58,24 @@ const Models = () => {
     }
   };
 
+  // Helper function to parse extra images from template data
+  const getExtraImages = (template: Template): string[] => {
+    if (!template.image_extras) return [];
+    
+    try {
+      const extraImages = JSON.parse(template.image_extras);
+      if (Array.isArray(extraImages)) {
+        return extraImages.map(image => 
+          `https://valzxjecoceltiyzkogw.supabase.co/storage/v1/object/public/template_images/${image}`
+        );
+      }
+      return [];
+    } catch (error) {
+      console.error('Error parsing image_extras:', error);
+      return [];
+    }
+  };
+
   return (
     <div className="min-h-screen flex flex-col">
       <Header />
@@ -81,20 +99,29 @@ const Models = () => {
             <div className="text-center py-8">Chargement des modèles...</div>
           ) : (
             <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
-              {featuredTemplates.map((template, index) => (
-                <ModelCard 
-                  key={template.id}
-                  title={template.titre}
-                  description={template.description || ''}
-                  imageSrc={template.image_apercu ? 
-                    `https://valzxjecoceltiyzkogw.supabase.co/storage/v1/object/public/template_images/${template.image_apercu}` :
-                    "https://images.unsplash.com/photo-1543002588-bfa74002ed7e?q=80&w=2730&auto=format&fit=crop"}
-                  downloadLink={`https://valzxjecoceltiyzkogw.supabase.co/storage/v1/object/public/template_files/${template.fichier_template}`}
-                  price={null}
-                  isFree={true}
-                  delay={`delay-${index * 100}`}
-                />
-              ))}
+              {featuredTemplates.map((template, index) => {
+                // Get main image URL
+                const mainImageUrl = template.image_apercu ? 
+                  `https://valzxjecoceltiyzkogw.supabase.co/storage/v1/object/public/template_images/${template.image_apercu}` :
+                  "https://images.unsplash.com/photo-1543002588-bfa74002ed7e?q=80&w=2730&auto=format&fit=crop";
+                
+                // Get extra images
+                const extraImages = getExtraImages(template);
+                
+                return (
+                  <ModelCard 
+                    key={template.id}
+                    title={template.titre}
+                    description={template.description || ''}
+                    imageSrc={mainImageUrl}
+                    downloadLink={`https://valzxjecoceltiyzkogw.supabase.co/storage/v1/object/public/template_files/${template.fichier_template}`}
+                    price={null}
+                    isFree={true}
+                    delay={`delay-${index * 100}`}
+                    imageExtras={extraImages}
+                  />
+                );
+              })}
             </div>
           )}
         </div>

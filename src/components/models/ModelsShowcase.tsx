@@ -28,6 +28,10 @@ const ModelsShowcase = () => {
             isFree={true}
             price={null}
             delay="delay-100"
+            imageExtras={[
+              "https://images.unsplash.com/photo-1476081718509-d5d0b661a376?q=80&w=2533&auto=format&fit=crop",
+              "https://images.unsplash.com/photo-1544947950-fa07a98d237f?q=80&w=2787&auto=format&fit=crop"
+            ]}
           />
           
           <ModelCard 
@@ -38,6 +42,9 @@ const ModelsShowcase = () => {
             isFree={true}
             price={null}
             delay="delay-200"
+            imageExtras={[
+              "https://images.unsplash.com/photo-1543002588-bfa74002ed7e?q=80&w=2730&auto=format&fit=crop"
+            ]}
           />
           
           <ModelCard 
@@ -48,6 +55,9 @@ const ModelsShowcase = () => {
             price={9.99}
             isFree={false}
             delay="delay-300"
+            imageExtras={[
+              "https://images.unsplash.com/photo-1553729459-efe14ef6055d?q=80&w=2070&auto=format&fit=crop"
+            ]}
           />
           
           <ModelCard 
@@ -58,6 +68,9 @@ const ModelsShowcase = () => {
             price={7.99}
             isFree={false}
             delay="delay-400"
+            imageExtras={[
+              "https://images.unsplash.com/photo-1544947950-fa07a98d237f?q=80&w=2787&auto=format&fit=crop"
+            ]}
           />
         </div>
       </div>

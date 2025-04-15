@@ -25,6 +25,7 @@ interface ModelCardProps {
   price: number | null;
   isFree: boolean;
   delay: string;
+  imageExtras?: string[]; // New prop to handle multiple images
 }
 
 const ModelCard = ({
@@ -34,13 +35,14 @@ const ModelCard = ({
   downloadLink,
   price,
   isFree,
-  delay
+  delay,
+  imageExtras = []
 }: ModelCardProps) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   
-  // Use the provided image in an array
-  const images = imageSrc ? [imageSrc] : [];
+  // Create an array of images including the main image and any extras
+  const images = imageSrc ? [imageSrc, ...imageExtras] : [];
 
   // Format price for display
   const formatPrice = (price: number | null): string => {
@@ -56,7 +58,7 @@ const ModelCard = ({
     <>
       <div className={`bg-white rounded-lg shadow-lg overflow-hidden transform transition-all duration-700 hover:shadow-xl ${delay}`}>
         <div 
-          className="aspect-square bg-gray-200 cursor-pointer" 
+          className="aspect-square bg-gray-200 cursor-pointer relative" 
           onClick={() => setIsModalOpen(true)}
         >
           {imageSrc ? (
@@ -91,7 +93,7 @@ const ModelCard = ({
         </div>
       </div>
       
-      {/* Modal for detailed view */}
+      {/* Modal for detailed view - enhanced to match TemplateDetailModal */}
       <Dialog open={isModalOpen} onOpenChange={(open) => !open && setIsModalOpen(false)}>
         <DialogContent className="sm:max-w-3xl">
           <DialogHeader>
@@ -181,7 +183,7 @@ const ModelCard = ({
                   download
                   className="button-primary w-full text-center inline-flex items-center justify-center"
                 >
-                  <span>Télécharger</span>
+                  <span>{isFree ? 'Télécharger gratuitement' : `Acheter - ${formatPrice(price)}`}</span>
                   <ArrowDownToLine size={16} className="ml-2" />
                 </a>
               </div>
