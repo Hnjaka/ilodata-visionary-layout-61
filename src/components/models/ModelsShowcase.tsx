@@ -26,6 +26,7 @@ const ModelsShowcase = () => {
             imageSrc="https://images.unsplash.com/photo-1543002588-bfa74002ed7e?q=80&w=2730&auto=format&fit=crop"
             downloadLink="/downloads/modele-roman.docx"
             isFree={true}
+            price={null}
             delay="delay-100"
           />
           
@@ -35,6 +36,7 @@ const ModelsShowcase = () => {
             imageSrc="https://images.unsplash.com/photo-1476081718509-d5d0b661a376?q=80&w=2533&auto=format&fit=crop"
             downloadLink="/downloads/modele-essai-academique.docx"
             isFree={true}
+            price={null}
             delay="delay-200"
           />
           
@@ -43,7 +45,8 @@ const ModelsShowcase = () => {
             description="Conçu pour les livres contenant des images, des graphiques ou des illustrations. Ce modèle gère parfaitement l'insertion d'éléments visuels."
             imageSrc="https://images.unsplash.com/photo-1544947950-fa07a98d237f?q=80&w=2787&auto=format&fit=crop"
             downloadLink="/downloads/modele-livre-illustre.docx"
-            price="9,99 €"
+            price={9.99}
+            isFree={false}
             delay="delay-300"
           />
           
@@ -52,7 +55,8 @@ const ModelsShowcase = () => {
             description="Adapté aux guides, manuels et livres pratiques. Ce modèle inclut des styles pour les listes, les tableaux et les encadrés."
             imageSrc="https://images.unsplash.com/photo-1553729459-efe14ef6055d?q=80&w=2070&auto=format&fit=crop"
             downloadLink="/downloads/modele-livre-technique.docx"
-            price="7,99 €"
+            price={7.99}
+            isFree={false}
             delay="delay-400"
           />
         </div>

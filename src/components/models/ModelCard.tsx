@@ -46,6 +46,12 @@ const ModelCard = ({
     setCurrentImageIndex(index);
   };
 
+  // Format price for display
+  const formatPrice = (price: number | null): string => {
+    if (price === null) return '';
+    return `${price.toFixed(2).replace('.', ',')} €`;
+  };
+
   return (
     <>
       <div className={`bg-white rounded-lg shadow-lg overflow-hidden transform transition-all duration-700 hover:shadow-xl ${delay}`}>
@@ -72,7 +78,7 @@ const ModelCard = ({
               className="button-primary w-full text-center inline-flex items-center justify-center"
               download
             >
-              <span>{isFree ? 'Télécharger gratuitement' : `Acheter - ${price} €`}</span>
+              <span>{isFree ? 'Télécharger gratuitement' : `Acheter - ${formatPrice(price)}`}</span>
               <ArrowDownToLine size={16} className="ml-2" />
             </a>
           </div>
@@ -156,7 +162,7 @@ const ModelCard = ({
               <div className="mb-4">
                 <h3 className="text-sm font-medium text-gray-500">Prix</h3>
                 <p className="mt-1 text-gray-900 font-semibold">
-                  {isFree ? 'Gratuit' : `${price} €`}
+                  {isFree ? 'Gratuit' : formatPrice(price)}
                 </p>
               </div>
               
