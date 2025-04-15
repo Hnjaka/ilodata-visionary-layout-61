@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
-import { ArrowDownToLine, ChevronLeft, ChevronRight } from 'lucide-react';
+import { ArrowDownToLine, ChevronLeft, ChevronRight, ZoomIn } from 'lucide-react';
 import { Tables } from '@/integrations/supabase/types';
 import {
   Dialog,
@@ -54,12 +54,8 @@ const TemplateDetailModal = ({
     setAllImages(images);
   }, [template]);
 
-  const nextImage = () => {
-    setCurrentImageIndex((prev) => (prev + 1) % allImages.length);
-  };
-
-  const prevImage = () => {
-    setCurrentImageIndex((prev) => (prev - 1 + allImages.length) % allImages.length);
+  const selectImage = (index: number) => {
+    setCurrentImageIndex(index);
   };
 
   if (!template) return null;
@@ -76,56 +72,65 @@ const TemplateDetailModal = ({
         
         <div className="grid md:grid-cols-2 gap-6 mt-4">
           {/* Image Gallery */}
-          <div className="relative overflow-hidden rounded-lg bg-slate-100">
-            {allImages.length > 0 ? (
-              <div className="aspect-square relative">
-                <img 
-                  src={`https://valzxjecoceltiyzkogw.supabase.co/storage/v1/object/public/template_images/${allImages[currentImageIndex]}`}
-                  alt={`${template.titre} - aperçu ${currentImageIndex + 1}`}
-                  className="w-full h-full object-contain"
-                />
-                
-                {allImages.length > 1 && (
-                  <>
-                    <Button 
-                      onClick={prevImage}
-                      className="absolute left-2 top-1/2 -translate-y-1/2 bg-black/30 text-white rounded-full p-1.5 hover:bg-black/50 transition-colors z-10"
-                      size="icon"
-                      variant="ghost"
-                    >
-                      <ChevronLeft size={20} />
-                    </Button>
-                    <Button 
-                      onClick={nextImage}
-                      className="absolute right-2 top-1/2 -translate-y-1/2 bg-black/30 text-white rounded-full p-1.5 hover:bg-black/50 transition-colors z-10"
-                      size="icon"
-                      variant="ghost"
-                    >
-                      <ChevronRight size={20} />
-                    </Button>
-                    
-                    {/* Image indicators */}
-                    <div className="absolute bottom-2 left-0 right-0 flex justify-center gap-1.5 z-10">
-                      {allImages.map((_, index) => (
-                        <button
-                          key={index}
-                          className={cn(
-                            "w-2 h-2 rounded-full transition-all",
-                            index === currentImageIndex 
-                              ? "bg-white scale-125" 
-                              : "bg-white/50 hover:bg-white/80"
-                          )}
-                          onClick={() => setCurrentImageIndex(index)}
-                          aria-label={`Voir l'image ${index + 1}`}
-                        />
-                      ))}
+          <div className="flex flex-col gap-4">
+            {/* Main Image Display */}
+            <div className="relative overflow-hidden rounded-lg bg-slate-100">
+              {allImages.length > 0 ? (
+                <div className="aspect-square relative">
+                  <img 
+                    src={`https://valzxjecoceltiyzkogw.supabase.co/storage/v1/object/public/template_images/${allImages[currentImageIndex]}`}
+                    alt={`${template.titre} - aperçu ${currentImageIndex + 1}`}
+                    className="w-full h-full object-contain"
+                  />
+                </div>
+              ) : (
+                <div className="aspect-square flex items-center justify-center">
+                  <span className="text-slate-400">Pas d'aperçu disponible</span>
+                </div>
+              )}
+            </div>
+            
+            {/* Thumbnails */}
+            {allImages.length > 1 && (
+              <div className="flex gap-2 overflow-x-auto pb-2">
+                {allImages.map((image, index) => (
+                  <div 
+                    key={index}
+                    onClick={() => selectImage(index)}
+                    className={cn(
+                      "relative cursor-pointer border-2 rounded overflow-hidden group transition-all",
+                      index === currentImageIndex 
+                        ? "border-blue-500" 
+                        : "border-transparent hover:border-blue-300"
+                    )}
+                  >
+                    {/* Thumbnail Image */}
+                    <div className="w-16 h-16 overflow-hidden">
+                      <img 
+                        src={`https://valzxjecoceltiyzkogw.supabase.co/storage/v1/object/public/template_images/${image}`}
+                        alt={`Miniature ${index + 1}`}
+                        className="w-full h-full object-cover"
+                      />
                     </div>
-                  </>
-                )}
-              </div>
-            ) : (
-              <div className="aspect-square flex items-center justify-center">
-                <span className="text-slate-400">Pas d'aperçu disponible</span>
+                    
+                    {/* Zoom Overlay */}
+                    <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity z-10">
+                      <ZoomIn className="text-white" size={14} />
+                    </div>
+                    
+                    {/* Zoom Preview (appears on hover) */}
+                    <div className="hidden group-hover:block absolute bottom-full left-1/2 -translate-x-1/2 mb-2 z-20">
+                      <div className="bg-white p-1 rounded-md shadow-lg">
+                        <img 
+                          src={`https://valzxjecoceltiyzkogw.supabase.co/storage/v1/object/public/template_images/${image}`}
+                          alt={`Aperçu ${index + 1}`} 
+                          className="w-48 h-auto max-h-48 object-contain"
+                        />
+                      </div>
+                      <div className="absolute top-full left-1/2 -translate-x-1/2 w-3 h-3 -mt-1.5 bg-white transform rotate-45" />
+                    </div>
+                  </div>
+                ))}
               </div>
             )}
           </div>

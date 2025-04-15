@@ -1,8 +1,8 @@
 
 import React, { useState } from 'react';
-import { ArrowDownToLine, Check, ChevronLeft, ChevronRight } from 'lucide-react';
+import { ArrowDownToLine, ZoomIn } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { 
+import {
   Dialog,
   DialogContent,
   DialogHeader,
@@ -16,8 +16,8 @@ interface ModelCardProps {
   description: string;
   imageSrc: string;
   downloadLink: string;
-  price?: string;
-  isFree?: boolean;
+  price: number | null;
+  isFree: boolean;
   delay: string;
 }
 
@@ -27,70 +27,60 @@ const ModelCard = ({
   imageSrc,
   downloadLink,
   price,
-  isFree = false,
+  isFree,
   delay
 }: ModelCardProps) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  
-  // Pour gérer plusieurs images dans le futur
-  const [images, setImages] = useState<string[]>(() => {
-    // Pour l'instant, nous n'avons qu'une seule image
-    return [imageSrc];
-  });
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
-
-  const nextImage = () => {
-    setCurrentImageIndex((prevIndex) => (prevIndex + 1) % images.length);
-  };
-
-  const prevImage = () => {
-    setCurrentImageIndex((prevIndex) => (prevIndex - 1 + images.length) % images.length);
-  };
   
+  // In a real app, we would fetch these from the backend
+  // For this example, let's create dummy images
+  const images = [
+    imageSrc, 
+    // Add dummy extra images for demonstration purposes
+    "https://images.unsplash.com/photo-1543002588-bfa74002ed7e?q=80&w=2730&auto=format&fit=crop",
+    "https://images.unsplash.com/photo-1614332287897-cdc485fa562d?q=80&w=3570&auto=format&fit=crop"
+  ];
+
+  const selectImage = (index: number) => {
+    setCurrentImageIndex(index);
+  };
+
   return (
     <>
-      <div className={cn(
-        "glass-card p-6 md:p-8 flex flex-col h-full animate-fade-up transition-all duration-300 hover:shadow-xl hover:-translate-y-1",
-        delay
-      )}>
+      <div className={`bg-white rounded-lg shadow-lg overflow-hidden transform transition-all duration-700 hover:shadow-xl ${delay}`}>
         <div 
-          className="mb-6 overflow-hidden rounded-lg h-48 cursor-pointer"
+          className="relative h-48 bg-gray-200 cursor-pointer" 
           onClick={() => setIsModalOpen(true)}
         >
-          <img
-            src={imageSrc}
-            alt={title}
-            className="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
+          <img 
+            src={imageSrc} 
+            alt={title} 
+            className="w-full h-full object-cover"
           />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 hover:opacity-100 transition-opacity flex items-end justify-center">
+            <span className="text-white pb-4 font-medium text-sm">Voir les détails</span>
+          </div>
         </div>
-        <h3 className="text-xl font-semibold mb-3 text-slate-800">{title}</h3>
-        <p className="text-slate-600 mb-6 flex-grow">{description}</p>
-        
-        <div className="mt-auto">
-          {isFree ? (
-            <span className="inline-block px-3 py-1 bg-green-100 text-green-800 rounded-full text-sm font-medium mb-4">
-              <Check size={14} className="inline mr-1" />
-              Gratuit
-            </span>
-          ) : price ? (
-            <span className="inline-block px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm font-medium mb-4">
-              {price}
-            </span>
-          ) : null}
+        <div className="p-6">
+          <h3 className="text-xl font-bold mb-2 text-slate-800">{title}</h3>
+          <p className="text-gray-600 mb-4 line-clamp-2">{description}</p>
           
-          <a 
-            href={downloadLink} 
-            className="group inline-flex items-center justify-center w-full button-primary"
-            download
-          >
-            Télécharger
-            <ArrowDownToLine size={16} className="ml-2 transition-transform group-hover:translate-y-1" />
-          </a>
+          <div className="mt-4">
+            <a 
+              href={downloadLink} 
+              className="button-primary w-full text-center inline-flex items-center justify-center"
+              download
+            >
+              <span>{isFree ? 'Télécharger gratuitement' : `Acheter - ${price} €`}</span>
+              <ArrowDownToLine size={16} className="ml-2" />
+            </a>
+          </div>
         </div>
       </div>
       
-      {/* Model Detail Modal */}
-      <Dialog open={isModalOpen} onOpenChange={(open) => setIsModalOpen(open)}>
+      {/* Modal for detailed view */}
+      <Dialog open={isModalOpen} onOpenChange={(open) => !open && setIsModalOpen(false)}>
         <DialogContent className="sm:max-w-3xl">
           <DialogHeader>
             <DialogTitle className="text-xl font-semibold">{title}</DialogTitle>
@@ -100,59 +90,63 @@ const ModelCard = ({
           </DialogHeader>
           
           <div className="grid md:grid-cols-2 gap-6 mt-4">
-            {/* Image */}
-            <div className="overflow-hidden rounded-lg bg-slate-100 relative">
-              <div className="aspect-square">
-                <img 
-                  src={images[currentImageIndex]}
-                  alt={title}
-                  className="w-full h-full object-contain"
-                />
+            {/* Image Gallery */}
+            <div className="flex flex-col gap-4">
+              {/* Main Image Display */}
+              <div className="relative overflow-hidden rounded-lg bg-slate-100">
+                <div className="aspect-square relative">
+                  <img 
+                    src={images[currentImageIndex]} 
+                    alt={`${title} - aperçu ${currentImageIndex + 1}`} 
+                    className="w-full h-full object-contain"
+                  />
+                </div>
               </div>
               
-              {images.length > 1 && (
-                <>
-                  {/* Boutons de navigation */}
-                  <Button 
-                    onClick={prevImage}
-                    className="absolute left-2 top-1/2 -translate-y-1/2 bg-black/30 text-white rounded-full p-1.5 hover:bg-black/50 transition-colors"
-                    size="icon"
-                    variant="ghost"
-                    aria-label="Image précédente"
+              {/* Thumbnails */}
+              <div className="flex gap-2 overflow-x-auto pb-2">
+                {images.map((image, index) => (
+                  <div 
+                    key={index}
+                    onClick={() => selectImage(index)}
+                    className={cn(
+                      "relative cursor-pointer border-2 rounded overflow-hidden group transition-all",
+                      index === currentImageIndex 
+                        ? "border-blue-500" 
+                        : "border-transparent hover:border-blue-300"
+                    )}
                   >
-                    <ChevronLeft size={20} />
-                  </Button>
-                  <Button 
-                    onClick={nextImage}
-                    className="absolute right-2 top-1/2 -translate-y-1/2 bg-black/30 text-white rounded-full p-1.5 hover:bg-black/50 transition-colors"
-                    size="icon"
-                    variant="ghost"
-                    aria-label="Image suivante"
-                  >
-                    <ChevronRight size={20} />
-                  </Button>
-                  
-                  {/* Indicateurs d'image */}
-                  <div className="absolute bottom-2 left-0 right-0 flex justify-center gap-1.5">
-                    {images.map((_, index) => (
-                      <button
-                        key={index}
-                        className={cn(
-                          "w-2 h-2 rounded-full transition-all",
-                          index === currentImageIndex 
-                            ? "bg-white scale-125" 
-                            : "bg-white/50 hover:bg-white/80"
-                        )}
-                        onClick={() => setCurrentImageIndex(index)}
-                        aria-label={`Voir l'image ${index + 1}`}
+                    {/* Thumbnail Image */}
+                    <div className="w-16 h-16 overflow-hidden">
+                      <img 
+                        src={image}
+                        alt={`Miniature ${index + 1}`}
+                        className="w-full h-full object-cover"
                       />
-                    ))}
+                    </div>
+                    
+                    {/* Zoom Overlay */}
+                    <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity z-10">
+                      <ZoomIn className="text-white" size={14} />
+                    </div>
+                    
+                    {/* Zoom Preview (appears on hover) */}
+                    <div className="hidden group-hover:block absolute bottom-full left-1/2 -translate-x-1/2 mb-2 z-20">
+                      <div className="bg-white p-1 rounded-md shadow-lg">
+                        <img 
+                          src={image}
+                          alt={`Aperçu ${index + 1}`} 
+                          className="w-48 h-auto max-h-48 object-contain"
+                        />
+                      </div>
+                      <div className="absolute top-full left-1/2 -translate-x-1/2 w-3 h-3 -mt-1.5 bg-white transform rotate-45" />
+                    </div>
                   </div>
-                </>
-              )}
+                ))}
+              </div>
             </div>
             
-            {/* Details */}
+            {/* Template Details */}
             <div className="flex flex-col">
               <div className="mb-4">
                 <h3 className="text-sm font-medium text-gray-500">Description</h3>
@@ -160,25 +154,19 @@ const ModelCard = ({
               </div>
               
               <div className="mb-4">
-                {isFree ? (
-                  <span className="inline-block px-3 py-1 bg-green-100 text-green-800 rounded-full text-sm font-medium">
-                    <Check size={14} className="inline mr-1" />
-                    Gratuit
-                  </span>
-                ) : price ? (
-                  <span className="inline-block px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm font-medium">
-                    {price}
-                  </span>
-                ) : null}
+                <h3 className="text-sm font-medium text-gray-500">Prix</h3>
+                <p className="mt-1 text-gray-900 font-semibold">
+                  {isFree ? 'Gratuit' : `${price} €`}
+                </p>
               </div>
               
               <div className="mt-auto pt-4">
                 <a 
-                  href={downloadLink} 
-                  className="button-primary w-full text-center inline-flex items-center justify-center"
+                  href={downloadLink}
                   download
+                  className="button-primary w-full text-center inline-flex items-center justify-center"
                 >
-                  Télécharger
+                  <span>Télécharger</span>
                   <ArrowDownToLine size={16} className="ml-2" />
                 </a>
               </div>
