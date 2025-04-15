@@ -7,6 +7,7 @@ import { Input } from '@/components/ui/input';
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
 import { Tables } from '@/integrations/supabase/types';
+import TemplateCard from '@/components/templates/TemplateCard';
 import {
   Select,
   SelectContent,
@@ -114,7 +115,7 @@ const Templates = () => {
                     <SelectValue placeholder="Filtrer par catégorie" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="all">Toutes catégories</SelectItem>
+                    <SelectItem value="">Toutes catégories</SelectItem>
                     <SelectItem value="Livres">Livres</SelectItem>
                     <SelectItem value="Magazines">Magazines</SelectItem>
                     <SelectItem value="CV">CV</SelectItem>
@@ -140,49 +141,7 @@ const Templates = () => {
             ) : (
               <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {filteredTemplates.map((template) => (
-                  <div key={template.id} className="bg-white rounded-lg shadow-md overflow-hidden flex flex-col">
-                    {/* Template Image */}
-                    <div className="h-48 overflow-hidden">
-                      {template.image_apercu ? (
-                        <img 
-                          src={`https://valzxjecoceltiyzkogw.supabase.co/storage/v1/object/public/template_images/${template.image_apercu}`}
-                          alt={template.titre}
-                          className="w-full h-full object-cover"
-                        />
-                      ) : (
-                        <div className="w-full h-full bg-slate-200 flex items-center justify-center">
-                          <span className="text-slate-400">Pas d'aperçu</span>
-                        </div>
-                      )}
-                    </div>
-                    
-                    {/* Template Content */}
-                    <div className="p-6 flex flex-col flex-grow">
-                      <h3 className="text-xl font-semibold mb-2 text-slate-800">
-                        {template.titre}
-                      </h3>
-                      <p className="text-slate-600 mb-4 line-clamp-3 flex-grow">
-                        {template.description}
-                      </p>
-                      
-                      {/* Category Badge */}
-                      <div className="mb-4">
-                        <span className="inline-block px-3 py-1 bg-blue-100 text-blue-700 rounded-full text-sm">
-                          {template.categorie}
-                        </span>
-                      </div>
-                      
-                      {/* Download Button */}
-                      <a 
-                        href={`https://valzxjecoceltiyzkogw.supabase.co/storage/v1/object/public/template_files/${template.fichier_template}`}
-                        download
-                        className="button-primary w-full text-center inline-flex items-center justify-center"
-                      >
-                        <span>Télécharger</span>
-                        <ArrowDownToLine size={16} className="ml-2" />
-                      </a>
-                    </div>
-                  </div>
+                  <TemplateCard key={template.id} template={template} />
                 ))}
               </div>
             )}
