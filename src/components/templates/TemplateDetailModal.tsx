@@ -10,6 +10,13 @@ import {
   DialogDescription,
 } from '@/components/ui/dialog';
 import { cn } from '@/lib/utils';
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
+import { AspectRatio } from "@/components/ui/aspect-ratio";
 
 type Template = Tables<"templates">;
 
@@ -78,13 +85,13 @@ const TemplateDetailModal = ({
             {/* Main Image Display */}
             <div className="relative overflow-hidden rounded-lg bg-slate-100">
               {allImages.length > 0 ? (
-                <div className="aspect-square relative">
+                <AspectRatio ratio={1/1} className="bg-white">
                   <img 
                     src={`https://valzxjecoceltiyzkogw.supabase.co/storage/v1/object/public/template_images/${allImages[currentImageIndex]}`}
                     alt={`${template.titre} - aperçu ${currentImageIndex + 1}`}
                     className="w-full h-full object-contain"
                   />
-                </div>
+                </AspectRatio>
               ) : (
                 <div className="aspect-square flex items-center justify-center">
                   <span className="text-slate-400">Pas d'aperçu disponible</span>
@@ -92,46 +99,40 @@ const TemplateDetailModal = ({
               )}
             </div>
             
-            {/* Thumbnails - Only shown if there's more than one image */}
-            {allImages.length > 1 && (
-              <div className="flex gap-2 overflow-x-auto pb-2">
+            {/* Thumbnails Gallery */}
+            {allImages.length > 0 && (
+              <div className="flex flex-wrap gap-2 justify-center">
                 {allImages.map((image, index) => (
-                  <div 
-                    key={index}
-                    onClick={() => selectImage(index)}
-                    className={cn(
-                      "relative cursor-pointer border-2 rounded overflow-hidden group transition-all",
-                      index === currentImageIndex 
-                        ? "border-blue-500" 
-                        : "border-transparent hover:border-blue-300"
-                    )}
-                  >
-                    {/* Thumbnail Image */}
-                    <div className="w-16 h-16 overflow-hidden">
-                      <img 
-                        src={`https://valzxjecoceltiyzkogw.supabase.co/storage/v1/object/public/template_images/${image}`}
-                        alt={`Miniature ${index + 1}`}
-                        className="w-full h-full object-cover"
-                      />
-                    </div>
-                    
-                    {/* Zoom Overlay */}
-                    <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity z-10">
-                      <ZoomIn className="text-white" size={14} />
-                    </div>
-                    
-                    {/* Zoom Preview (appears on hover) */}
-                    <div className="hidden group-hover:block absolute bottom-full left-1/2 -translate-x-1/2 mb-2 z-20">
-                      <div className="bg-white p-1 rounded-md shadow-lg">
-                        <img 
-                          src={`https://valzxjecoceltiyzkogw.supabase.co/storage/v1/object/public/template_images/${image}`}
-                          alt={`Aperçu ${index + 1}`} 
-                          className="w-48 h-auto max-h-48 object-contain"
-                        />
-                      </div>
-                      <div className="absolute top-full left-1/2 -translate-x-1/2 w-3 h-3 -mt-1.5 bg-white transform rotate-45" />
-                    </div>
-                  </div>
+                  <TooltipProvider key={index}>
+                    <Tooltip delayDuration={300}>
+                      <TooltipTrigger asChild>
+                        <div 
+                          onClick={() => selectImage(index)}
+                          className={cn(
+                            "w-16 h-16 cursor-pointer border-2 rounded overflow-hidden transition-all",
+                            index === currentImageIndex 
+                              ? "border-blue-500 shadow-md" 
+                              : "border-transparent hover:border-blue-300"
+                          )}
+                        >
+                          <img 
+                            src={`https://valzxjecoceltiyzkogw.supabase.co/storage/v1/object/public/template_images/${image}`}
+                            alt={`Miniature ${index + 1}`}
+                            className="w-full h-full object-cover"
+                          />
+                        </div>
+                      </TooltipTrigger>
+                      <TooltipContent side="top" className="p-0 overflow-hidden bg-transparent border-0 shadow-xl">
+                        <div className="bg-white p-1 rounded-md shadow-lg">
+                          <img 
+                            src={`https://valzxjecoceltiyzkogw.supabase.co/storage/v1/object/public/template_images/${image}`}
+                            alt={`Aperçu ${index + 1}`} 
+                            className="w-60 h-auto max-h-60 object-contain rounded"
+                          />
+                        </div>
+                      </TooltipContent>
+                    </Tooltip>
+                  </TooltipProvider>
                 ))}
               </div>
             )}
