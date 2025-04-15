@@ -3,26 +3,11 @@ import React from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from '@/components/ui/form';
-import { Input } from '@/components/ui/input';
-import { Textarea } from '@/components/ui/textarea';
-import { Checkbox } from '@/components/ui/checkbox';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select';
-import TemplateImageUploader from './TemplateImageUploader';
-import TemplateFileUploader from './TemplateFileUploader';
+import { Form } from '@/components/ui/form';
+import BasicInfoFields from './form-fields/BasicInfoFields';
+import CategoryTagFields from './form-fields/CategoryTagFields';
+import VisibilityField from './form-fields/VisibilityField';
+import FileUploadFields from './form-fields/FileUploadFields';
 import TemplateFormButtons from './TemplateFormButtons';
 
 export const templateSchema = z.object({
@@ -68,116 +53,20 @@ const TemplateFormFields: React.FC<TemplateFormFieldsProps> = ({
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-        <FormField
-          control={form.control}
-          name="titre"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Titre *</FormLabel>
-              <FormControl>
-                <Input {...field} placeholder="Titre du template" />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
-        <FormField
-          control={form.control}
-          name="description"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Description</FormLabel>
-              <FormControl>
-                <Textarea 
-                  {...field} 
-                  placeholder="Description du template" 
-                  rows={4} 
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
-        <FormField
-          control={form.control}
-          name="categorie"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Catégorie *</FormLabel>
-              <Select 
-                onValueChange={field.onChange} 
-                defaultValue={field.value}
-              >
-                <FormControl>
-                  <SelectTrigger>
-                    <SelectValue placeholder="Sélectionner une catégorie" />
-                  </SelectTrigger>
-                </FormControl>
-                <SelectContent>
-                  <SelectItem value="Livres">Livres</SelectItem>
-                  <SelectItem value="Magazines">Magazines</SelectItem>
-                  <SelectItem value="CV">CV</SelectItem>
-                  <SelectItem value="Flyers">Flyers</SelectItem>
-                  <SelectItem value="Rapports">Rapports</SelectItem>
-                </SelectContent>
-              </Select>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
-        <FormField
-          control={form.control}
-          name="tags"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Tags</FormLabel>
-              <FormControl>
-                <Input 
-                  {...field} 
-                  placeholder="Tags séparés par des virgules" 
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
-        <TemplateImageUploader
-          id="image_apercu"
-          label="Image d'aperçu"
+        <BasicInfoFields form={form} />
+        
+        <CategoryTagFields form={form} />
+        
+        <FileUploadFields
           onImageChange={onImageChange}
-          existingImagePath={existingImagePath}
-          imagePreview={imagePreview}
-        />
-
-        <TemplateFileUploader
-          id="fichier_template"
-          label="Fichier template"
-          required={!isEditing}
-          existingFilePath={existingFilePath}
           onFileChange={onFileChange}
+          existingImagePath={existingImagePath}
+          existingFilePath={existingFilePath}
+          imagePreview={imagePreview}
+          isEditing={isEditing}
         />
-
-        <FormField
-          control={form.control}
-          name="visible"
-          render={({ field }) => (
-            <FormItem className="flex flex-row items-start space-x-3 space-y-0">
-              <FormControl>
-                <Checkbox
-                  checked={field.value}
-                  onCheckedChange={field.onChange}
-                />
-              </FormControl>
-              <div className="space-y-1 leading-none">
-                <FormLabel>Visible</FormLabel>
-              </div>
-            </FormItem>
-          )}
-        />
+        
+        <VisibilityField form={form} />
 
         <TemplateFormButtons 
           isSubmitting={isSubmitting}
