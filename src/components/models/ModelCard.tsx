@@ -56,14 +56,14 @@ const ModelCard = ({
     <>
       <div className={`bg-white rounded-lg shadow-lg overflow-hidden transform transition-all duration-700 hover:shadow-xl ${delay}`}>
         <div 
-          className="relative h-48 bg-gray-200 cursor-pointer" 
+          className="aspect-square bg-gray-200 cursor-pointer" 
           onClick={() => setIsModalOpen(true)}
         >
           {imageSrc ? (
             <img 
               src={imageSrc} 
               alt={title} 
-              className="w-full h-full object-cover"
+              className="w-full h-full object-contain p-2"
             />
           ) : (
             <div className="w-full h-full flex items-center justify-center">
@@ -105,13 +105,13 @@ const ModelCard = ({
             {/* Image Gallery */}
             <div className="flex flex-col gap-4">
               {/* Main Image Display */}
-              <div className="relative overflow-hidden rounded-lg bg-slate-100">
+              <div className="relative overflow-hidden rounded-lg bg-white border border-slate-200">
                 {images.length > 0 ? (
-                  <AspectRatio ratio={1/1} className="bg-white">
+                  <AspectRatio ratio={1/1}>
                     <img 
                       src={images[currentImageIndex]} 
                       alt={`${title} - aperçu ${currentImageIndex + 1}`} 
-                      className="w-full h-full object-contain"
+                      className="w-full h-full object-contain p-2"
                     />
                   </AspectRatio>
                 ) : (
@@ -141,7 +141,7 @@ const ModelCard = ({
                             <img 
                               src={image}
                               alt={`Miniature ${index + 1}`}
-                              className="w-full h-full object-cover"
+                              className="w-full h-full object-contain p-1"
                             />
                           </button>
                         </TooltipTrigger>
