@@ -7,8 +7,10 @@ import {
   DialogContent,
   DialogHeader,
   DialogTitle,
+  DialogDescription,
 } from '@/components/ui/dialog';
 import { cn } from '@/lib/utils';
+import { Button } from '@/components/ui/button';
 
 type Template = Tables<"templates">;
 
@@ -67,6 +69,9 @@ const TemplateDetailModal = ({
       <DialogContent className="sm:max-w-3xl">
         <DialogHeader>
           <DialogTitle className="text-xl font-semibold">{template.titre}</DialogTitle>
+          <DialogDescription>
+            Aperçu du modèle et informations détaillées
+          </DialogDescription>
         </DialogHeader>
         
         <div className="grid md:grid-cols-2 gap-6 mt-4">
@@ -76,26 +81,28 @@ const TemplateDetailModal = ({
               <div className="aspect-square relative">
                 <img 
                   src={`https://valzxjecoceltiyzkogw.supabase.co/storage/v1/object/public/template_images/${allImages[currentImageIndex]}`}
-                  alt={`${template.titre} - preview ${currentImageIndex + 1}`}
+                  alt={`${template.titre} - aperçu ${currentImageIndex + 1}`}
                   className="w-full h-full object-contain"
                 />
                 
                 {allImages.length > 1 && (
                   <>
-                    <button 
+                    <Button 
                       onClick={prevImage}
                       className="absolute left-2 top-1/2 -translate-y-1/2 bg-black/30 text-white rounded-full p-1.5 hover:bg-black/50 transition-colors z-10"
-                      aria-label="Image précédente"
+                      size="icon"
+                      variant="ghost"
                     >
                       <ChevronLeft size={20} />
-                    </button>
-                    <button 
+                    </Button>
+                    <Button 
                       onClick={nextImage}
                       className="absolute right-2 top-1/2 -translate-y-1/2 bg-black/30 text-white rounded-full p-1.5 hover:bg-black/50 transition-colors z-10"
-                      aria-label="Image suivante"
+                      size="icon"
+                      variant="ghost"
                     >
                       <ChevronRight size={20} />
-                    </button>
+                    </Button>
                     
                     {/* Image indicators */}
                     <div className="absolute bottom-2 left-0 right-0 flex justify-center gap-1.5 z-10">

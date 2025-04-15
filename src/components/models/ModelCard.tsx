@@ -7,7 +7,9 @@ import {
   DialogContent,
   DialogHeader,
   DialogTitle,
+  DialogDescription,
 } from '@/components/ui/dialog';
+import { Button } from '@/components/ui/button';
 
 interface ModelCardProps {
   title: string;
@@ -92,6 +94,9 @@ const ModelCard = ({
         <DialogContent className="sm:max-w-3xl">
           <DialogHeader>
             <DialogTitle className="text-xl font-semibold">{title}</DialogTitle>
+            <DialogDescription>
+              Aperçu du modèle et informations détaillées
+            </DialogDescription>
           </DialogHeader>
           
           <div className="grid md:grid-cols-2 gap-6 mt-4">
@@ -108,20 +113,24 @@ const ModelCard = ({
               {images.length > 1 && (
                 <>
                   {/* Boutons de navigation */}
-                  <button 
+                  <Button 
                     onClick={prevImage}
                     className="absolute left-2 top-1/2 -translate-y-1/2 bg-black/30 text-white rounded-full p-1.5 hover:bg-black/50 transition-colors"
+                    size="icon"
+                    variant="ghost"
                     aria-label="Image précédente"
                   >
                     <ChevronLeft size={20} />
-                  </button>
-                  <button 
+                  </Button>
+                  <Button 
                     onClick={nextImage}
                     className="absolute right-2 top-1/2 -translate-y-1/2 bg-black/30 text-white rounded-full p-1.5 hover:bg-black/50 transition-colors"
+                    size="icon"
+                    variant="ghost"
                     aria-label="Image suivante"
                   >
                     <ChevronRight size={20} />
-                  </button>
+                  </Button>
                   
                   {/* Indicateurs d'image */}
                   <div className="absolute bottom-2 left-0 right-0 flex justify-center gap-1.5">
