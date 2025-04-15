@@ -9,7 +9,42 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
-      [_ in never]: never
+      templates: {
+        Row: {
+          categorie: Database["public"]["Enums"]["template_category"]
+          date_ajout: string
+          description: string | null
+          fichier_template: string
+          id: string
+          image_apercu: string | null
+          tags: string | null
+          titre: string
+          visible: boolean | null
+        }
+        Insert: {
+          categorie: Database["public"]["Enums"]["template_category"]
+          date_ajout?: string
+          description?: string | null
+          fichier_template: string
+          id?: string
+          image_apercu?: string | null
+          tags?: string | null
+          titre: string
+          visible?: boolean | null
+        }
+        Update: {
+          categorie?: Database["public"]["Enums"]["template_category"]
+          date_ajout?: string
+          description?: string | null
+          fichier_template?: string
+          id?: string
+          image_apercu?: string | null
+          tags?: string | null
+          titre?: string
+          visible?: boolean | null
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
@@ -18,7 +53,7 @@ export type Database = {
       [_ in never]: never
     }
     Enums: {
-      [_ in never]: never
+      template_category: "Livres" | "Magazines" | "CV" | "Flyers" | "Rapports"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -133,6 +168,8 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      template_category: ["Livres", "Magazines", "CV", "Flyers", "Rapports"],
+    },
   },
 } as const

@@ -13,6 +13,10 @@ import NotFound from "./pages/NotFound";
 import About from "./pages/About";
 import FondamentauxMiseEnPage from "./pages/articles/FondamentauxMiseEnPage";
 import ChoisirTaillePolice from "./pages/articles/ChoisirTaillePolice";
+import Templates from "./pages/Templates";
+import AdminTemplates from "./pages/AdminTemplates";
+import AddTemplate from "./pages/AddTemplate";
+import EditTemplate from "./pages/EditTemplate";
 
 const queryClient = new QueryClient();
 
@@ -31,6 +35,10 @@ const App = () => (
           <Route path="/guides/fondamentaux-mise-en-page" element={<FondamentauxMiseEnPage />} />
           <Route path="/guides/choisir-taille-police" element={<ChoisirTaillePolice />} />
           <Route path="/about" element={<About />} />
+          <Route path="/templates" element={<Templates />} />
+          <Route path="/admin/templates" element={<AdminTemplates />} />
+          <Route path="/admin/templates/new" element={<AddTemplate />} />
+          <Route path="/admin/templates/edit/:id" element={<EditTemplate />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
