@@ -17,6 +17,7 @@ export type Database = {
           fichier_template: string
           id: string
           image_apercu: string | null
+          image_extras: string | null
           tags: string | null
           titre: string
           visible: boolean | null
@@ -28,6 +29,7 @@ export type Database = {
           fichier_template: string
           id?: string
           image_apercu?: string | null
+          image_extras?: string | null
           tags?: string | null
           titre: string
           visible?: boolean | null
@@ -39,6 +41,7 @@ export type Database = {
           fichier_template?: string
           id?: string
           image_apercu?: string | null
+          image_extras?: string | null
           tags?: string | null
           titre?: string
           visible?: boolean | null

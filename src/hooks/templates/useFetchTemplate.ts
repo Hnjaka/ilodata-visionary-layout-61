@@ -71,15 +71,21 @@ export const useFetchTemplate = ({ id, isEditing }: UseFetchTemplateProps): Fetc
           setImagePreviews([getPublicFileUrl('template_images', mainImagePath)]);
 
           // If there are additional images in the image_extras field (JSON array of paths)
-          if (data.image_extras && Array.isArray(JSON.parse(data.image_extras))) {
-            const extraImagePaths = JSON.parse(data.image_extras);
-            const updatedImagePaths = [...mainImagePaths, ...extraImagePaths];
-            setExistingImagePaths(updatedImagePaths);
-            
-            const extraImagePreviews = extraImagePaths.map(path => 
-              getPublicFileUrl('template_images', path)
-            );
-            setImagePreviews(prev => [...prev, ...extraImagePreviews]);
+          if (data.image_extras) {
+            try {
+              const extraImagePaths = JSON.parse(data.image_extras);
+              if (Array.isArray(extraImagePaths)) {
+                const updatedImagePaths = [...mainImagePaths, ...extraImagePaths];
+                setExistingImagePaths(updatedImagePaths);
+                
+                const extraImagePreviews = extraImagePaths.map(path => 
+                  getPublicFileUrl('template_images', path)
+                );
+                setImagePreviews(prev => [...prev, ...extraImagePreviews]);
+              }
+            } catch (parseError) {
+              console.error('Error parsing image_extras:', parseError);
+            }
           }
         }
 
