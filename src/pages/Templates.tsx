@@ -23,7 +23,7 @@ const Templates = () => {
   const [filteredTemplates, setFilteredTemplates] = useState<Template[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
-  const [categoryFilter, setCategoryFilter] = useState<string>('');
+  const [categoryFilter, setCategoryFilter] = useState<string>('all');
   const { toast } = useToast();
 
   useEffect(() => {
@@ -66,7 +66,7 @@ const Templates = () => {
         (template.description && template.description.toLowerCase().includes(searchQuery.toLowerCase())) ||
         (template.tags && template.tags.toLowerCase().includes(searchQuery.toLowerCase()));
       
-      const matchesCategory = !categoryFilter || template.categorie === categoryFilter;
+      const matchesCategory = categoryFilter === 'all' || template.categorie === categoryFilter;
       
       return matchesSearch && matchesCategory;
     });
@@ -115,7 +115,7 @@ const Templates = () => {
                     <SelectValue placeholder="Filtrer par catégorie" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="">Toutes catégories</SelectItem>
+                    <SelectItem value="all">Toutes catégories</SelectItem>
                     <SelectItem value="Livres">Livres</SelectItem>
                     <SelectItem value="Magazines">Magazines</SelectItem>
                     <SelectItem value="CV">CV</SelectItem>
