@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
@@ -117,7 +116,6 @@ const TemplateForm = ({ isEditing = false }: { isEditing?: boolean }) => {
     if (file) {
       setTemplateImageFile(file);
       
-      // Create preview for image
       const reader = new FileReader();
       reader.onloadend = () => {
         setImagePreview(reader.result as string);
@@ -137,11 +135,26 @@ const TemplateForm = ({ isEditing = false }: { isEditing?: boolean }) => {
     const fileExt = file.name.split('.').pop();
     const fileName = `${Date.now()}.${fileExt}`;
     
-    const { error: uploadError } = await supabase.storage
+    const { data: buckets } = await supabase.storage.listBuckets();
+    
+    if (!buckets?.some(b => b.name === bucket)) {
+      console.log(`Creating bucket: ${bucket}`);
+      await supabase.storage.createBucket(bucket, {
+        public: true
+      });
+    }
+    
+    await supabase.storage.from(bucket).setPublic(fileName, true);
+
+    const { error: uploadError, data } = await supabase.storage
       .from(bucket)
-      .upload(fileName, file);
+      .upload(fileName, file, {
+        cacheControl: '3600',
+        upsert: true
+      });
 
     if (uploadError) {
+      console.error("Upload error:", uploadError);
       throw uploadError;
     }
     
@@ -151,26 +164,49 @@ const TemplateForm = ({ isEditing = false }: { isEditing?: boolean }) => {
   const onSubmit = async (values: FormValues) => {
     try {
       setLoading(true);
+      
       let imageFileName = existingImagePath;
       let templateFileName = existingFilePath;
 
-      // Upload new image if provided
       if (templateImageFile) {
-        imageFileName = await uploadFile(templateImageFile, 'template_images');
+        try {
+          imageFileName = await uploadFile(templateImageFile, 'template_images');
+          console.log("Image uploaded successfully:", imageFileName);
+        } catch (error) {
+          console.error("Error uploading image:", error);
+          toast({
+            title: "Erreur",
+            description: "Impossible d'uploader l'image d'aperçu",
+            variant: "destructive",
+          });
+          setLoading(false);
+          return;
+        }
       }
 
-      // Upload new template file if provided
       if (templateFile) {
-        templateFileName = await uploadFile(templateFile, 'template_files');
+        try {
+          templateFileName = await uploadFile(templateFile, 'template_files');
+          console.log("Template file uploaded successfully:", templateFileName);
+        } catch (error) {
+          console.error("Error uploading template file:", error);
+          toast({
+            title: "Erreur",
+            description: "Impossible d'uploader le fichier template",
+            variant: "destructive",
+          });
+          setLoading(false);
+          return;
+        }
       }
 
-      // Check if template file exists for new templates
       if (!isEditing && !templateFileName) {
         toast({
           title: "Erreur",
           description: "Le fichier template est requis",
           variant: "destructive",
         });
+        setLoading(false);
         return;
       }
 
@@ -184,6 +220,8 @@ const TemplateForm = ({ isEditing = false }: { isEditing?: boolean }) => {
         fichier_template: templateFileName,
       };
 
+      console.log("Saving template with data:", templateData);
+      
       let response;
 
       if (isEditing && id) {
@@ -194,10 +232,11 @@ const TemplateForm = ({ isEditing = false }: { isEditing?: boolean }) => {
       } else {
         response = await supabase
           .from('templates')
-          .insert([templateData]);
+          .insert([{ ...templateData, date_ajout: new Date().toISOString() }]);
       }
 
       if (response.error) {
+        console.error("Database error:", response.error);
         throw response.error;
       }
 
@@ -210,12 +249,12 @@ const TemplateForm = ({ isEditing = false }: { isEditing?: boolean }) => {
 
       navigate('/admin/templates');
     } catch (error) {
+      console.error('Error saving template:', error);
       toast({
         title: "Erreur",
         description: "Une erreur est survenue lors de l'enregistrement du template",
         variant: "destructive",
       });
-      console.error('Error saving template:', error);
     } finally {
       setLoading(false);
     }
