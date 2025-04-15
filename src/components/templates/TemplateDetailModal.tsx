@@ -33,6 +33,8 @@ const TemplateDetailModal = ({
 }: TemplateDetailModalProps) => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [allImages, setAllImages] = useState<string[]>([]);
+  const [zoomPosition, setZoomPosition] = useState({ x: 0, y: 0 });
+  const [showZoom, setShowZoom] = useState(false);
   
   useEffect(() => {
     if (!template) return;
@@ -68,6 +70,21 @@ const TemplateDetailModal = ({
     setCurrentImageIndex(index);
   };
 
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    const { left, top, width, height } = e.currentTarget.getBoundingClientRect();
+    
+    // Calculate position in percentage
+    const x = Math.max(0, Math.min(1, (e.clientX - left) / width));
+    const y = Math.max(0, Math.min(1, (e.clientY - top) / height));
+    
+    setZoomPosition({ x, y });
+    setShowZoom(true);
+  };
+
+  const handleMouseLeave = () => {
+    setShowZoom(false);
+  };
+
   if (!template) return null;
 
   return (
@@ -83,16 +100,52 @@ const TemplateDetailModal = ({
         <div className="grid md:grid-cols-2 gap-6 mt-4">
           {/* Image Gallery */}
           <div className="flex flex-col gap-4">
-            {/* Main Image Display */}
+            {/* Main Image Display with Zoom Effect */}
             <div className="relative overflow-hidden rounded-lg bg-slate-100">
               {allImages.length > 0 ? (
-                <AspectRatio ratio={1/1} className="bg-white">
-                  <img 
-                    src={`https://valzxjecoceltiyzkogw.supabase.co/storage/v1/object/public/template_images/${allImages[currentImageIndex]}`}
-                    alt={`${template.titre} - aperçu ${currentImageIndex + 1}`}
-                    className="w-full h-full object-contain"
-                  />
-                </AspectRatio>
+                <div className="relative">
+                  <AspectRatio ratio={1/1} className="bg-white">
+                    <div 
+                      className="w-full h-full relative"
+                      onMouseMove={handleMouseMove}
+                      onMouseLeave={handleMouseLeave}
+                    >
+                      <img 
+                        src={`https://valzxjecoceltiyzkogw.supabase.co/storage/v1/object/public/template_images/${allImages[currentImageIndex]}`}
+                        alt={`${template.titre} - aperçu ${currentImageIndex + 1}`}
+                        className="w-full h-full object-contain"
+                      />
+                      
+                      {/* Zoom overlay */}
+                      {showZoom && (
+                        <div 
+                          className="absolute top-0 left-0 right-0 bottom-0 pointer-events-none overflow-hidden rounded-md bg-white/10 backdrop-blur-sm z-10"
+                        >
+                          <div 
+                            className="absolute bg-white shadow-lg rounded-md border border-gray-200 w-40 h-40 overflow-hidden"
+                            style={{
+                              top: `calc(${zoomPosition.y * 100}% - 80px)`, 
+                              left: `calc(${zoomPosition.x * 100}% - 80px)`,
+                              zIndex: 20,
+                            }}
+                          >
+                            <img 
+                              src={`https://valzxjecoceltiyzkogw.supabase.co/storage/v1/object/public/template_images/${allImages[currentImageIndex]}`}
+                              alt={`Zoom de ${template.titre}`}
+                              className="w-[200%] h-[200%] object-contain"
+                              style={{ 
+                                transformOrigin: `${zoomPosition.x * 100}% ${zoomPosition.y * 100}%`,
+                                transform: 'scale(2)',
+                                marginLeft: `-${zoomPosition.x * 200}%`,
+                                marginTop: `-${zoomPosition.y * 200}%`
+                              }}
+                            />
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  </AspectRatio>
+                </div>
               ) : (
                 <div className="aspect-square flex items-center justify-center">
                   <span className="text-slate-400">Pas d'aperçu disponible</span>
