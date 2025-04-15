@@ -5,8 +5,7 @@ import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
 import { Tables } from '@/integrations/supabase/types';
 import TemplateFormFields, { FormValues } from './TemplateFormFields';
-import { uploadFile } from '@/utils/templateFileUtils';
-import { Button } from '@/components/ui/button';
+import { uploadFile, getPublicFileUrl } from '@/utils/templateFileUtils';
 
 type Template = Tables<"templates">;
 
@@ -59,7 +58,7 @@ const TemplateForm = ({ isEditing = false }: { isEditing?: boolean }) => {
 
         if (data.image_apercu) {
           setExistingImagePath(data.image_apercu);
-          setImagePreview(`https://valzxjecoceltiyzkogw.supabase.co/storage/v1/object/public/template_images/${data.image_apercu}`);
+          setImagePreview(getPublicFileUrl('template_images', data.image_apercu));
         }
 
         if (data.fichier_template) {
@@ -80,6 +79,13 @@ const TemplateForm = ({ isEditing = false }: { isEditing?: boolean }) => {
 
   const handleImageChange = (file: File | null) => {
     setTemplateImageFile(file);
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setImagePreview(reader.result as string);
+      };
+      reader.readAsDataURL(file);
+    }
   };
 
   const handleFileChange = (file: File | null) => {
@@ -93,37 +99,19 @@ const TemplateForm = ({ isEditing = false }: { isEditing?: boolean }) => {
       let imageFileName = existingImagePath;
       let templateFileName = existingFilePath;
 
-      // Upload image if provided
+      // Upload image if new file is provided
       if (templateImageFile) {
-        try {
-          imageFileName = await uploadFile(templateImageFile, 'template_images');
-          console.log("Image uploaded successfully:", imageFileName);
-        } catch (error) {
-          console.error("Error uploading image:", error);
-          toast({
-            title: "Erreur",
-            description: "Impossible d'uploader l'image d'aperçu",
-            variant: "destructive",
-          });
-          setLoading(false);
-          return;
+        imageFileName = await uploadFile(templateImageFile, 'template_images');
+        if (!imageFileName) {
+          throw new Error("Impossible d'uploader l'image d'aperçu");
         }
       }
 
-      // Upload template file if provided
+      // Upload template file if new file is provided
       if (templateFile) {
-        try {
-          templateFileName = await uploadFile(templateFile, 'template_files');
-          console.log("Template file uploaded successfully:", templateFileName);
-        } catch (error) {
-          console.error("Error uploading template file:", error);
-          toast({
-            title: "Erreur",
-            description: "Impossible d'uploader le fichier template",
-            variant: "destructive",
-          });
-          setLoading(false);
-          return;
+        templateFileName = await uploadFile(templateFile, 'template_files');
+        if (!templateFileName) {
+          throw new Error("Impossible d'uploader le fichier template");
         }
       }
 
@@ -134,7 +122,6 @@ const TemplateForm = ({ isEditing = false }: { isEditing?: boolean }) => {
           description: "Le fichier template est requis",
           variant: "destructive",
         });
-        setLoading(false);
         return;
       }
 

@@ -1,22 +1,13 @@
 
 import { supabase } from '@/integrations/supabase/client';
 
-// Upload a file to the specified bucket
-export const uploadFile = async (file: File, bucket: string): Promise<string> => {
+export const uploadFile = async (file: File, bucket: string): Promise<string | null> => {
+  if (!file) return null;
+
   const fileExt = file.name.split('.').pop();
   const fileName = `${Date.now()}.${fileExt}`;
   
   try {
-    // Check if bucket exists and create it if not
-    const { data: buckets } = await supabase.storage.listBuckets();
-    
-    if (!buckets?.some(b => b.name === bucket)) {
-      console.log(`Creating bucket: ${bucket}`);
-      await supabase.storage.createBucket(bucket, {
-        public: true
-      });
-    }
-    
     // Upload the file
     const { error: uploadError, data } = await supabase.storage
       .from(bucket)
@@ -27,13 +18,18 @@ export const uploadFile = async (file: File, bucket: string): Promise<string> =>
       });
 
     if (uploadError) {
-      console.error("Upload error:", uploadError);
+      console.error(`Error uploading file to ${bucket}:`, uploadError);
       throw uploadError;
     }
     
     return fileName;
   } catch (error) {
-    console.error(`Error uploading file to ${bucket}:`, error);
-    throw error;
+    console.error(`Unexpected error uploading file to ${bucket}:`, error);
+    return null;
   }
+};
+
+export const getPublicFileUrl = (bucket: string, fileName: string | null): string | null => {
+  if (!fileName) return null;
+  return `https://valzxjecoceltiyzkogw.supabase.co/storage/v1/object/public/${bucket}/${fileName}`;
 };
