@@ -144,13 +144,12 @@ const TemplateForm = ({ isEditing = false }: { isEditing?: boolean }) => {
       });
     }
     
-    await supabase.storage.from(bucket).setPublic(fileName, true);
-
     const { error: uploadError, data } = await supabase.storage
       .from(bucket)
       .upload(fileName, file, {
         cacheControl: '3600',
-        upsert: true
+        upsert: true,
+        contentType: file.type
       });
 
     if (uploadError) {
