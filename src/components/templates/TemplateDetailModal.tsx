@@ -60,6 +60,7 @@ const TemplateDetailModal = ({
       }
     }
     
+    console.log('Template images loaded:', images);
     setAllImages(images);
   }, [template]);
 
@@ -106,8 +107,9 @@ const TemplateDetailModal = ({
                   <TooltipProvider key={index}>
                     <Tooltip delayDuration={300}>
                       <TooltipTrigger asChild>
-                        <div 
+                        <button 
                           onClick={() => selectImage(index)}
+                          aria-label={`Aperçu ${index + 1}`}
                           className={cn(
                             "w-16 h-16 cursor-pointer border-2 rounded overflow-hidden transition-all",
                             index === currentImageIndex 
@@ -120,7 +122,7 @@ const TemplateDetailModal = ({
                             alt={`Miniature ${index + 1}`}
                             className="w-full h-full object-cover"
                           />
-                        </div>
+                        </button>
                       </TooltipTrigger>
                       <TooltipContent side="top" className="p-0 overflow-hidden bg-transparent border-0 shadow-xl">
                         <div className="bg-white p-1 rounded-md shadow-lg">
