@@ -23,6 +23,7 @@ import {
 } from '@/components/ui/select';
 import TemplateImageUploader from './TemplateImageUploader';
 import TemplateFileUploader from './TemplateFileUploader';
+import TemplateFormButtons from './TemplateFormButtons';
 
 export const templateSchema = z.object({
   titre: z.string().min(1, { message: "Le titre est requis" }),
@@ -178,23 +179,11 @@ const TemplateFormFields: React.FC<TemplateFormFieldsProps> = ({
           )}
         />
 
-        <div className="flex justify-end space-x-4">
-          <button 
-            type="button" 
-            className="btn btn-outline"
-            onClick={onCancel}
-            disabled={isSubmitting}
-          >
-            Annuler
-          </button>
-          <button 
-            type="submit" 
-            className="btn btn-primary" 
-            disabled={isSubmitting}
-          >
-            {isSubmitting ? 'Enregistrement...' : isEditing ? 'Mettre à jour' : 'Créer'}
-          </button>
-        </div>
+        <TemplateFormButtons 
+          isSubmitting={isSubmitting}
+          isEditing={isEditing}
+          onCancel={onCancel}
+        />
       </form>
     </Form>
   );
