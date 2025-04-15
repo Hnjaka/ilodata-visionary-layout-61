@@ -54,7 +54,7 @@ const TemplateCard = ({ template }: TemplateCardProps) => {
       <div className="bg-white rounded-lg shadow-md overflow-hidden flex flex-col h-full">
         {/* Template Image Gallery - Clickable to open modal */}
         <div 
-          className="h-48 overflow-hidden relative cursor-pointer"
+          className="aspect-square overflow-hidden relative cursor-pointer"
           onClick={openModal}
         >
           {allImages.length > 0 ? (
@@ -62,7 +62,7 @@ const TemplateCard = ({ template }: TemplateCardProps) => {
               <img 
                 src={`https://valzxjecoceltiyzkogw.supabase.co/storage/v1/object/public/template_images/${allImages[currentImageIndex]}`}
                 alt={template.titre}
-                className="w-full h-full object-cover transition-transform hover:scale-105 duration-300"
+                className="w-full h-full object-contain p-2"
               />
               
               {allImages.length > 1 && (
