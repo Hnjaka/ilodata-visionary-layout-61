@@ -1,4 +1,3 @@
-
 import { useEffect } from 'react';
 import { useFetchTemplate } from './templates/useFetchTemplate';
 import { useTemplateFiles } from './templates/useTemplateFiles';
@@ -12,13 +11,14 @@ interface UseTemplateFormProps {
 
 interface UseTemplateFormReturn {
   loading: boolean;
-  templateImageFile: File | null;
+  templateImageFiles: File[];
   templateFile: File | null;
-  imagePreview: string | null;
-  existingImagePath: string | null;
+  imagePreviews: string[];
+  existingImagePaths: string[];
   existingFilePath: string | null;
   defaultValues: FormValues;
-  handleImageChange: (file: File | null) => void;
+  handleImagesChange: (files: File[] | null) => void;
+  removeImage: (indexToRemove: number) => void;
   handleFileChange: (file: File | null) => void;
   onSubmit: (values: FormValues) => Promise<void>;
 }
@@ -27,48 +27,50 @@ export const useTemplateForm = ({ id, isEditing }: UseTemplateFormProps): UseTem
   const { 
     loading, 
     defaultValues, 
-    existingImagePath, 
+    existingImagePaths, 
     existingFilePath, 
-    imagePreview: fetchedImagePreview 
+    imagePreviews: fetchedImagePreviews 
   } = useFetchTemplate({ id, isEditing });
 
   const { 
-    templateImageFile, 
+    templateImageFiles, 
     templateFile, 
-    imagePreview, 
-    handleImageChange, 
-    handleFileChange 
-  } = useTemplateFiles(fetchedImagePreview);
+    imagePreviews, 
+    handleImagesChange, 
+    handleFileChange,
+    removeImage 
+  } = useTemplateFiles(fetchedImagePreviews);
 
   const { submitting, onSubmit: submitTemplate } = useTemplateSubmit({ isEditing, id });
 
-  // Sync imagePreview when it changes in useFetchTemplate
+  // Sync imagePreviews when they change in useFetchTemplate
   useEffect(() => {
-    if (fetchedImagePreview) {
-      handleImageChange(null);  // Reset the file but keep the preview
+    if (fetchedImagePreviews.length > 0) {
+      // We keep any existing file uploads but update the previews
     }
-  }, [fetchedImagePreview]);
+  }, [fetchedImagePreviews]);
 
   // Wrap the submit function to provide the current file states
   const onSubmit = async (values: FormValues) => {
     return submitTemplate(
       values,
-      templateImageFile,
+      templateImageFiles,
       templateFile,
-      existingImagePath,
+      existingImagePaths,
       existingFilePath
     );
   };
 
   return {
     loading: loading || submitting,
-    templateImageFile,
+    templateImageFiles,
     templateFile,
-    imagePreview: imagePreview || fetchedImagePreview,
-    existingImagePath,
+    imagePreviews: imagePreviews.length > 0 ? imagePreviews : fetchedImagePreviews,
+    existingImagePaths,
     existingFilePath,
     defaultValues,
-    handleImageChange,
+    handleImagesChange,
+    removeImage,
     handleFileChange,
     onSubmit
   };

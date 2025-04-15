@@ -1,7 +1,8 @@
 
-import React from 'react';
-import { ArrowDownToLine } from 'lucide-react';
+import React, { useState } from 'react';
+import { ArrowDownToLine, ChevronLeft, ChevronRight } from 'lucide-react';
 import { Tables } from '@/integrations/supabase/types';
+import { cn } from '@/lib/utils';
 
 type Template = Tables<"templates">;
 
@@ -10,16 +11,85 @@ interface TemplateCardProps {
 }
 
 const TemplateCard = ({ template }: TemplateCardProps) => {
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  
+  // Prepare all image paths
+  const allImages: string[] = [];
+  
+  // Add main image if it exists
+  if (template.image_apercu) {
+    allImages.push(template.image_apercu);
+  }
+  
+  // Add extra images if they exist
+  if (template.image_extras) {
+    try {
+      const extraImages = JSON.parse(template.image_extras);
+      if (Array.isArray(extraImages)) {
+        allImages.push(...extraImages);
+      }
+    } catch (error) {
+      console.error('Error parsing image_extras:', error);
+    }
+  }
+
+  const nextImage = () => {
+    setCurrentImageIndex((prev) => (prev + 1) % allImages.length);
+  };
+
+  const prevImage = () => {
+    setCurrentImageIndex((prev) => (prev - 1 + allImages.length) % allImages.length);
+  };
+
   return (
     <div className="bg-white rounded-lg shadow-md overflow-hidden flex flex-col h-full">
-      {/* Template Image */}
-      <div className="h-48 overflow-hidden">
-        {template.image_apercu ? (
-          <img 
-            src={`https://valzxjecoceltiyzkogw.supabase.co/storage/v1/object/public/template_images/${template.image_apercu}`}
-            alt={template.titre}
-            className="w-full h-full object-cover transition-transform hover:scale-105 duration-300"
-          />
+      {/* Template Image Gallery */}
+      <div className="h-48 overflow-hidden relative">
+        {allImages.length > 0 ? (
+          <>
+            <img 
+              src={`https://valzxjecoceltiyzkogw.supabase.co/storage/v1/object/public/template_images/${allImages[currentImageIndex]}`}
+              alt={template.titre}
+              className="w-full h-full object-cover transition-transform hover:scale-105 duration-300"
+            />
+            
+            {allImages.length > 1 && (
+              <>
+                {/* Navigation arrows */}
+                <button 
+                  onClick={prevImage}
+                  className="absolute left-2 top-1/2 -translate-y-1/2 bg-black/30 text-white rounded-full p-1 hover:bg-black/50 transition-colors"
+                  aria-label="Image précédente"
+                >
+                  <ChevronLeft size={20} />
+                </button>
+                <button 
+                  onClick={nextImage}
+                  className="absolute right-2 top-1/2 -translate-y-1/2 bg-black/30 text-white rounded-full p-1 hover:bg-black/50 transition-colors"
+                  aria-label="Image suivante"
+                >
+                  <ChevronRight size={20} />
+                </button>
+                
+                {/* Image indicators */}
+                <div className="absolute bottom-2 left-0 right-0 flex justify-center gap-1.5">
+                  {allImages.map((_, index) => (
+                    <button
+                      key={index}
+                      className={cn(
+                        "w-2 h-2 rounded-full transition-all",
+                        index === currentImageIndex 
+                          ? "bg-white scale-125" 
+                          : "bg-white/50 hover:bg-white/80"
+                      )}
+                      onClick={() => setCurrentImageIndex(index)}
+                      aria-label={`Voir l'image ${index + 1}`}
+                    />
+                  ))}
+                </div>
+              </>
+            )}
+          </>
         ) : (
           <div className="w-full h-full bg-slate-200 flex items-center justify-center">
             <span className="text-slate-400">Pas d'aperçu</span>

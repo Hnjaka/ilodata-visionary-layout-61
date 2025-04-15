@@ -14,9 +14,9 @@ interface UseTemplateSubmitResult {
   submitting: boolean;
   onSubmit: (
     values: FormValues, 
-    templateImageFile: File | null, 
+    templateImageFiles: File[], 
     templateFile: File | null,
-    existingImagePath: string | null,
+    existingImagePaths: string[],
     existingFilePath: string | null
   ) => Promise<void>;
 }
@@ -30,22 +30,35 @@ export const useTemplateSubmit = ({
 
   const onSubmit = async (
     values: FormValues, 
-    templateImageFile: File | null, 
+    templateImageFiles: File[], 
     templateFile: File | null,
-    existingImagePath: string | null,
+    existingImagePaths: string[],
     existingFilePath: string | null
   ) => {
     try {
       setSubmitting(true);
       
-      let imageFileName = existingImagePath;
+      let mainImagePath: string | null = existingImagePaths[0] || null;
+      const extraImagePaths: string[] = [...existingImagePaths.slice(1)];
       let templateFileName = existingFilePath;
 
-      // Upload image if new file is provided
-      if (templateImageFile) {
-        imageFileName = await uploadFile(templateImageFile, 'template_images');
-        if (!imageFileName) {
-          throw new Error("Impossible d'uploader l'image d'aperçu");
+      // Upload new images if provided
+      if (templateImageFiles.length > 0) {
+        const uploadPromises = templateImageFiles.map(file => 
+          uploadFile(file, 'template_images')
+        );
+        
+        const newImagePaths = await Promise.all(uploadPromises);
+        
+        // Set the main image to the first uploaded image if no main image exists yet
+        if (!mainImagePath && newImagePaths[0]) {
+          mainImagePath = newImagePaths[0];
+          
+          // Add the rest to extra images
+          extraImagePaths.push(...newImagePaths.slice(1).filter(Boolean) as string[]);
+        } else {
+          // Add all new images to extras
+          extraImagePaths.push(...newImagePaths.filter(Boolean) as string[]);
         }
       }
 
@@ -73,7 +86,8 @@ export const useTemplateSubmit = ({
         categorie: values.categorie,
         tags: values.tags,
         visible: values.visible,
-        image_apercu: imageFileName,
+        image_apercu: mainImagePath,
+        image_extras: extraImagePaths.length > 0 ? JSON.stringify(extraImagePaths) : null,
         fichier_template: templateFileName,
       };
 

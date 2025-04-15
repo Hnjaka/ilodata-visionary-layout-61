@@ -23,11 +23,12 @@ export type FormValues = z.infer<typeof templateSchema>;
 export interface TemplateFormFieldsProps {
   defaultValues: FormValues;
   onSubmit: (values: FormValues) => void;
-  onImageChange: (file: File | null) => void;
+  onImagesChange: (files: File[] | null) => void;
   onFileChange: (file: File | null) => void;
-  existingImagePath: string | null;
+  onImageRemove: (index: number) => void;
+  existingImagePaths: string[];
   existingFilePath: string | null;
-  imagePreview: string | null;
+  imagePreviews: string[];
   isSubmitting: boolean;
   isEditing: boolean;
   onCancel: () => void;
@@ -36,11 +37,12 @@ export interface TemplateFormFieldsProps {
 const TemplateFormFields: React.FC<TemplateFormFieldsProps> = ({
   defaultValues,
   onSubmit,
-  onImageChange,
+  onImagesChange,
   onFileChange,
-  existingImagePath,
+  onImageRemove,
+  existingImagePaths,
   existingFilePath,
-  imagePreview,
+  imagePreviews,
   isSubmitting,
   isEditing,
   onCancel,
@@ -58,11 +60,12 @@ const TemplateFormFields: React.FC<TemplateFormFieldsProps> = ({
         <CategoryTagFields form={form} />
         
         <FileUploadFields
-          onImageChange={onImageChange}
+          onImagesChange={onImagesChange}
           onFileChange={onFileChange}
-          existingImagePath={existingImagePath}
+          onImageRemove={onImageRemove}
+          existingImagePaths={existingImagePaths}
           existingFilePath={existingFilePath}
-          imagePreview={imagePreview}
+          imagePreviews={imagePreviews}
           isEditing={isEditing}
         />
         

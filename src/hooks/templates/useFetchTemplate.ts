@@ -16,9 +16,9 @@ interface UseFetchTemplateProps {
 interface FetchTemplateResult {
   loading: boolean;
   defaultValues: FormValues;
-  existingImagePath: string | null;
+  existingImagePaths: string[];
   existingFilePath: string | null;
-  imagePreview: string | null;
+  imagePreviews: string[];
 }
 
 export const useFetchTemplate = ({ id, isEditing }: UseFetchTemplateProps): FetchTemplateResult => {
@@ -31,9 +31,9 @@ export const useFetchTemplate = ({ id, isEditing }: UseFetchTemplateProps): Fetc
     tags: '',
     visible: true,
   });
-  const [existingImagePath, setExistingImagePath] = useState<string | null>(null);
+  const [existingImagePaths, setExistingImagePaths] = useState<string[]>([]);
   const [existingFilePath, setExistingFilePath] = useState<string | null>(null);
-  const [imagePreview, setImagePreview] = useState<string | null>(null);
+  const [imagePreviews, setImagePreviews] = useState<string[]>([]);
 
   useEffect(() => {
     if (isEditing && id) {
@@ -63,9 +63,24 @@ export const useFetchTemplate = ({ id, isEditing }: UseFetchTemplateProps): Fetc
           visible: data.visible || false,
         });
 
+        // Handle the main image_apercu field
         if (data.image_apercu) {
-          setExistingImagePath(data.image_apercu);
-          setImagePreview(getPublicFileUrl('template_images', data.image_apercu));
+          const mainImagePath = data.image_apercu;
+          const mainImagePaths = [mainImagePath];
+          setExistingImagePaths(mainImagePaths);
+          setImagePreviews([getPublicFileUrl('template_images', mainImagePath)]);
+
+          // If there are additional images in the image_extras field (JSON array of paths)
+          if (data.image_extras && Array.isArray(JSON.parse(data.image_extras))) {
+            const extraImagePaths = JSON.parse(data.image_extras);
+            const updatedImagePaths = [...mainImagePaths, ...extraImagePaths];
+            setExistingImagePaths(updatedImagePaths);
+            
+            const extraImagePreviews = extraImagePaths.map(path => 
+              getPublicFileUrl('template_images', path)
+            );
+            setImagePreviews(prev => [...prev, ...extraImagePreviews]);
+          }
         }
 
         if (data.fichier_template) {
@@ -87,8 +102,8 @@ export const useFetchTemplate = ({ id, isEditing }: UseFetchTemplateProps): Fetc
   return {
     loading,
     defaultValues,
-    existingImagePath,
+    existingImagePaths,
     existingFilePath,
-    imagePreview,
+    imagePreviews,
   };
 };

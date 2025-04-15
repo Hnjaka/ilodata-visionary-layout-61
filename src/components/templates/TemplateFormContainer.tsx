@@ -18,10 +18,11 @@ const TemplateFormContainer: React.FC<TemplateFormContainerProps> = ({
   const {
     loading,
     defaultValues,
-    imagePreview,
-    existingImagePath,
+    imagePreviews,
+    existingImagePaths,
     existingFilePath,
-    handleImageChange,
+    handleImagesChange,
+    removeImage,
     handleFileChange,
     onSubmit
   } = useTemplateForm({ id, isEditing });
@@ -43,11 +44,12 @@ const TemplateFormContainer: React.FC<TemplateFormContainerProps> = ({
     <TemplateFormFields 
       defaultValues={defaultValues}
       onSubmit={handleFormSubmit}
-      onImageChange={handleImageChange}
+      onImagesChange={handleImagesChange}
       onFileChange={handleFileChange}
-      existingImagePath={existingImagePath}
+      onImageRemove={removeImage}
+      existingImagePaths={existingImagePaths}
       existingFilePath={existingFilePath}
-      imagePreview={imagePreview}
+      imagePreviews={imagePreviews}
       isSubmitting={loading}
       isEditing={isEditing}
       onCancel={handleCancel}

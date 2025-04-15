@@ -5,7 +5,7 @@ export const uploadFile = async (file: File, bucket: string): Promise<string | n
   if (!file) return null;
 
   const fileExt = file.name.split('.').pop();
-  const fileName = `${Date.now()}.${fileExt}`;
+  const fileName = `${Date.now()}_${Math.floor(Math.random() * 1000)}.${fileExt}`;
   
   try {
     // Upload the file

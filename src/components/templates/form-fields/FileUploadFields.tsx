@@ -1,33 +1,35 @@
 
 import React from 'react';
-import TemplateImageUploader from '../TemplateImageUploader';
+import TemplateMultiImageUploader from '../TemplateMultiImageUploader';
 import TemplateFileUploader from '../TemplateFileUploader';
 
 interface FileUploadFieldsProps {
-  onImageChange: (file: File | null) => void;
+  onImagesChange: (files: File[] | null) => void;
   onFileChange: (file: File | null) => void;
-  existingImagePath: string | null;
+  onImageRemove: (index: number) => void;
+  existingImagePaths: string[];
   existingFilePath: string | null;
-  imagePreview: string | null;
+  imagePreviews: string[];
   isEditing: boolean;
 }
 
 const FileUploadFields: React.FC<FileUploadFieldsProps> = ({
-  onImageChange,
+  onImagesChange,
   onFileChange,
-  existingImagePath,
+  onImageRemove,
+  existingImagePaths,
   existingFilePath,
-  imagePreview,
+  imagePreviews,
   isEditing,
 }) => {
   return (
     <>
-      <TemplateImageUploader
+      <TemplateMultiImageUploader
         id="image_apercu"
-        label="Image d'aperçu"
-        onImageChange={onImageChange}
-        existingImagePath={existingImagePath}
-        imagePreview={imagePreview}
+        label="Images d'aperçu"
+        onImagesChange={onImagesChange}
+        onImageRemove={onImageRemove}
+        imagePreviews={imagePreviews}
       />
 
       <TemplateFileUploader
