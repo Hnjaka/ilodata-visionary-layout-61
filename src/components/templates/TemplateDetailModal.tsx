@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { ArrowDownToLine } from 'lucide-react';
 import { Tables } from '@/integrations/supabase/types';
@@ -10,12 +9,6 @@ import {
   DialogDescription,
 } from '@/components/ui/dialog';
 import { cn } from '@/lib/utils';
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 
 type Template = Tables<"templates">;
@@ -37,18 +30,14 @@ const TemplateDetailModal = ({
   useEffect(() => {
     if (!template) return;
     
-    // Reset current image index when template changes
     setCurrentImageIndex(0);
     
-    // Prepare all image paths
     const images: string[] = [];
     
-    // Add main image if it exists
     if (template.image_apercu) {
       images.push(template.image_apercu);
     }
     
-    // Add extra images if they exist
     if (template.image_extras) {
       try {
         const extraImages = JSON.parse(template.image_extras);
@@ -81,9 +70,7 @@ const TemplateDetailModal = ({
         </DialogHeader>
         
         <div className="grid md:grid-cols-2 gap-6 mt-4">
-          {/* Image Gallery */}
           <div className="flex flex-col gap-4">
-            {/* Main Image Display */}
             <div className="relative overflow-hidden rounded-lg bg-white border border-slate-200">
               {allImages.length > 0 ? (
                 <div className="relative">
@@ -102,47 +89,31 @@ const TemplateDetailModal = ({
               )}
             </div>
             
-            {/* Thumbnails Gallery */}
             {allImages.length > 0 && (
               <div className="flex flex-wrap gap-2 justify-center">
                 {allImages.map((image, index) => (
-                  <TooltipProvider key={index}>
-                    <Tooltip delayDuration={300}>
-                      <TooltipTrigger asChild>
-                        <button 
-                          onClick={() => selectImage(index)}
-                          aria-label={`Aperçu ${index + 1}`}
-                          className={cn(
-                            "w-16 h-16 cursor-pointer border-2 rounded overflow-hidden transition-all",
-                            index === currentImageIndex 
-                              ? "border-blue-500 shadow-md" 
-                              : "border-transparent hover:border-blue-300"
-                          )}
-                        >
-                          <img 
-                            src={`https://valzxjecoceltiyzkogw.supabase.co/storage/v1/object/public/template_images/${image}`}
-                            alt={`Miniature ${index + 1}`}
-                            className="w-full h-full object-contain p-1"
-                          />
-                        </button>
-                      </TooltipTrigger>
-                      <TooltipContent side="top" className="p-0 overflow-hidden bg-transparent border-0 shadow-xl">
-                        <div className="bg-white p-1 rounded-md shadow-lg">
-                          <img 
-                            src={`https://valzxjecoceltiyzkogw.supabase.co/storage/v1/object/public/template_images/${image}`}
-                            alt={`Aperçu ${index + 1}`} 
-                            className="w-60 h-auto max-h-60 object-contain rounded"
-                          />
-                        </div>
-                      </TooltipContent>
-                    </Tooltip>
-                  </TooltipProvider>
+                  <button 
+                    key={index}
+                    onClick={() => selectImage(index)}
+                    aria-label={`Aperçu ${index + 1}`}
+                    className={cn(
+                      "w-16 h-16 cursor-pointer border-2 rounded overflow-hidden transition-all",
+                      index === currentImageIndex 
+                        ? "border-blue-500 shadow-md" 
+                        : "border-transparent hover:border-blue-300"
+                    )}
+                  >
+                    <img 
+                      src={`https://valzxjecoceltiyzkogw.supabase.co/storage/v1/object/public/template_images/${image}`}
+                      alt={`Miniature ${index + 1}`}
+                      className="w-full h-full object-contain p-1"
+                    />
+                  </button>
                 ))}
               </div>
             )}
           </div>
           
-          {/* Template Details */}
           <div className="flex flex-col">
             <div className="mb-4">
               <h3 className="text-sm font-medium text-gray-500">Description</h3>

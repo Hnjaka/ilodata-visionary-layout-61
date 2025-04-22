@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { ArrowDownToLine } from 'lucide-react';
 import { cn } from '@/lib/utils';
@@ -9,12 +8,6 @@ import {
   DialogTitle,
   DialogDescription,
 } from '@/components/ui/dialog';
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 
 interface ModelCardProps {
@@ -25,7 +18,7 @@ interface ModelCardProps {
   price: number | null;
   isFree: boolean;
   delay: string;
-  imageExtras?: string[]; // New prop to handle multiple images
+  imageExtras?: string[];
 }
 
 const ModelCard = ({
@@ -41,10 +34,8 @@ const ModelCard = ({
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   
-  // Create an array of images including the main image and any extras
   const images = imageSrc ? [imageSrc, ...imageExtras] : [];
 
-  // Format price for display
   const formatPrice = (price: number | null): string => {
     if (price === null) return '';
     return `${price.toFixed(2).replace('.', ',')} €`;
@@ -93,7 +84,6 @@ const ModelCard = ({
         </div>
       </div>
       
-      {/* Modal for detailed view - enhanced to match TemplateDetailModal */}
       <Dialog open={isModalOpen} onOpenChange={(open) => !open && setIsModalOpen(false)}>
         <DialogContent className="sm:max-w-3xl">
           <DialogHeader>
@@ -104,9 +94,7 @@ const ModelCard = ({
           </DialogHeader>
           
           <div className="grid md:grid-cols-2 gap-6 mt-4">
-            {/* Image Gallery */}
             <div className="flex flex-col gap-4">
-              {/* Main Image Display */}
               <div className="relative overflow-hidden rounded-lg bg-white border border-slate-200">
                 {images.length > 0 ? (
                   <AspectRatio ratio={1/1}>
@@ -123,47 +111,31 @@ const ModelCard = ({
                 )}
               </div>
               
-              {/* Thumbnails Gallery */}
               {images.length > 1 && (
                 <div className="flex flex-wrap gap-2 justify-center">
                   {images.map((image, index) => (
-                    <TooltipProvider key={index}>
-                      <Tooltip delayDuration={300}>
-                        <TooltipTrigger asChild>
-                          <button 
-                            onClick={() => selectImage(index)}
-                            aria-label={`Aperçu ${index + 1}`}
-                            className={cn(
-                              "w-16 h-16 cursor-pointer border-2 rounded overflow-hidden transition-all",
-                              index === currentImageIndex 
-                                ? "border-blue-500 shadow-md" 
-                                : "border-transparent hover:border-blue-300"
-                            )}
-                          >
-                            <img 
-                              src={image}
-                              alt={`Miniature ${index + 1}`}
-                              className="w-full h-full object-contain p-1"
-                            />
-                          </button>
-                        </TooltipTrigger>
-                        <TooltipContent side="top" className="p-0 overflow-hidden bg-transparent border-0 shadow-xl">
-                          <div className="bg-white p-1 rounded-md shadow-lg">
-                            <img 
-                              src={image}
-                              alt={`Aperçu ${index + 1}`} 
-                              className="w-60 h-auto max-h-60 object-contain rounded"
-                            />
-                          </div>
-                        </TooltipContent>
-                      </Tooltip>
-                    </TooltipProvider>
+                    <button 
+                      key={index}
+                      onClick={() => selectImage(index)}
+                      aria-label={`Aperçu ${index + 1}`}
+                      className={cn(
+                        "w-16 h-16 cursor-pointer border-2 rounded overflow-hidden transition-all",
+                        index === currentImageIndex 
+                          ? "border-blue-500 shadow-md" 
+                          : "border-transparent hover:border-blue-300"
+                      )}
+                    >
+                      <img 
+                        src={image}
+                        alt={`Miniature ${index + 1}`}
+                        className="w-full h-full object-contain p-1"
+                      />
+                    </button>
                   ))}
                 </div>
               )}
             </div>
             
-            {/* Template Details */}
             <div className="flex flex-col">
               <div className="mb-4">
                 <h3 className="text-sm font-medium text-gray-500">Description</h3>
