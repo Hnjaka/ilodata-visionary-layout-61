@@ -20,12 +20,12 @@ const HeroSection = () => {
             Découvrez nos modèles Word faciles à utiliser, compatibles avec tous les éditeurs de texte. Téléchargez-les, personnalisez-les et créez une mise en page professionnelle en quelques clics.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center animate-fade-down delay-300">
-            <a href="#models" className="button-primary">
+            <Link to="#models" className="button-primary">
               Voir tous les modèles
-            </a>
-            <a href="#how-to-use" className="button-secondary">
-              Comment utiliser nos modèles ?
-            </a>
+            </Link>
+            <Link to="/contact" className="button-secondary">
+              Demandez un devis
+            </Link>
           </div>
         </div>
       </div>

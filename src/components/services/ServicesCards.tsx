@@ -1,5 +1,6 @@
 
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { FileText, BookOpen, Layout, PenTool } from 'lucide-react';
 import ServiceCard from './ServiceCard';
 
@@ -35,7 +36,7 @@ const ServicesCards = () => {
             title="Service de Mise en Page sur Mesure"
             description="Confiez-nous votre projet et bénéficiez d'une mise en page professionnelle adaptée à vos besoins. Nous nous occupons de tout, de la typographie à la mise en page finale."
             buttonText="Demandez un devis"
-            link="/devis"
+            link="/contact"
             delay="delay-300"
           />
           
@@ -43,7 +44,7 @@ const ServicesCards = () => {
             icon={PenTool}
             title="Création de Modèles Personnalisés"
             description="Besoin d'un modèle unique pour votre livre ? Nous créons des modèles de mise en page sur mesure, adaptés à votre projet et à votre style."
-            buttonText="Contactez-nous"
+            buttonText="Demandez un devis"
             link="/contact"
             delay="delay-400"
           />

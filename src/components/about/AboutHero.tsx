@@ -17,11 +17,11 @@ const AboutHero = () => {
               Découvrez notre histoire, notre équipe et nos valeurs.
             </p>
             <div className="flex flex-col sm:flex-row gap-4">
-              <a href="#team" className="button-primary">
+              <Link to="#team" className="button-primary">
                 Découvrir notre équipe
-              </a>
+              </Link>
               <Link to="/contact" className="button-secondary">
-                Contactez-nous
+                Demandez un devis
               </Link>
             </div>
           </div>

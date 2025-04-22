@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Menu, X } from 'lucide-react';
@@ -30,14 +29,12 @@ const Header = () => {
     >
       <div className="container mx-auto px-4 md:px-6">
         <div className="flex items-center justify-between">
-          {/* Logo */}
           <Link to="/" className="flex items-center">
             <div className="font-display font-bold text-2xl bg-clip-text text-transparent bg-gradient-to-r from-ilodata-700 to-ilodata-500">
               ilodata
             </div>
           </Link>
 
-          {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center space-x-8">
             <Link to="/" className="text-slate-800 font-medium hover:text-ilodata-600 transition-colors">
               Accueil
@@ -67,14 +64,12 @@ const Header = () => {
             </a>
           </nav>
 
-          {/* CTA Button */}
           <div className="hidden md:block">
             <Link to="/contact" className="button-primary">
               Demandez un devis
             </Link>
           </div>
 
-          {/* Mobile Menu Button */}
           <button 
             className="md:hidden text-slate-800"
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
@@ -84,7 +79,6 @@ const Header = () => {
         </div>
       </div>
 
-      {/* Mobile Menu */}
       {isMobileMenuOpen && (
         <div className="md:hidden absolute top-full left-0 right-0 bg-white shadow-lg animate-fade-down">
           <div className="container mx-auto px-4 py-4">

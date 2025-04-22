@@ -62,8 +62,8 @@ const AboutWhyChoose = () => {
           </div>
 
           <div className="text-center">
-            <Link to="/services" className="button-primary">
-              Découvrez nos services
+            <Link to="/contact" className="button-primary">
+              Demandez un devis
             </Link>
           </div>
         </div>
