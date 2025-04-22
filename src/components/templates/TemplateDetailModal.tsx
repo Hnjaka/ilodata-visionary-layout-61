@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { ArrowDownToLine } from 'lucide-react';
 import { Tables } from '@/integrations/supabase/types';
@@ -61,7 +62,7 @@ const TemplateDetailModal = ({
 
   return (
     <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
-      <DialogContent className="sm:max-w-3xl">
+      <DialogContent className="sm:max-w-[1200px] w-[90vw] h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle className="text-xl font-semibold">{template.titre}</DialogTitle>
           <DialogDescription>
@@ -69,35 +70,35 @@ const TemplateDetailModal = ({
           </DialogDescription>
         </DialogHeader>
         
-        <div className="grid md:grid-cols-2 gap-6 mt-4">
-          <div className="flex flex-col gap-4">
+        <div className="grid md:grid-cols-2 gap-8 mt-4">
+          <div className="flex flex-col gap-6">
             <div className="relative overflow-hidden rounded-lg bg-white border border-slate-200">
               {allImages.length > 0 ? (
                 <div className="relative">
-                  <AspectRatio ratio={1/1}>
+                  <AspectRatio ratio={4/3}>
                     <img 
                       src={`https://valzxjecoceltiyzkogw.supabase.co/storage/v1/object/public/template_images/${allImages[currentImageIndex]}`}
                       alt={`${template.titre} - aperçu ${currentImageIndex + 1}`}
-                      className="w-full h-full object-contain p-2"
+                      className="w-full h-full object-contain p-4"
                     />
                   </AspectRatio>
                 </div>
               ) : (
-                <div className="aspect-square flex items-center justify-center">
+                <div className="aspect-video flex items-center justify-center">
                   <span className="text-slate-400">Pas d'aperçu disponible</span>
                 </div>
               )}
             </div>
             
             {allImages.length > 0 && (
-              <div className="flex flex-wrap gap-2 justify-center">
+              <div className="flex flex-wrap gap-3 justify-center">
                 {allImages.map((image, index) => (
                   <button 
                     key={index}
                     onClick={() => selectImage(index)}
                     aria-label={`Aperçu ${index + 1}`}
                     className={cn(
-                      "w-16 h-16 cursor-pointer border-2 rounded overflow-hidden transition-all",
+                      "w-24 h-24 cursor-pointer border-2 rounded overflow-hidden transition-all",
                       index === currentImageIndex 
                         ? "border-blue-500 shadow-md" 
                         : "border-transparent hover:border-blue-300"
@@ -106,7 +107,7 @@ const TemplateDetailModal = ({
                     <img 
                       src={`https://valzxjecoceltiyzkogw.supabase.co/storage/v1/object/public/template_images/${image}`}
                       alt={`Miniature ${index + 1}`}
-                      className="w-full h-full object-contain p-1"
+                      className="w-full h-full object-contain p-2"
                     />
                   </button>
                 ))}

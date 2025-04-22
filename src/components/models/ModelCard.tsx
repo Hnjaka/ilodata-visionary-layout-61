@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { ArrowDownToLine } from 'lucide-react';
 import { cn } from '@/lib/utils';
@@ -85,7 +86,7 @@ const ModelCard = ({
       </div>
       
       <Dialog open={isModalOpen} onOpenChange={(open) => !open && setIsModalOpen(false)}>
-        <DialogContent className="sm:max-w-3xl">
+        <DialogContent className="sm:max-w-[1200px] w-[90vw] h-[90vh] overflow-y-auto">
           <DialogHeader>
             <DialogTitle className="text-xl font-semibold">{title}</DialogTitle>
             <DialogDescription>
@@ -93,33 +94,33 @@ const ModelCard = ({
             </DialogDescription>
           </DialogHeader>
           
-          <div className="grid md:grid-cols-2 gap-6 mt-4">
-            <div className="flex flex-col gap-4">
+          <div className="grid md:grid-cols-2 gap-8 mt-4">
+            <div className="flex flex-col gap-6">
               <div className="relative overflow-hidden rounded-lg bg-white border border-slate-200">
                 {images.length > 0 ? (
-                  <AspectRatio ratio={1/1}>
+                  <AspectRatio ratio={4/3}>
                     <img 
                       src={images[currentImageIndex]} 
                       alt={`${title} - aperçu ${currentImageIndex + 1}`} 
-                      className="w-full h-full object-contain p-2"
+                      className="w-full h-full object-contain p-4"
                     />
                   </AspectRatio>
                 ) : (
-                  <div className="aspect-square flex items-center justify-center">
+                  <div className="aspect-video flex items-center justify-center">
                     <span className="text-slate-400">Pas d'aperçu disponible</span>
                   </div>
                 )}
               </div>
               
               {images.length > 1 && (
-                <div className="flex flex-wrap gap-2 justify-center">
+                <div className="flex flex-wrap gap-3 justify-center">
                   {images.map((image, index) => (
                     <button 
                       key={index}
                       onClick={() => selectImage(index)}
                       aria-label={`Aperçu ${index + 1}`}
                       className={cn(
-                        "w-16 h-16 cursor-pointer border-2 rounded overflow-hidden transition-all",
+                        "w-24 h-24 cursor-pointer border-2 rounded overflow-hidden transition-all",
                         index === currentImageIndex 
                           ? "border-blue-500 shadow-md" 
                           : "border-transparent hover:border-blue-300"
@@ -128,7 +129,7 @@ const ModelCard = ({
                       <img 
                         src={image}
                         alt={`Miniature ${index + 1}`}
-                        className="w-full h-full object-contain p-1"
+                        className="w-full h-full object-contain p-2"
                       />
                     </button>
                   ))}
