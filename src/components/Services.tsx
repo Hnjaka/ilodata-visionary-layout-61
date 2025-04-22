@@ -1,4 +1,3 @@
-
 import React, { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { Layout, FileText, BookOpen, ArrowRight } from 'lucide-react';
@@ -140,7 +139,7 @@ const Services = () => {
               "Délais rapides et respectés"
             ]}
             buttonText="Demandez un devis"
-            link="/devis"
+            link="/contact"
             delay="delay-300"
           />
         </div>
