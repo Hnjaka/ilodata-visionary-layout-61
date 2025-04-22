@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Facebook, Twitter, Linkedin, Instagram } from 'lucide-react';
@@ -13,7 +12,7 @@ const Footer = () => {
           <div className="md:col-span-1">
             <Link to="/" className="inline-block mb-4">
               <div className="font-display font-bold text-2xl text-white">
-                ilodata
+                ilodata.com
               </div>
             </Link>
             <p className="text-slate-300 mb-6">

@@ -1,4 +1,3 @@
-
 import React, { useEffect } from 'react';
 import Header from '@/components/Header';
 import Hero from '@/components/Hero';
@@ -13,7 +12,28 @@ import Footer from '@/components/Footer';
 
 const Index = () => {
   useEffect(() => {
-    // Animation for fade-in-section elements on scroll
+    document.title = "ilodata.com | Mise en page de livre pour auteurs indépendants et éditeurs";
+    
+    // Update meta description
+    let metaDescription = document.querySelector('meta[name="description"]');
+    if (!metaDescription) {
+      metaDescription = document.createElement('meta');
+      metaDescription.setAttribute('name', 'description');
+      document.head.appendChild(metaDescription);
+    }
+    metaDescription.setAttribute('content', 'ilodata.com : Des solutions professionnelles pour la mise en page de vos livres. Modèles, formations et services personnalisés pour auteurs et éditeurs.');
+    
+    // Add keywords meta tag
+    let metaKeywords = document.querySelector('meta[name="keywords"]');
+    if (!metaKeywords) {
+      metaKeywords = document.createElement('meta');
+      metaKeywords.setAttribute('name', 'keywords');
+      document.head.appendChild(metaKeywords);
+    }
+    metaKeywords.setAttribute('content', 'ilodata.com, mise en page livre, formation mise en page livre, modèles de livre');
+  }, []);
+
+  useEffect(() => {
     const fadeInSections = document.querySelectorAll('.fade-in-section');
     
     const observer = new IntersectionObserver((entries) => {
@@ -33,29 +53,6 @@ const Index = () => {
         observer.unobserve(section);
       });
     };
-  }, []);
-
-  // Set meta tags for SEO
-  useEffect(() => {
-    document.title = "Mise en page de livre pour auteurs indépendants et éditeurs | ilodata.com";
-    
-    // Update meta description
-    let metaDescription = document.querySelector('meta[name="description"]');
-    if (!metaDescription) {
-      metaDescription = document.createElement('meta');
-      metaDescription.setAttribute('name', 'description');
-      document.head.appendChild(metaDescription);
-    }
-    metaDescription.setAttribute('content', 'Découvrez nos modèles Word, formations et services de mise en page pour créer des livres professionnels. Réalisez vous-même ou confiez-nous votre projet.');
-    
-    // Add keywords meta tag
-    let metaKeywords = document.querySelector('meta[name="keywords"]');
-    if (!metaKeywords) {
-      metaKeywords = document.createElement('meta');
-      metaKeywords.setAttribute('name', 'keywords');
-      document.head.appendChild(metaKeywords);
-    }
-    metaKeywords.setAttribute('content', 'Mise en page livre, Formation mise en page livre, Réaliser soi-même mise en page livre');
   }, []);
 
   return (
