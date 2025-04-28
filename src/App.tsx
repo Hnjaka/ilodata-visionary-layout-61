@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
@@ -18,6 +17,7 @@ import Templates from "./pages/Templates";
 import AdminTemplates from "./pages/AdminTemplates";
 import AddTemplate from "./pages/AddTemplate";
 import EditTemplate from "./pages/EditTemplate";
+import ErreursMiseEnPage from "./pages/articles/ErreursMiseEnPage";
 
 const queryClient = new QueryClient();
 
@@ -40,6 +40,7 @@ const App = () => {
               <Route path="/admin/templates" element={<AdminTemplates />} />
               <Route path="/admin/templates/new" element={<AddTemplate />} />
               <Route path="/admin/templates/edit/:id" element={<EditTemplate />} />
+              <Route path="/guides/erreurs-mise-en-page" element={<ErreursMiseEnPage />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
           </BrowserRouter>
