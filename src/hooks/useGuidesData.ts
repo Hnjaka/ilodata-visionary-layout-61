@@ -72,33 +72,69 @@ export const useGuidesData = () => {
     
     fetchCategoriesAndArticles();
 
-    // Set up a subscription for real-time updates
-    const categoriesChannel = supabase
-      .channel('admin-categories-changes')
-      .on('postgres_changes', 
-        { event: '*', schema: 'public', table: 'guide_categories' }, 
-        () => {
-          fetchCategoriesAndArticles();
-        }
-      )
-      .subscribe();
-
-    const articlesChannel = supabase
-      .channel('admin-articles-changes')
-      .on('postgres_changes', 
-        { event: '*', schema: 'public', table: 'guide_articles' }, 
-        () => {
-          fetchCategoriesAndArticles();
-        }
-      )
-      .subscribe();
-
-    // Cleanup subscriptions
-    return () => {
-      supabase.removeChannel(categoriesChannel);
-      supabase.removeChannel(articlesChannel);
-    };
+    // We're removing the real-time subscriptions to prevent automatic page refreshes
+    // Manual refresh will now be required when data changes
   }, []);
 
-  return { categories, setCategories, loading };
+  // Add a manual refresh function
+  const refreshData = async () => {
+    setLoading(true);
+    try {
+      // Fetch categories
+      const { data: categoriesData, error: categoriesError } = await supabase
+        .from('guide_categories')
+        .select('*')
+        .order('position');
+        
+      if (categoriesError) throw categoriesError;
+      
+      // Fetch articles for each category
+      const categoriesWithArticles = await Promise.all(
+        (categoriesData || []).map(async (category) => {
+          const { data: articlesData, error: articlesError } = await supabase
+            .from('guide_articles')
+            .select('*')
+            .eq('category_id', category.id)
+            .order('position');
+            
+          if (articlesError) throw articlesError;
+          
+          // Map the icon string to the actual icon component
+          const iconComponent = getIconByName(category.icon);
+          
+          // Format articles to match ArticleType
+          const formattedArticles: ArticleType[] = (articlesData || []).map(article => ({
+            id: article.id,
+            title: article.title,
+            slug: article.slug,
+            content: article.content || '',
+            layout: (article.layout || 'standard') as 'standard' | 'wide' | 'sidebar',
+            position: article.position,
+            category_id: article.category_id
+          }));
+          
+          return {
+            id: category.id,
+            title: category.title,
+            icon: iconComponent,
+            articles: formattedArticles,
+            position: category.position
+          };
+        })
+      );
+      
+      setCategories(categoriesWithArticles);
+    } catch (error) {
+      console.error('Error refreshing categories and articles:', error);
+      toast({
+        title: "Erreur",
+        description: "Erreur lors du rafraîchissement des données",
+        variant: "destructive"
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return { categories, setCategories, loading, refreshData };
 };

@@ -7,14 +7,14 @@ import GuidesContent from '@/components/admin/guides/GuidesContent';
 import { useGuidesData } from '@/hooks/useGuidesData';
 
 const AdminGuides = () => {
-  const { categories, setCategories, loading } = useGuidesData();
+  const { categories, setCategories, loading, refreshData } = useGuidesData();
 
   return (
     <div className="min-h-screen flex flex-col">
       <Header />
       
       <main className="flex-grow container mx-auto px-4 py-12">
-        <GuidesHeader categories={categories} />
+        <GuidesHeader categories={categories} onRefresh={refreshData} />
         <GuidesContent 
           categories={categories} 
           setCategories={setCategories} 
