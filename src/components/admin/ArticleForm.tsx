@@ -79,9 +79,18 @@ const ArticleForm: React.FC<ArticleFormProps> = ({
     if (editArticle && editArticleCategoryIndex !== null && editArticleIndex !== null) {
       // Handle article edit
       
-      // If category changed, remove from old and add to new
+      // Ensure the categories and articles arrays exist
+      if (!updatedCategories[editArticleCategoryIndex]?.articles) {
+        updatedCategories[editArticleCategoryIndex].articles = [];
+      }
+      
       if (editArticleCategoryIndex !== categoryIndex) {
-        // Remove from old category
+        // Ensure the target category's articles array exists
+        if (!updatedCategories[categoryIndex].articles) {
+          updatedCategories[categoryIndex].articles = [];
+        }
+        
+        // Remove from old category if it exists
         updatedCategories[editArticleCategoryIndex].articles.splice(editArticleIndex, 1);
         
         // Add to new category
@@ -93,12 +102,15 @@ const ArticleForm: React.FC<ArticleFormProps> = ({
         });
       } else {
         // Just update in the same category
-        updatedCategories[categoryIndex].articles[editArticleIndex] = {
-          title: title,
-          slug: slug,
-          content: content,
-          layout: layout
-        };
+        if (updatedCategories[categoryIndex].articles && 
+            editArticleIndex < updatedCategories[categoryIndex].articles.length) {
+          updatedCategories[categoryIndex].articles[editArticleIndex] = {
+            title: title,
+            slug: slug,
+            content: content,
+            layout: layout
+          };
+        }
       }
       
       toast({
@@ -113,6 +125,11 @@ const ArticleForm: React.FC<ArticleFormProps> = ({
       
     } else {
       // Add new article
+      // Ensure the category's articles array exists
+      if (!updatedCategories[categoryIndex].articles) {
+        updatedCategories[categoryIndex].articles = [];
+      }
+      
       updatedCategories[categoryIndex].articles.push({
         title: title,
         slug: slug,

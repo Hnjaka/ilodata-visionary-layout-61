@@ -30,32 +30,36 @@ const ArticleList: React.FC<ArticleListProps> = ({
   const handleDeleteArticle = (categoryIndex: number, articleIndex: number) => {
     if (window.confirm('Êtes-vous sûr de vouloir supprimer cet article ?')) {
       const updatedCategories = [...categories];
-      updatedCategories[categoryIndex].articles.splice(articleIndex, 1);
-      setCategories(updatedCategories);
-      
-      toast({
-        title: "Supprimé",
-        description: "L'article a été supprimé",
-      });
+      if (updatedCategories[categoryIndex]?.articles) {
+        updatedCategories[categoryIndex].articles.splice(articleIndex, 1);
+        setCategories(updatedCategories);
+        
+        toast({
+          title: "Supprimé",
+          description: "L'article a été supprimé",
+        });
+      }
     }
   };
 
   // Filter articles based on search term
-  const filteredArticles = categories.flatMap((category, categoryIndex) =>
-    (category.articles || [])  // Ensure articles is an array
-      .filter(article => 
-        (article.title || '').toLowerCase().includes(searchTerm.toLowerCase()) ||
-        (article.slug || '').toLowerCase().includes(searchTerm.toLowerCase()) ||
-        (category.title || '').toLowerCase().includes(searchTerm.toLowerCase()) ||
-        ((article.content || '').toLowerCase().includes(searchTerm.toLowerCase()))
-      )
-      .map((article, articleIndex) => ({
-        article,
-        categoryIndex,
-        articleIndex,
-        categoryTitle: category.title || ''
-      }))
-  );
+  const filteredArticles = categories
+    .filter(category => category && category.articles) // Only include categories that exist and have articles
+    .flatMap((category, categoryIndex) =>
+      (category.articles || [])
+        .filter(article => article && ( // Ensure article exists before accessing properties
+          (article.title || '').toLowerCase().includes(searchTerm.toLowerCase()) ||
+          (article.slug || '').toLowerCase().includes(searchTerm.toLowerCase()) ||
+          (category.title || '').toLowerCase().includes(searchTerm.toLowerCase()) ||
+          ((article.content || '').toLowerCase().includes(searchTerm.toLowerCase()))
+        ))
+        .map((article, articleIndex) => ({
+          article,
+          categoryIndex,
+          articleIndex,
+          categoryTitle: category.title || ''
+        }))
+    );
 
   // Function to truncate content for display
   const truncateContent = (content: string | undefined, maxLength: number = 100) => {
