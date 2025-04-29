@@ -25,7 +25,7 @@ const RichTextEditor: React.FC<RichTextEditorProps> = ({ value, onChange }) => {
     openLinkForm,
     handleLinkSubmit,
     removeLink
-  } = useRichEditor({ value, onChange });
+  } = useRichEditor({ value: value || '', onChange });
 
   return (
     <div className="border rounded-md overflow-hidden">
@@ -36,7 +36,7 @@ const RichTextEditor: React.FC<RichTextEditorProps> = ({ value, onChange }) => {
             isCodeView={isCodeView}
             showLinkForm={showLinkForm}
             setShowLinkForm={setShowLinkForm}
-            linkUrl={linkUrl}
+            linkUrl={linkUrl || ''}
             setLinkUrl={setLinkUrl}
             onLinkSubmit={handleLinkSubmit}
             onRemoveLink={removeLink}
@@ -51,12 +51,12 @@ const RichTextEditor: React.FC<RichTextEditorProps> = ({ value, onChange }) => {
       <div className="min-h-[200px]">
         {isCodeView ? (
           <CodeView 
-            value={codeViewContent} 
+            value={codeViewContent || ''} 
             onChange={handleCodeViewChange} 
           />
         ) : (
           <div className="p-3 min-h-[200px] prose prose-slate max-w-none">
-            <EditorContent editor={editor} />
+            {editor && <EditorContent editor={editor} />}
           </div>
         )}
       </div>

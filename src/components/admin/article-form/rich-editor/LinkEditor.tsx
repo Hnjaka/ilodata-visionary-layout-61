@@ -4,9 +4,10 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Link, ExternalLink } from 'lucide-react';
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { Editor } from '@tiptap/react';
 
 interface LinkEditorProps {
-  editor: any;
+  editor: Editor | null;
   showForm: boolean;
   setShowForm: (show: boolean) => void;
   initialUrl: string;
@@ -23,14 +24,15 @@ const LinkEditor: React.FC<LinkEditorProps> = ({
   onRemove
 }) => {
   const [url, setUrl] = useState(initialUrl);
-  const [isExternal, setIsExternal] = useState(initialUrl.startsWith('http') || false);
+  const [isExternal, setIsExternal] = useState(initialUrl?.startsWith('http') || false);
   
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     onSubmit(url, isExternal);
   };
   
-  const isActive = editor?.isActive('link');
+  // Check if editor exists and if link is active
+  const isActive = editor ? editor.isActive('link') : false;
   
   return (
     <Popover open={showForm} onOpenChange={setShowForm}>

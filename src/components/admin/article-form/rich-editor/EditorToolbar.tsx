@@ -42,6 +42,8 @@ const EditorToolbar: React.FC<EditorToolbarProps> = ({
   }
 
   const toggleFormat = (format: string) => {
+    if (!editor) return;
+    
     switch(format) {
       case 'bold':
         editor.chain().focus().toggleBold().run();
@@ -156,7 +158,7 @@ const EditorToolbar: React.FC<EditorToolbarProps> = ({
         editor={editor}
         showForm={showLinkForm}
         setShowForm={setShowLinkForm}
-        initialUrl={linkUrl}
+        initialUrl={linkUrl || ''}
         onSubmit={onLinkSubmit}
         onRemove={onRemoveLink}
       />
