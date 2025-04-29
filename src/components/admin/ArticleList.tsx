@@ -28,6 +28,15 @@ const ArticleList: React.FC<ArticleListProps> = ({
 }) => {
   // Handle deleting an article
   const handleDeleteArticle = (categoryIndex: number, articleIndex: number) => {
+    if (!categories[categoryIndex] || !categories[categoryIndex].articles) {
+      toast({
+        title: "Erreur",
+        description: "Impossible de supprimer l'article",
+        variant: "destructive"
+      });
+      return;
+    }
+
     if (window.confirm('Êtes-vous sûr de vouloir supprimer cet article ?')) {
       const updatedCategories = [...categories];
       if (updatedCategories[categoryIndex]?.articles) {
@@ -43,15 +52,15 @@ const ArticleList: React.FC<ArticleListProps> = ({
   };
 
   // Filter articles based on search term
-  const filteredArticles = categories
-    .filter(category => category && category.articles) // Only include categories that exist and have articles
+  const filteredArticles = (categories || [])
+    .filter(category => category && Array.isArray(category.articles)) // Only include categories that exist and have articles array
     .flatMap((category, categoryIndex) =>
-      (category.articles || [])
+      category.articles
         .filter(article => article && ( // Ensure article exists before accessing properties
-          (article.title || '').toLowerCase().includes(searchTerm.toLowerCase()) ||
-          (article.slug || '').toLowerCase().includes(searchTerm.toLowerCase()) ||
-          (category.title || '').toLowerCase().includes(searchTerm.toLowerCase()) ||
-          ((article.content || '').toLowerCase().includes(searchTerm.toLowerCase()))
+          ((article.title || '').toLowerCase().includes((searchTerm || '').toLowerCase())) ||
+          ((article.slug || '').toLowerCase().includes((searchTerm || '').toLowerCase())) ||
+          ((category.title || '').toLowerCase().includes((searchTerm || '').toLowerCase())) ||
+          ((article.content || '').toLowerCase().includes((searchTerm || '').toLowerCase()))
         ))
         .map((article, articleIndex) => ({
           article,
@@ -85,12 +94,12 @@ const ArticleList: React.FC<ArticleListProps> = ({
         {filteredArticles.length > 0 ? (
           filteredArticles.map(({ article, categoryIndex, articleIndex, categoryTitle }) => (
             <TableRow key={`${categoryIndex}-${articleIndex}`}>
-              <TableCell className="font-medium">{article.title || ''}</TableCell>
-              <TableCell>{article.slug || ''}</TableCell>
+              <TableCell className="font-medium">{article?.title || ''}</TableCell>
+              <TableCell>{article?.slug || ''}</TableCell>
               <TableCell>{categoryTitle}</TableCell>
-              <TableCell>{article.layout || 'Standard'}</TableCell>
+              <TableCell>{article?.layout || 'Standard'}</TableCell>
               <TableCell className="max-w-xs truncate">
-                {truncateContent(article.content)}
+                {truncateContent(article?.content)}
               </TableCell>
               <TableCell className="text-right">
                 <div className="flex justify-end space-x-2">

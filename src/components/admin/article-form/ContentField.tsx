@@ -13,7 +13,7 @@ import { z } from 'zod';
 
 // Define the schema for this part of the form
 export const contentSchema = z.object({
-  content: z.string().min(1, "Le contenu de l'article est requis"),
+  content: z.string().optional().default(''),
 });
 
 // Extract the type from the schema

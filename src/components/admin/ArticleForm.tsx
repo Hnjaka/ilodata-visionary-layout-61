@@ -50,13 +50,12 @@ const ArticleForm: React.FC<ArticleFormProps> = ({
   // Update form values when editing an article
   useEffect(() => {
     if (editArticle && editArticleCategoryIndex !== null) {
-      // Make sure to provide default values for potentially undefined fields
       form.reset({
-        title: editArticle.title || "",
-        slug: editArticle.slug || "",
+        title: editArticle?.title || "",
+        slug: editArticle?.slug || "",
         categoryIndex: editArticleCategoryIndex,
-        content: editArticle.content || "",
-        layout: editArticle.layout || "standard"
+        content: editArticle?.content || "",
+        layout: editArticle?.layout || "standard"
       });
     }
   }, [editArticle, editArticleCategoryIndex, form]);
@@ -65,7 +64,10 @@ const ArticleForm: React.FC<ArticleFormProps> = ({
   const onSubmit = (values: ArticleFormValues) => {
     const { title, slug, categoryIndex, content, layout } = values;
     
-    if (categoryIndex === undefined || categoryIndex < 0 || categoryIndex >= categories.length) {
+    // Validate categoryIndex
+    if (categoryIndex === undefined || 
+        categoryIndex < 0 || 
+        categoryIndex >= categories.length) {
       toast({
         title: "Erreur",
         description: "Catégorie invalide",
@@ -80,24 +82,45 @@ const ArticleForm: React.FC<ArticleFormProps> = ({
       // Handle article edit
       
       // Ensure the categories and articles arrays exist
-      if (!updatedCategories[editArticleCategoryIndex]?.articles) {
+      if (!updatedCategories[editArticleCategoryIndex]) {
+        toast({
+          title: "Erreur",
+          description: "Catégorie invalide",
+          variant: "destructive"
+        });
+        return;
+      }
+      
+      if (!updatedCategories[editArticleCategoryIndex].articles) {
         updatedCategories[editArticleCategoryIndex].articles = [];
       }
       
       if (editArticleCategoryIndex !== categoryIndex) {
+        // Ensure the target category exists and has an articles array
+        if (!updatedCategories[categoryIndex]) {
+          toast({
+            title: "Erreur",
+            description: "Catégorie cible invalide",
+            variant: "destructive"
+          });
+          return;
+        }
+        
         // Ensure the target category's articles array exists
         if (!updatedCategories[categoryIndex].articles) {
           updatedCategories[categoryIndex].articles = [];
         }
         
         // Remove from old category if it exists
-        updatedCategories[editArticleCategoryIndex].articles.splice(editArticleIndex, 1);
+        if (updatedCategories[editArticleCategoryIndex].articles.length > editArticleIndex) {
+          updatedCategories[editArticleCategoryIndex].articles.splice(editArticleIndex, 1);
+        }
         
         // Add to new category
         updatedCategories[categoryIndex].articles.push({
           title: title,
           slug: slug,
-          content: content,
+          content: content || '',
           layout: layout
         });
       } else {
@@ -107,7 +130,7 @@ const ArticleForm: React.FC<ArticleFormProps> = ({
           updatedCategories[categoryIndex].articles[editArticleIndex] = {
             title: title,
             slug: slug,
-            content: content,
+            content: content || '',
             layout: layout
           };
         }
@@ -125,6 +148,16 @@ const ArticleForm: React.FC<ArticleFormProps> = ({
       
     } else {
       // Add new article
+      // Ensure the category exists
+      if (!updatedCategories[categoryIndex]) {
+        toast({
+          title: "Erreur",
+          description: "Catégorie invalide",
+          variant: "destructive"
+        });
+        return;
+      }
+      
       // Ensure the category's articles array exists
       if (!updatedCategories[categoryIndex].articles) {
         updatedCategories[categoryIndex].articles = [];
@@ -133,7 +166,7 @@ const ArticleForm: React.FC<ArticleFormProps> = ({
       updatedCategories[categoryIndex].articles.push({
         title: title,
         slug: slug,
-        content: content,
+        content: content || '',
         layout: layout
       });
       
