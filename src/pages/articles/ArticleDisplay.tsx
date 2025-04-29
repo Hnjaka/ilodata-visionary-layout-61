@@ -4,6 +4,7 @@ import { useParams, Navigate, Link } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
 import ArticleLayout from '@/components/article/ArticleLayout';
 import LoadingSpinner from '@/components/LoadingSpinner';
+import ArticleFooter from '@/components/article/ArticleFooter';
 
 const ArticleDisplay = () => {
   const { slug } = useParams<{ slug: string }>();
@@ -125,6 +126,9 @@ const ArticleDisplay = () => {
     >
       {/* Render article content with processed headings and links */}
       <div className="prose prose-slate max-w-none" dangerouslySetInnerHTML={{ __html: processContent() }} />
+      
+      {/* Add the standardized article footer */}
+      <ArticleFooter />
     </ArticleLayout>
   );
 };
