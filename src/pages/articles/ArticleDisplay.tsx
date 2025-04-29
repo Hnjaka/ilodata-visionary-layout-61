@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
-import { useParams, Navigate } from 'react-router-dom';
+import { useParams, Navigate, Link } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
 import ArticleLayout from '@/components/article/ArticleLayout';
 import LoadingSpinner from '@/components/LoadingSpinner';
@@ -95,17 +95,26 @@ const ArticleDisplay = () => {
     { label: category?.title || "Article", url: "/guides" },
   ];
 
-  // Process the article content to add IDs to headings for the TOC
+  // Process the article content to add IDs to headings for the TOC and add internal links
   const processContent = () => {
     if (!article?.content) return '';
     
-    return article.content.replace(
+    // First, add IDs to headings for TOC
+    let processedContent = article.content.replace(
       /<h([2-3])([^>]*)>(.*?)<\/h\1>/g, 
       (match, level, attrs, content) => {
         const id = content.replace(/<[^>]*>/g, '').toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]/g, '');
         return `<h${level}${attrs} id="${id}">${content}</h${level}>`;
       }
     );
+    
+    // Add internal links for "Bonus : Modèles professionnels gratuits"
+    processedContent = processedContent.replace(
+      /(?<!<a[^>]*>)(Bonus\s*:\s*Modèles professionnels gratuits|Bonus\s*:\s*Modèles gratuits)(?![^<]*<\/a>)/g,
+      '<a href="/modeles" class="text-ilodata-600 hover:text-ilodata-800 no-underline">$&</a>'
+    );
+    
+    return processedContent;
   };
 
   return (
@@ -114,7 +123,7 @@ const ArticleDisplay = () => {
       breadcrumbs={breadcrumbs}
       tocItems={generateTocItems()}
     >
-      {/* Render article content with processed headings */}
+      {/* Render article content with processed headings and links */}
       <div className="prose prose-slate max-w-none" dangerouslySetInnerHTML={{ __html: processContent() }} />
     </ArticleLayout>
   );
