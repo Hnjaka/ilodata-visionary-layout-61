@@ -49,7 +49,7 @@ serve(async (req) => {
     
     if (data.error) {
       console.error('OpenAI API error:', data.error);
-      throw new Error(data.error.message || 'Erreur lors de la génération d'image');
+      throw new Error(data.error.message || "Erreur lors de la génération d'image");
     }
 
     // Récupérer l'URL de l'image générée
