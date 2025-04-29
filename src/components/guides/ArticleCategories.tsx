@@ -4,9 +4,10 @@ import ArticleCategory from './ArticleCategory';
 import { supabase } from '@/integrations/supabase/client';
 import { getIconByName } from '@/data/guidesData';
 import LoadingSpinner from '@/components/LoadingSpinner';
+import { CategoryType } from '@/types/guides';
 
 const ArticleCategories = () => {
-  const [categories, setCategories] = useState<any[]>([]);
+  const [categories, setCategories] = useState<CategoryType[]>([]);
   const [loading, setLoading] = useState(true);
   
   useEffect(() => {
@@ -22,7 +23,7 @@ const ArticleCategories = () => {
         
         // Fetch articles for each category
         const categoriesWithArticles = await Promise.all(
-          categoriesData.map(async (category) => {
+          (categoriesData || []).map(async (category) => {
             const { data: articlesData, error: articlesError } = await supabase
               .from('guide_articles')
               .select('*')
@@ -65,7 +66,7 @@ const ArticleCategories = () => {
     <div className="grid md:grid-cols-2 gap-8">
       {categories.map((category, index) => (
         <ArticleCategory 
-          key={index} 
+          key={category.id || index} 
           title={category.title} 
           icon={category.icon} 
           articles={category.articles} 

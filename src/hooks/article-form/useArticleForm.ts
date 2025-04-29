@@ -26,8 +26,8 @@ export const useArticleForm = (props: UseArticleFormProps) => {
   const submitHandler = useArticleFormSubmit(props);
   
   // Handle form submission with form reset
-  const onSubmit = (values: ArticleFormValues) => {
-    const categoryIndex = submitHandler(values);
+  const onSubmit = async (values: ArticleFormValues) => {
+    const categoryIndex = await submitHandler(values);
     if (categoryIndex !== undefined) {
       form.reset({
         title: "",
@@ -58,7 +58,7 @@ export const useArticleForm = (props: UseArticleFormProps) => {
     onSubmit,
     handleCancel,
     isEditing: !!editArticle,
-    categories, // Make sure to return these props
-    editArticle // Make sure to return this too
+    categories, 
+    editArticle 
   };
 };

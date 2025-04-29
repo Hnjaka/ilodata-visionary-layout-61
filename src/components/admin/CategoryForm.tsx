@@ -6,7 +6,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
 import { toast } from '@/components/ui/use-toast';
 import { 
   Select, 
@@ -69,7 +68,10 @@ const CategoryForm: React.FC<CategoryFormProps> = ({
   // Update form values when editing a category
   useEffect(() => {
     if (editCategory) {
-      const iconName = getIconName(editCategory.icon);
+      const iconName = typeof editCategory.icon === 'string' 
+        ? editCategory.icon 
+        : getIconName(editCategory.icon);
+        
       form.reset({
         title: editCategory.title,
         icon: iconName

@@ -34,6 +34,7 @@ export const useArticleFormSubmit = (props: UseArticleFormProps) => {
     }
     
     const updatedCategories = [...categories];
+    const selectedCategory = updatedCategories[categoryIndex];
 
     try {
       if (editArticle && editArticleCategoryIndex !== null && editArticleIndex !== null) {
@@ -67,6 +68,7 @@ export const useArticleFormSubmit = (props: UseArticleFormProps) => {
           if (updatedCategories[categoryIndex].articles && 
               editArticleIndex < updatedCategories[categoryIndex].articles.length) {
             updatedCategories[categoryIndex].articles[editArticleIndex] = {
+              ...editArticle,
               title: title,
               slug: slug,
               content: content || '',
@@ -81,7 +83,7 @@ export const useArticleFormSubmit = (props: UseArticleFormProps) => {
                 slug,
                 content: content || '',
                 layout,
-                category_id: updatedCategories[categoryIndex].id
+                category_id: selectedCategory.id
               })
               .eq('id', editArticle.id);
           }
@@ -107,10 +109,6 @@ export const useArticleFormSubmit = (props: UseArticleFormProps) => {
       }
       
       setCategories(updatedCategories);
-
-      // Save all categories to Supabase (this is a simplified approach)
-      // In a more sophisticated system, we would handle incremental updates
-      await saveCategoriesDataToSupabase(updatedCategories);
       
       return categoryIndex; // Return for form reset
     } catch (error) {
@@ -159,7 +157,10 @@ const handleArticleCategoryChange = async (
   }
   
   // Add to new category
-  updatedCategories[newCategoryIndex].articles.push(articleData);
+  updatedCategories[newCategoryIndex].articles.push({
+    ...articleData,
+    id: articleToMove.id
+  });
 
   // Update in Supabase
   if (articleToMove && articleToMove.id) {
@@ -231,7 +232,7 @@ const saveCategoriesDataToSupabase = async (categories: any[]) => {
   // In a real-world scenario, you would handle incremental updates
   for (const category of categories) {
     // Update or create category
-    const iconName = getIconName(category.icon);
+    const iconName = typeof category.icon === 'string' ? category.icon : getIconName(category.icon);
     
     if (category.id) {
       // Update existing category

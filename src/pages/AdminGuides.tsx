@@ -45,7 +45,7 @@ const AdminGuides = () => {
         
         // Fetch articles for each category
         const categoriesWithArticles = await Promise.all(
-          categoriesData.map(async (category) => {
+          (categoriesData || []).map(async (category) => {
             const { data: articlesData, error: articlesError } = await supabase
               .from('guide_articles')
               .select('*')
@@ -79,9 +79,36 @@ const AdminGuides = () => {
     };
     
     fetchCategoriesAndArticles();
+
+    // Set up a subscription for real-time updates
+    const categoriesChannel = supabase
+      .channel('categories-changes')
+      .on('postgres_changes', 
+        { event: '*', schema: 'public', table: 'guide_categories' }, 
+        () => {
+          fetchCategoriesAndArticles();
+        }
+      )
+      .subscribe();
+
+    const articlesChannel = supabase
+      .channel('articles-changes')
+      .on('postgres_changes', 
+        { event: '*', schema: 'public', table: 'guide_articles' }, 
+        () => {
+          fetchCategoriesAndArticles();
+        }
+      )
+      .subscribe();
+
+    // Cleanup subscriptions
+    return () => {
+      supabase.removeChannel(categoriesChannel);
+      supabase.removeChannel(articlesChannel);
+    };
   }, []);
   
-  // Export the data structure (would normally save to database)
+  // Export the data structure
   const handleExportData = () => {
     const dataStr = JSON.stringify(categories, null, 2);
     console.log(dataStr);
