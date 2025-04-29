@@ -1,25 +1,21 @@
 
 import React from 'react';
 import { Button } from '@/components/ui/button';
-import { BlogArticle } from '@/hooks/useBlogData';
+import { BlogCategory } from '@/hooks/useBlogData';
 
 interface FormActionsProps {
-  editArticle: BlogArticle | null;
+  editCategory: BlogCategory | null;
   handleCancel: () => void;
-  categoriesEmpty: boolean;
 }
 
-export const FormActions: React.FC<FormActionsProps> = ({ editArticle, handleCancel, categoriesEmpty }) => {
+export const FormActions: React.FC<FormActionsProps> = ({ editCategory, handleCancel }) => {
   return (
     <div className="flex space-x-2">
-      <Button 
-        type="submit" 
-        disabled={categoriesEmpty}
-      >
-        {editArticle ? "Mettre à jour" : "Ajouter"}
+      <Button type="submit">
+        {editCategory ? "Modifier" : "Ajouter"}
       </Button>
       
-      {editArticle && (
+      {editCategory && (
         <Button type="button" variant="outline" onClick={handleCancel}>
           Annuler
         </Button>
