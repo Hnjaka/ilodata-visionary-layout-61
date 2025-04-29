@@ -3,10 +3,11 @@ import React, { useState, useEffect } from 'react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { Link } from 'react-router-dom';
-import { ArrowRight } from 'lucide-react';
+import { ArrowRight, Settings } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { BlogArticle } from '@/hooks/useBlogData';
 import { Pagination, PaginationContent, PaginationItem, PaginationLink } from '@/components/ui/pagination';
+import { Button } from '@/components/ui/button';
 
 interface BlogPost extends BlogArticle {
   category_title?: string;
@@ -72,8 +73,18 @@ const Blog: React.FC = () => {
       
       <main className="flex-grow pt-24">
         <div className="container mx-auto px-4 py-12">
-          <h1 className="text-3xl md:text-4xl font-bold mb-2">Blog</h1>
-          <p className="text-slate-600 mb-8">Articles, conseils et inspiration pour vos projets éditoriaux</p>
+          <div className="flex justify-between items-center mb-8">
+            <div>
+              <h1 className="text-3xl md:text-4xl font-bold mb-2">Blog</h1>
+              <p className="text-slate-600">Articles, conseils et inspiration pour vos projets éditoriaux</p>
+            </div>
+            <Link to="/admin/blog">
+              <Button variant="outline" className="flex items-center gap-2">
+                <Settings size={18} />
+                Administration
+              </Button>
+            </Link>
+          </div>
           
           {loading ? (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
