@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import BlogHeader from '@/components/admin/blog/BlogHeader';
@@ -8,7 +8,12 @@ import { useBlogData } from '@/hooks/useBlogData';
 
 const AdminBlog = () => {
   // Utilisation du hook pour récupérer les données du blog
-  const { categories, setCategories, loading, refreshData } = useBlogData();
+  const { categories, setCategories, loading, setLoading, refreshData } = useBlogData();
+
+  // Load data once on initial render
+  useEffect(() => {
+    refreshData();
+  }, []);
 
   return (
     <div className="min-h-screen flex flex-col">

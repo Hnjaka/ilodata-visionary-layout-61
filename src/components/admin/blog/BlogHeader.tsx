@@ -24,11 +24,11 @@ const BlogHeader: React.FC<BlogHeaderProps> = ({ categories, onRefresh }) => {
         <h1 className="text-3xl font-bold text-slate-800">Blog</h1>
         <div className="flex space-x-2">
           <Button
-            variant="outline"
             onClick={handleRefresh}
+            className="flex items-center gap-2"
           >
-            <RefreshCw className="h-4 w-4 mr-2" />
-            Actualiser
+            <RefreshCw className="h-4 w-4" />
+            Rafraîchir les données
           </Button>
           <Button>
             <Plus className="h-4 w-4 mr-2" />
