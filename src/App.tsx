@@ -21,6 +21,7 @@ import EditTemplate from "./pages/EditTemplate";
 import ErreursMiseEnPage from "./pages/articles/ErreursMiseEnPage";
 import PersonnaliserModeleWord from "./pages/articles/PersonnaliserModeleWord";
 import AdapterModeleWord from "./pages/articles/AdapterModeleWord";
+import MeilleuresPratiquesModeles from "./pages/articles/MeilleuresPratiquesModeles";
 
 const queryClient = new QueryClient();
 
@@ -46,6 +47,7 @@ const App = () => {
               <Route path="/guides/erreurs-mise-en-page" element={<ErreursMiseEnPage />} />
               <Route path="/guides/personnaliser-modele-word" element={<PersonnaliserModeleWord />} />
               <Route path="/guides/adapter-modele-word" element={<AdapterModeleWord />} />
+              <Route path="/guides/meilleures-pratiques-modeles" element={<MeilleuresPratiquesModeles />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
           </BrowserRouter>
