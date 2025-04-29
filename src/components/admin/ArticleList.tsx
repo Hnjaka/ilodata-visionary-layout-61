@@ -55,18 +55,18 @@ const ArticleList: React.FC<ArticleListProps> = ({
   const filteredArticles = (categories || [])
     .filter(category => category && Array.isArray(category.articles)) // Only include categories that exist and have articles array
     .flatMap((category, categoryIndex) =>
-      category.articles
-        .filter(article => article && ( // Ensure article exists before accessing properties
-          ((article.title || '').toLowerCase().includes((searchTerm || '').toLowerCase())) ||
-          ((article.slug || '').toLowerCase().includes((searchTerm || '').toLowerCase())) ||
-          ((category.title || '').toLowerCase().includes((searchTerm || '').toLowerCase())) ||
-          ((article.content || '').toLowerCase().includes((searchTerm || '').toLowerCase()))
+      (category.articles || [])
+        .filter((article = {}) => ( // Ensure article exists before accessing properties and provide default empty object
+          ((article?.title || '').toLowerCase().includes((searchTerm || '').toLowerCase())) ||
+          ((article?.slug || '').toLowerCase().includes((searchTerm || '').toLowerCase())) ||
+          ((category?.title || '').toLowerCase().includes((searchTerm || '').toLowerCase())) ||
+          ((article?.content || '').toLowerCase().includes((searchTerm || '').toLowerCase()))
         ))
-        .map((article, articleIndex) => ({
+        .map((article = {}, articleIndex) => ({
           article,
           categoryIndex,
           articleIndex,
-          categoryTitle: category.title || ''
+          categoryTitle: category?.title || ''
         }))
     );
 
@@ -92,7 +92,7 @@ const ArticleList: React.FC<ArticleListProps> = ({
       </TableHeader>
       <TableBody>
         {filteredArticles.length > 0 ? (
-          filteredArticles.map(({ article, categoryIndex, articleIndex, categoryTitle }) => (
+          filteredArticles.map(({ article = {}, categoryIndex, articleIndex, categoryTitle }) => (
             <TableRow key={`${categoryIndex}-${articleIndex}`}>
               <TableCell className="font-medium">{article?.title || ''}</TableCell>
               <TableCell>{article?.slug || ''}</TableCell>
