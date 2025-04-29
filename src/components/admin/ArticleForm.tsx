@@ -2,7 +2,7 @@
 import React from 'react';
 import { Form } from "@/components/ui/form";
 import { CategoryType, ArticleType } from '@/types/guides';
-import { useArticleForm } from '@/hooks/useArticleForm';
+import { useArticleForm } from '@/hooks/article-form/useArticleForm';
 
 // Import subcomponents
 import TitleSlugFields from './article-form/TitleSlugFields';
