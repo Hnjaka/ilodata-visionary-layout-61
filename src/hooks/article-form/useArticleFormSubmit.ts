@@ -3,7 +3,9 @@ import { toast } from '@/components/ui/use-toast';
 import { ArticleFormValues } from '@/components/admin/article-form/formSchema';
 import { UseArticleFormProps } from './types';
 import { supabase } from '@/integrations/supabase/client';
-import { getIconName } from '@/data/guidesData';
+import { handleArticleCategoryChange } from './utils/articleCategoryChange';
+import { handleNewArticleCreation } from './utils/articleCreation';
+import { validateCategoryIndex } from './utils/validation';
 
 export const useArticleFormSubmit = (props: UseArticleFormProps) => {
   const { 
@@ -22,19 +24,12 @@ export const useArticleFormSubmit = (props: UseArticleFormProps) => {
     const { title, slug, categoryIndex, content, layout } = values;
     
     // Validate categoryIndex
-    if (categoryIndex === undefined || 
-        categoryIndex < 0 || 
-        categoryIndex >= categories.length) {
-      toast({
-        title: "Erreur",
-        description: "Catégorie invalide",
-        variant: "destructive"
-      });
+    if (!validateCategoryIndex(categoryIndex, categories)) {
       return categoryIndex;
     }
     
     const updatedCategories = [...categories];
-    const selectedCategory = updatedCategories[categoryIndex];
+    const selectedCategory = updatedCategories[categoryIndex!];
 
     try {
       if (editArticle && editArticleCategoryIndex !== null && editArticleIndex !== null) {
@@ -59,14 +54,14 @@ export const useArticleFormSubmit = (props: UseArticleFormProps) => {
           await handleArticleCategoryChange(
             updatedCategories,
             editArticleCategoryIndex,
-            categoryIndex,
+            categoryIndex!,
             editArticleIndex,
             { title, slug, content: content || '', layout }
           );
         } else {
           // Just update in the same category
-          if (updatedCategories[categoryIndex].articles && 
-              editArticleIndex < updatedCategories[categoryIndex].articles.length) {
+          if (updatedCategories[categoryIndex!].articles && 
+              editArticleIndex < updatedCategories[categoryIndex!].articles.length) {
             
             // Update in Supabase
             await supabase
@@ -81,7 +76,7 @@ export const useArticleFormSubmit = (props: UseArticleFormProps) => {
               .eq('id', editArticle.id);
               
             // Update in local state  
-            updatedCategories[categoryIndex].articles[editArticleIndex] = {
+            updatedCategories[categoryIndex!].articles[editArticleIndex] = {
               ...editArticle,
               title: title,
               slug: slug,
@@ -105,7 +100,7 @@ export const useArticleFormSubmit = (props: UseArticleFormProps) => {
         // Add new article
         await handleNewArticleCreation(
           updatedCategories,
-          categoryIndex,
+          categoryIndex!,
           { title, slug, content: content || '', layout }
         );
       }
@@ -125,105 +120,4 @@ export const useArticleFormSubmit = (props: UseArticleFormProps) => {
   };
 
   return onSubmit;
-};
-
-// Helper functions for article submission
-const handleArticleCategoryChange = async (
-  updatedCategories: any[],
-  oldCategoryIndex: number,
-  newCategoryIndex: number,
-  articleIndex: number,
-  articleData: { title: string, slug: string, content: string, layout?: "standard" | "wide" | "sidebar" }
-) => {
-  // Ensure the target category exists and has an articles array
-  if (!updatedCategories[newCategoryIndex]) {
-    toast({
-      title: "Erreur",
-      description: "Catégorie cible invalide",
-      variant: "destructive"
-    });
-    return;
-  }
-  
-  // Ensure the target category's articles array exists
-  if (!updatedCategories[newCategoryIndex].articles) {
-    updatedCategories[newCategoryIndex].articles = [];
-  }
-  
-  // Get article to move
-  const articleToMove = updatedCategories[oldCategoryIndex].articles[articleIndex];
-  
-  // Update in Supabase
-  if (articleToMove && articleToMove.id) {
-    await supabase
-      .from('guide_articles')
-      .update({
-        title: articleData.title,
-        slug: articleData.slug,
-        content: articleData.content,
-        layout: articleData.layout,
-        category_id: updatedCategories[newCategoryIndex].id
-      })
-      .eq('id', articleToMove.id);
-  }
-  
-  // Remove from old category if it exists
-  if (updatedCategories[oldCategoryIndex].articles.length > articleIndex) {
-    updatedCategories[oldCategoryIndex].articles.splice(articleIndex, 1);
-  }
-  
-  // Add to new category
-  updatedCategories[newCategoryIndex].articles.push({
-    ...articleData,
-    id: articleToMove.id
-  });
-};
-
-const handleNewArticleCreation = async (
-  updatedCategories: any[],
-  categoryIndex: number,
-  articleData: { title: string, slug: string, content: string, layout?: "standard" | "wide" | "sidebar" }
-) => {
-  // Ensure the category exists
-  if (!updatedCategories[categoryIndex]) {
-    toast({
-      title: "Erreur",
-      description: "Catégorie invalide",
-      variant: "destructive"
-    });
-    return;
-  }
-  
-  // Ensure the category's articles array exists
-  if (!updatedCategories[categoryIndex].articles) {
-    updatedCategories[categoryIndex].articles = [];
-  }
-  
-  // Insert in Supabase
-  const { data: newArticle, error } = await supabase
-    .from('guide_articles')
-    .insert({
-      title: articleData.title,
-      slug: articleData.slug,
-      content: articleData.content,
-      layout: articleData.layout || 'standard',
-      category_id: updatedCategories[categoryIndex].id
-    })
-    .select()
-    .single();
-
-  if (error) {
-    throw error;
-  }
-  
-  // Add the article with the ID from Supabase
-  updatedCategories[categoryIndex].articles.push({
-    ...articleData,
-    id: newArticle.id
-  });
-  
-  toast({
-    title: "Succès",
-    description: "Nouvel article ajouté",
-  });
 };
