@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
@@ -141,6 +142,10 @@ const BlogCategoryForm: React.FC<BlogCategoryFormProps> = ({
     });
   };
 
+  const handleIconChange = (iconName: string) => {
+    form.setValue("icon", iconName);
+  };
+
   return (
     <div className="mt-6 bg-slate-50 p-4 rounded-lg">
       <h3 className="text-lg font-medium mb-4">
@@ -170,8 +175,8 @@ const BlogCategoryForm: React.FC<BlogCategoryFormProps> = ({
                 <FormLabel>Icône</FormLabel>
                 <FormControl>
                   <IconSelector
-                    value={field.value}
-                    onChange={field.onChange}
+                    selectedIcon={field.value}
+                    onSelect={handleIconChange}
                   />
                 </FormControl>
                 <FormMessage />
