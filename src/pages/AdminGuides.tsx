@@ -13,8 +13,7 @@ import {
   TableHeader, 
   TableRow 
 } from '@/components/ui/table';
-import { Form, FormField, FormItem, FormLabel, FormControl } from '@/components/ui/form';
-import { useForm } from 'react-hook-form';
+import { Label } from '@/components/ui/label';
 import { getCategoryData, getIconByName } from '@/data/guidesData';
 import { toast } from '@/components/ui/use-toast';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
@@ -188,7 +187,7 @@ const AdminGuides = () => {
             <h3 className="text-lg font-medium mb-4">Ajouter une rubrique</h3>
             <div className="flex gap-4 items-end">
               <div className="flex-1">
-                <FormLabel htmlFor="categoryTitle">Titre de la rubrique</FormLabel>
+                <Label htmlFor="categoryTitle">Titre de la rubrique</Label>
                 <Input
                   id="categoryTitle"
                   value={newCategory.title}
@@ -197,7 +196,7 @@ const AdminGuides = () => {
                 />
               </div>
               <div className="w-1/3">
-                <FormLabel htmlFor="categoryIcon">Icône</FormLabel>
+                <Label htmlFor="categoryIcon">Icône</Label>
                 <Select 
                   value={newCategory.icon}
                   onValueChange={(value) => setNewCategory({...newCategory, icon: value})}
@@ -261,7 +260,7 @@ const AdminGuides = () => {
             <h3 className="text-lg font-medium mb-4">Ajouter un article</h3>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
               <div>
-                <FormLabel htmlFor="articleTitle">Titre de l'article</FormLabel>
+                <Label htmlFor="articleTitle">Titre de l'article</Label>
                 <Input
                   id="articleTitle"
                   value={newArticle.title}
@@ -270,7 +269,7 @@ const AdminGuides = () => {
                 />
               </div>
               <div>
-                <FormLabel htmlFor="articleSlug">Slug (URL)</FormLabel>
+                <Label htmlFor="articleSlug">Slug (URL)</Label>
                 <Input
                   id="articleSlug"
                   value={newArticle.slug}
@@ -279,7 +278,7 @@ const AdminGuides = () => {
                 />
               </div>
               <div>
-                <FormLabel htmlFor="articleCategory">Rubrique</FormLabel>
+                <Label htmlFor="articleCategory">Rubrique</Label>
                 <select
                   id="articleCategory"
                   value={newArticle.categoryIndex}
