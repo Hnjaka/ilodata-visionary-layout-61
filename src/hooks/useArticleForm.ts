@@ -196,6 +196,8 @@ export const useArticleForm = ({
     form,
     onSubmit,
     handleCancel,
-    isEditing: !!editArticle
+    isEditing: !!editArticle,
+    categories, // Make sure to return these props
+    editArticle // Make sure to return this too
   };
 };

@@ -23,34 +23,27 @@ interface ArticleFormProps {
 }
 
 const ArticleForm: React.FC<ArticleFormProps> = (props) => {
-  const { 
-    categories,
-    editArticle,
-    form,
-    onSubmit,
-    handleCancel,
-    isEditing
-  } = useArticleForm(props);
+  const formData = useArticleForm(props);
   
   return (
     <div className="mt-6 bg-slate-50 p-4 rounded-lg">
       <h3 className="text-lg font-medium mb-4">
-        {editArticle ? "Modifier l'article" : "Ajouter un article"}
+        {formData.editArticle ? "Modifier l'article" : "Ajouter un article"}
       </h3>
-      <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+      <Form {...formData.form}>
+        <form onSubmit={formData.form.handleSubmit(formData.onSubmit)} className="space-y-6">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <TitleSlugFields form={form} />
-            <CategorySelection form={form} categories={categories} />
+            <TitleSlugFields form={formData.form} />
+            <CategorySelection form={formData.form} categories={formData.categories} />
           </div>
           
-          <LayoutSelection form={form} />
-          <ContentField form={form} />
+          <LayoutSelection form={formData.form} />
+          <ContentField form={formData.form} />
           
           <FormActions 
-            isEditing={isEditing}
-            isCategoryAvailable={categories.length > 0}
-            onCancel={handleCancel}
+            isEditing={formData.isEditing}
+            isCategoryAvailable={formData.categories.length > 0}
+            onCancel={formData.handleCancel}
           />
         </form>
       </Form>
