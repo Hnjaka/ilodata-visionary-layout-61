@@ -18,6 +18,15 @@ const AdminGuides = () => {
   
   // Add state for search functionality
   const [searchTerm, setSearchTerm] = useState('');
+
+  // States for editing categories
+  const [editCategory, setEditCategory] = useState<CategoryType | null>(null);
+  const [editCategoryIndex, setEditCategoryIndex] = useState<number | null>(null);
+
+  // States for editing articles
+  const [editArticle, setEditArticle] = useState<any | null>(null);
+  const [editArticleCategoryIndex, setEditArticleCategoryIndex] = useState<number | null>(null);
+  const [editArticleIndex, setEditArticleIndex] = useState<number | null>(null);
   
   // Export the data structure (would normally save to database)
   const handleExportData = () => {
@@ -34,6 +43,28 @@ const AdminGuides = () => {
   // Handle search term changes
   const handleSearchChange = (value: string) => {
     setSearchTerm(value);
+  };
+
+  // Handle edit category action
+  const handleEditCategory = (category: CategoryType, index: number) => {
+    setEditCategory(category);
+    setEditCategoryIndex(index);
+    
+    // Reset article edit state if active
+    setEditArticle(null);
+    setEditArticleCategoryIndex(null);
+    setEditArticleIndex(null);
+  };
+
+  // Handle edit article action
+  const handleEditArticle = (article: any, categoryIndex: number, articleIndex: number) => {
+    setEditArticle(article);
+    setEditArticleCategoryIndex(categoryIndex);
+    setEditArticleIndex(articleIndex);
+    
+    // Reset category edit state if active
+    setEditCategory(null);
+    setEditCategoryIndex(null);
   };
 
   return (
@@ -64,8 +95,16 @@ const AdminGuides = () => {
             categories={categories} 
             setCategories={setCategories} 
             searchTerm={searchTerm}
+            onEditCategory={handleEditCategory}
           />
-          <CategoryForm categories={categories} setCategories={setCategories} />
+          <CategoryForm 
+            categories={categories} 
+            setCategories={setCategories} 
+            editCategory={editCategory}
+            editCategoryIndex={editCategoryIndex}
+            setEditCategory={setEditCategory}
+            setEditCategoryIndex={setEditCategoryIndex}
+          />
         </section>
         
         {/* Articles Section */}
@@ -74,9 +113,19 @@ const AdminGuides = () => {
           <ArticleList 
             categories={categories} 
             setCategories={setCategories}
-            searchTerm={searchTerm} 
+            searchTerm={searchTerm}
+            onEditArticle={handleEditArticle}
           />
-          <ArticleForm categories={categories} setCategories={setCategories} />
+          <ArticleForm 
+            categories={categories} 
+            setCategories={setCategories}
+            editArticle={editArticle}
+            editArticleCategoryIndex={editArticleCategoryIndex}
+            editArticleIndex={editArticleIndex}
+            setEditArticle={setEditArticle}
+            setEditArticleCategoryIndex={setEditArticleCategoryIndex}
+            setEditArticleIndex={setEditArticleIndex}
+          />
         </section>
       </main>
 

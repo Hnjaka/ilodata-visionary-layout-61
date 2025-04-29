@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { Trash } from 'lucide-react';
+import { Trash, Edit } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { 
   Table, 
@@ -17,9 +17,15 @@ interface CategoryListProps {
   categories: CategoryType[];
   setCategories: React.Dispatch<React.SetStateAction<CategoryType[]>>;
   searchTerm: string;
+  onEditCategory: (category: CategoryType, index: number) => void;
 }
 
-const CategoryList: React.FC<CategoryListProps> = ({ categories, setCategories, searchTerm }) => {
+const CategoryList: React.FC<CategoryListProps> = ({ 
+  categories, 
+  setCategories, 
+  searchTerm,
+  onEditCategory 
+}) => {
   // Handle deleting a category
   const handleDeleteCategory = (index: number) => {
     if (window.confirm('Êtes-vous sûr de vouloir supprimer cette rubrique et tous ses articles ?')) {
@@ -45,7 +51,7 @@ const CategoryList: React.FC<CategoryListProps> = ({ categories, setCategories, 
         <TableRow>
           <TableHead>Titre</TableHead>
           <TableHead>Nombre d'articles</TableHead>
-          <TableHead className="w-24 text-right">Actions</TableHead>
+          <TableHead className="w-32 text-right">Actions</TableHead>
         </TableRow>
       </TableHeader>
       <TableBody>
@@ -55,13 +61,22 @@ const CategoryList: React.FC<CategoryListProps> = ({ categories, setCategories, 
               <TableCell className="font-medium">{category.title}</TableCell>
               <TableCell>{category.articles.length}</TableCell>
               <TableCell className="text-right">
-                <Button 
-                  variant="ghost" 
-                  size="sm"
-                  onClick={() => handleDeleteCategory(index)}
-                >
-                  <Trash className="h-4 w-4 text-red-500" />
-                </Button>
+                <div className="flex justify-end space-x-2">
+                  <Button 
+                    variant="ghost" 
+                    size="sm"
+                    onClick={() => onEditCategory(category, index)}
+                  >
+                    <Edit className="h-4 w-4 text-blue-500" />
+                  </Button>
+                  <Button 
+                    variant="ghost" 
+                    size="sm"
+                    onClick={() => handleDeleteCategory(index)}
+                  >
+                    <Trash className="h-4 w-4 text-red-500" />
+                  </Button>
+                </div>
               </TableCell>
             </TableRow>
           ))

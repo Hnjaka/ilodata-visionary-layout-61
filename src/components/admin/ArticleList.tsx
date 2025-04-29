@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { Trash } from 'lucide-react';
+import { Trash, Edit } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { 
   Table, 
@@ -17,9 +17,15 @@ interface ArticleListProps {
   categories: CategoryType[];
   setCategories: React.Dispatch<React.SetStateAction<CategoryType[]>>;
   searchTerm: string;
+  onEditArticle: (article: any, categoryIndex: number, articleIndex: number) => void;
 }
 
-const ArticleList: React.FC<ArticleListProps> = ({ categories, setCategories, searchTerm }) => {
+const ArticleList: React.FC<ArticleListProps> = ({ 
+  categories, 
+  setCategories, 
+  searchTerm,
+  onEditArticle
+}) => {
   // Handle deleting an article
   const handleDeleteArticle = (categoryIndex: number, articleIndex: number) => {
     if (window.confirm('Êtes-vous sûr de vouloir supprimer cet article ?')) {
@@ -57,7 +63,7 @@ const ArticleList: React.FC<ArticleListProps> = ({ categories, setCategories, se
           <TableHead>Titre</TableHead>
           <TableHead>Slug</TableHead>
           <TableHead>Rubrique</TableHead>
-          <TableHead className="w-24 text-right">Actions</TableHead>
+          <TableHead className="w-32 text-right">Actions</TableHead>
         </TableRow>
       </TableHeader>
       <TableBody>
@@ -68,13 +74,22 @@ const ArticleList: React.FC<ArticleListProps> = ({ categories, setCategories, se
               <TableCell>{article.slug}</TableCell>
               <TableCell>{categoryTitle}</TableCell>
               <TableCell className="text-right">
-                <Button 
-                  variant="ghost" 
-                  size="sm"
-                  onClick={() => handleDeleteArticle(categoryIndex, articleIndex)}
-                >
-                  <Trash className="h-4 w-4 text-red-500" />
-                </Button>
+                <div className="flex justify-end space-x-2">
+                  <Button 
+                    variant="ghost" 
+                    size="sm"
+                    onClick={() => onEditArticle(article, categoryIndex, articleIndex)}
+                  >
+                    <Edit className="h-4 w-4 text-blue-500" />
+                  </Button>
+                  <Button 
+                    variant="ghost" 
+                    size="sm"
+                    onClick={() => handleDeleteArticle(categoryIndex, articleIndex)}
+                  >
+                    <Trash className="h-4 w-4 text-red-500" />
+                  </Button>
+                </div>
               </TableCell>
             </TableRow>
           ))

@@ -1,6 +1,6 @@
 
-import React from 'react';
-import { PlusCircle } from 'lucide-react';
+import React, { useEffect } from 'react';
+import { PlusCircle, Save } from 'lucide-react';
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
@@ -23,7 +23,7 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { getIconByName } from '@/data/guidesData';
+import { getIconByName, getIconName } from '@/data/guidesData';
 import { CategoryType } from '@/types/guides';
 
 // Define form schema for validation
@@ -37,9 +37,20 @@ type CategoryFormValues = z.infer<typeof categoryFormSchema>;
 interface CategoryFormProps {
   categories: CategoryType[];
   setCategories: React.Dispatch<React.SetStateAction<CategoryType[]>>;
+  editCategory: CategoryType | null;
+  editCategoryIndex: number | null;
+  setEditCategory: React.Dispatch<React.SetStateAction<CategoryType | null>>;
+  setEditCategoryIndex: React.Dispatch<React.SetStateAction<number | null>>;
 }
 
-const CategoryForm: React.FC<CategoryFormProps> = ({ categories, setCategories }) => {
+const CategoryForm: React.FC<CategoryFormProps> = ({ 
+  categories, 
+  setCategories, 
+  editCategory, 
+  editCategoryIndex, 
+  setEditCategory,
+  setEditCategoryIndex 
+}) => {
   // Available icons for selection
   const availableIcons = [
     'Book', 'FileText', 'Shapes', 'Printer', 'ImageIcon', 'PanelLeft', 'LayoutTemplate', 'FileCode'
@@ -54,29 +65,79 @@ const CategoryForm: React.FC<CategoryFormProps> = ({ categories, setCategories }
     }
   });
 
-  // Handle adding a new category
+  // Update form values when editing a category
+  useEffect(() => {
+    if (editCategory) {
+      const iconName = getIconName(editCategory.icon);
+      form.reset({
+        title: editCategory.title,
+        icon: iconName
+      });
+    }
+  }, [editCategory, form]);
+
+  // Handle adding/editing a category
   const onSubmit = (values: CategoryFormValues) => {
-    // Use getIconByName to get the actual component
+    // Get the icon component from the name
     const IconComponent = getIconByName(values.icon);
     
-    const updatedCategories = [...categories, {
-      title: values.title,
-      icon: IconComponent,
-      articles: []
-    }];
+    if (editCategory && editCategoryIndex !== null) {
+      // Update existing category
+      const updatedCategories = [...categories];
+      updatedCategories[editCategoryIndex] = {
+        ...editCategory,
+        title: values.title,
+        icon: IconComponent
+      };
+      
+      setCategories(updatedCategories);
+      
+      toast({
+        title: "Succès",
+        description: "Rubrique modifiée",
+      });
+      
+      // Reset edit mode
+      setEditCategory(null);
+      setEditCategoryIndex(null);
+      
+    } else {
+      // Add new category
+      const updatedCategories = [...categories, {
+        title: values.title,
+        icon: IconComponent,
+        articles: []
+      }];
+      
+      setCategories(updatedCategories);
+      
+      toast({
+        title: "Succès",
+        description: "Nouvelle rubrique ajoutée",
+      });
+    }
     
-    setCategories(updatedCategories);
-    form.reset();
-    
-    toast({
-      title: "Succès",
-      description: "Nouvelle rubrique ajoutée",
+    form.reset({
+      title: "",
+      icon: "Book"
+    });
+  };
+
+  // Cancel editing
+  const handleCancel = () => {
+    setEditCategory(null);
+    setEditCategoryIndex(null);
+    form.reset({
+      title: "",
+      icon: "Book"
     });
   };
 
   return (
     <div className="mt-6 bg-slate-50 p-4 rounded-lg">
-      <h3 className="text-lg font-medium mb-4">Ajouter une rubrique</h3>
+      <h3 className="text-lg font-medium mb-4">
+        {editCategory ? "Modifier la rubrique" : "Ajouter une rubrique"}
+      </h3>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="flex gap-4 items-end">
           <FormField
@@ -88,7 +149,7 @@ const CategoryForm: React.FC<CategoryFormProps> = ({ categories, setCategories }
                 <FormControl>
                   <Input
                     {...field}
-                    placeholder="Nouvelle rubrique"
+                    placeholder="Titre de la rubrique"
                   />
                 </FormControl>
                 <FormMessage />
@@ -105,6 +166,7 @@ const CategoryForm: React.FC<CategoryFormProps> = ({ categories, setCategories }
                 <Select 
                   onValueChange={field.onChange}
                   defaultValue={field.value}
+                  value={field.value}
                 >
                   <FormControl>
                     <SelectTrigger>
@@ -124,10 +186,27 @@ const CategoryForm: React.FC<CategoryFormProps> = ({ categories, setCategories }
             )}
           />
           
-          <Button type="submit">
-            <PlusCircle className="h-4 w-4 mr-2" />
-            Ajouter
-          </Button>
+          <div className="flex space-x-2">
+            <Button type="submit">
+              {editCategory ? (
+                <>
+                  <Save className="h-4 w-4 mr-2" />
+                  Modifier
+                </>
+              ) : (
+                <>
+                  <PlusCircle className="h-4 w-4 mr-2" />
+                  Ajouter
+                </>
+              )}
+            </Button>
+            
+            {editCategory && (
+              <Button type="button" variant="outline" onClick={handleCancel}>
+                Annuler
+              </Button>
+            )}
+          </div>
         </form>
       </Form>
     </div>
