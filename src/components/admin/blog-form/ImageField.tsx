@@ -36,21 +36,27 @@ export const ImageField: React.FC<ImageFieldProps> = ({ form }) => {
       // Construire le prompt pour la génération d'image
       const prompt = `${title}${excerpt ? ` - ${excerpt}` : ''}`;
       
+      console.log('Envoi du prompt à la fonction Edge:', prompt);
+      
       // Appel à l'API Supabase Edge Function pour générer l'image
       const { data, error } = await supabase.functions.invoke('generate-blog-image', {
         body: { prompt }
       });
       
+      console.log('Réponse de la fonction Edge:', data, error);
+      
       if (error) {
+        console.error('Erreur Supabase:', error);
         throw new Error(error?.message || "Erreur lors de la génération de l'image");
       }
       
-      if (data.error) {
+      if (data && data.error) {
+        console.error('Erreur retournée par la fonction:', data.error);
         throw new Error(data.error);
       }
       
       // Mettre à jour le champ image avec l'URL générée
-      if (data.imageUrl) {
+      if (data && data.imageUrl) {
         form.setValue('image', data.imageUrl);
         toast({
           title: "Succès",
