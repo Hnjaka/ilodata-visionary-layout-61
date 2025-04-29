@@ -17,14 +17,31 @@ const RichTextEditor: React.FC<RichTextEditorProps> = ({ value, onChange }) => {
     isCodeView,
     codeViewContent,
     handleCodeViewChange,
-    toggleCodeView
+    toggleCodeView,
+    showLinkForm,
+    setShowLinkForm,
+    linkUrl,
+    setLinkUrl,
+    openLinkForm,
+    handleLinkSubmit,
+    removeLink
   } = useRichEditor({ value, onChange });
 
   return (
     <div className="border rounded-md overflow-hidden">
       <div className="bg-slate-100 p-2 border-b flex flex-wrap gap-1 items-center justify-between">
         <div className="flex flex-wrap gap-1">
-          <EditorToolbar editor={editor} isCodeView={isCodeView} />
+          <EditorToolbar 
+            editor={editor} 
+            isCodeView={isCodeView}
+            showLinkForm={showLinkForm}
+            setShowLinkForm={setShowLinkForm}
+            linkUrl={linkUrl}
+            setLinkUrl={setLinkUrl}
+            onLinkSubmit={handleLinkSubmit}
+            onRemoveLink={removeLink}
+            onOpenLinkForm={openLinkForm}
+          />
         </div>
         <EditorModeToggle 
           isCodeView={isCodeView}

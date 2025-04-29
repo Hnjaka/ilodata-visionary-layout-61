@@ -13,13 +13,30 @@ import {
   List, 
   Quote
 } from 'lucide-react';
+import LinkEditor from './LinkEditor';
 
 interface EditorToolbarProps {
   editor: Editor | null;
   isCodeView: boolean;
+  showLinkForm: boolean;
+  setShowLinkForm: (show: boolean) => void;
+  linkUrl: string;
+  setLinkUrl: (url: string) => void;
+  onLinkSubmit: (url: string, isExternal: boolean) => void;
+  onRemoveLink: () => void;
+  onOpenLinkForm: () => void;
 }
 
-const EditorToolbar: React.FC<EditorToolbarProps> = ({ editor, isCodeView }) => {
+const EditorToolbar: React.FC<EditorToolbarProps> = ({ 
+  editor, 
+  isCodeView, 
+  showLinkForm,
+  setShowLinkForm,
+  linkUrl,
+  onLinkSubmit,
+  onRemoveLink,
+  onOpenLinkForm
+}) => {
   if (!editor || isCodeView) {
     return null;
   }
@@ -134,6 +151,15 @@ const EditorToolbar: React.FC<EditorToolbarProps> = ({ editor, isCodeView }) => 
       >
         <Quote className="h-4 w-4" />
       </Button>
+      <span className="border-r h-6 mx-1"></span>
+      <LinkEditor
+        editor={editor}
+        showForm={showLinkForm}
+        setShowForm={setShowLinkForm}
+        initialUrl={linkUrl}
+        onSubmit={onLinkSubmit}
+        onRemove={onRemoveLink}
+      />
     </>
   );
 };
