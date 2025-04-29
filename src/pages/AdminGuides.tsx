@@ -1,9 +1,8 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { Button } from '@/components/ui/button';
-import { getCategoryData } from '@/data/guidesData';
 import { toast } from '@/components/ui/use-toast';
 import CategoryList from '@/components/admin/CategoryList';
 import CategoryForm from '@/components/admin/CategoryForm';
@@ -11,10 +10,13 @@ import ArticleList from '@/components/admin/ArticleList';
 import ArticleForm from '@/components/admin/ArticleForm';
 import SearchBar from '@/components/admin/SearchBar';
 import { CategoryType } from '@/types/guides';
+import { supabase } from '@/integrations/supabase/client';
+import { getIconByName } from '@/data/guidesData';
+import LoadingSpinner from '@/components/LoadingSpinner';
 
 const AdminGuides = () => {
-  // Load initial data from guidesData.ts
-  const [categories, setCategories] = useState<CategoryType[]>(getCategoryData());
+  const [categories, setCategories] = useState<CategoryType[]>([]);
+  const [loading, setLoading] = useState(true);
   
   // Add state for search functionality
   const [searchTerm, setSearchTerm] = useState('');
@@ -27,6 +29,57 @@ const AdminGuides = () => {
   const [editArticle, setEditArticle] = useState<any | null>(null);
   const [editArticleCategoryIndex, setEditArticleCategoryIndex] = useState<number | null>(null);
   const [editArticleIndex, setEditArticleIndex] = useState<number | null>(null);
+  
+  // Fetch categories and articles from Supabase
+  useEffect(() => {
+    const fetchCategoriesAndArticles = async () => {
+      setLoading(true);
+      try {
+        // Fetch categories
+        const { data: categoriesData, error: categoriesError } = await supabase
+          .from('guide_categories')
+          .select('*')
+          .order('position');
+          
+        if (categoriesError) throw categoriesError;
+        
+        // Fetch articles for each category
+        const categoriesWithArticles = await Promise.all(
+          categoriesData.map(async (category) => {
+            const { data: articlesData, error: articlesError } = await supabase
+              .from('guide_articles')
+              .select('*')
+              .eq('category_id', category.id)
+              .order('position');
+              
+            if (articlesError) throw articlesError;
+            
+            // Map the icon string to the actual icon component
+            const iconComponent = getIconByName(category.icon);
+            
+            return {
+              ...category,
+              icon: iconComponent,
+              articles: articlesData || []
+            };
+          })
+        );
+        
+        setCategories(categoriesWithArticles);
+      } catch (error) {
+        console.error('Error fetching categories and articles:', error);
+        toast({
+          title: "Erreur",
+          description: "Erreur lors du chargement des données",
+          variant: "destructive"
+        });
+      } finally {
+        setLoading(false);
+      }
+    };
+    
+    fetchCategoriesAndArticles();
+  }, []);
   
   // Export the data structure (would normally save to database)
   const handleExportData = () => {
@@ -88,45 +141,53 @@ const AdminGuides = () => {
           />
         </div>
         
-        {/* Categories Section */}
-        <section className="mb-12">
-          <h2 className="text-xl font-semibold mb-4 text-slate-800">Rubriques</h2>
-          <CategoryList 
-            categories={categories} 
-            setCategories={setCategories} 
-            searchTerm={searchTerm}
-            onEditCategory={handleEditCategory}
-          />
-          <CategoryForm 
-            categories={categories} 
-            setCategories={setCategories} 
-            editCategory={editCategory}
-            editCategoryIndex={editCategoryIndex}
-            setEditCategory={setEditCategory}
-            setEditCategoryIndex={setEditCategoryIndex}
-          />
-        </section>
-        
-        {/* Articles Section */}
-        <section>
-          <h2 className="text-xl font-semibold mb-4 text-slate-800">Articles</h2>
-          <ArticleList 
-            categories={categories} 
-            setCategories={setCategories}
-            searchTerm={searchTerm}
-            onEditArticle={handleEditArticle}
-          />
-          <ArticleForm 
-            categories={categories} 
-            setCategories={setCategories}
-            editArticle={editArticle}
-            editArticleCategoryIndex={editArticleCategoryIndex}
-            editArticleIndex={editArticleIndex}
-            setEditArticle={setEditArticle}
-            setEditArticleCategoryIndex={setEditArticleCategoryIndex}
-            setEditArticleIndex={setEditArticleIndex}
-          />
-        </section>
+        {loading ? (
+          <div className="flex items-center justify-center h-64">
+            <LoadingSpinner />
+          </div>
+        ) : (
+          <>
+            {/* Categories Section */}
+            <section className="mb-12">
+              <h2 className="text-xl font-semibold mb-4 text-slate-800">Rubriques</h2>
+              <CategoryList 
+                categories={categories} 
+                setCategories={setCategories} 
+                searchTerm={searchTerm}
+                onEditCategory={handleEditCategory}
+              />
+              <CategoryForm 
+                categories={categories} 
+                setCategories={setCategories} 
+                editCategory={editCategory}
+                editCategoryIndex={editCategoryIndex}
+                setEditCategory={setEditCategory}
+                setEditCategoryIndex={setEditCategoryIndex}
+              />
+            </section>
+            
+            {/* Articles Section */}
+            <section>
+              <h2 className="text-xl font-semibold mb-4 text-slate-800">Articles</h2>
+              <ArticleList 
+                categories={categories} 
+                setCategories={setCategories}
+                searchTerm={searchTerm}
+                onEditArticle={handleEditArticle}
+              />
+              <ArticleForm 
+                categories={categories} 
+                setCategories={setCategories}
+                editArticle={editArticle}
+                editArticleCategoryIndex={editArticleCategoryIndex}
+                editArticleIndex={editArticleIndex}
+                setEditArticle={setEditArticle}
+                setEditArticleCategoryIndex={setEditArticleCategoryIndex}
+                setEditArticleIndex={setEditArticleIndex}
+              />
+            </section>
+          </>
+        )}
       </main>
 
       <Footer />

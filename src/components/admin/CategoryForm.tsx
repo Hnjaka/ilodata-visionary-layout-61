@@ -25,6 +25,7 @@ import {
 } from "@/components/ui/form";
 import { getIconByName, getIconName } from '@/data/guidesData';
 import { CategoryType } from '@/types/guides';
+import { supabase } from '@/integrations/supabase/client';
 
 // Define form schema for validation
 const categoryFormSchema = z.object({
@@ -77,50 +78,86 @@ const CategoryForm: React.FC<CategoryFormProps> = ({
   }, [editCategory, form]);
 
   // Handle adding/editing a category
-  const onSubmit = (values: CategoryFormValues) => {
+  const onSubmit = async (values: CategoryFormValues) => {
     // Get the icon component from the name
     const IconComponent = getIconByName(values.icon);
     
-    if (editCategory && editCategoryIndex !== null) {
-      // Update existing category
-      const updatedCategories = [...categories];
-      updatedCategories[editCategoryIndex] = {
-        ...editCategory,
-        title: values.title,
-        icon: IconComponent
-      };
+    try {
+      if (editCategory && editCategoryIndex !== null) {
+        // Update existing category
+        const updatedCategories = [...categories];
+        updatedCategories[editCategoryIndex] = {
+          ...editCategory,
+          title: values.title,
+          icon: IconComponent
+        };
+        
+        // Update in Supabase
+        const { error } = await supabase
+          .from('guide_categories')
+          .update({
+            title: values.title,
+            icon: values.icon
+          })
+          .eq('id', editCategory.id);
+          
+        if (error) throw error;
+        
+        setCategories(updatedCategories);
+        
+        toast({
+          title: "Succès",
+          description: "Rubrique modifiée",
+        });
+        
+        // Reset edit mode
+        setEditCategory(null);
+        setEditCategoryIndex(null);
+        
+      } else {
+        // Add new category
+        
+        // First create in Supabase
+        const { data: newCategory, error } = await supabase
+          .from('guide_categories')
+          .insert({
+            title: values.title,
+            icon: values.icon,
+            position: categories.length // Add at the end
+          })
+          .select()
+          .single();
+          
+        if (error) throw error;
+        
+        // Now add to state with ID from Supabase
+        const updatedCategories = [...categories, {
+          id: newCategory.id,
+          title: values.title,
+          icon: IconComponent,
+          articles: []
+        }];
+        
+        setCategories(updatedCategories);
+        
+        toast({
+          title: "Succès",
+          description: "Nouvelle rubrique ajoutée",
+        });
+      }
       
-      setCategories(updatedCategories);
-      
-      toast({
-        title: "Succès",
-        description: "Rubrique modifiée",
+      form.reset({
+        title: "",
+        icon: "Book"
       });
-      
-      // Reset edit mode
-      setEditCategory(null);
-      setEditCategoryIndex(null);
-      
-    } else {
-      // Add new category
-      const updatedCategories = [...categories, {
-        title: values.title,
-        icon: IconComponent,
-        articles: []
-      }];
-      
-      setCategories(updatedCategories);
-      
+    } catch (error) {
+      console.error('Error saving category:', error);
       toast({
-        title: "Succès",
-        description: "Nouvelle rubrique ajoutée",
+        title: "Erreur",
+        description: "Erreur lors de l'enregistrement de la rubrique",
+        variant: "destructive"
       });
     }
-    
-    form.reset({
-      title: "",
-      icon: "Book"
-    });
   };
 
   // Cancel editing
