@@ -16,6 +16,7 @@ import FondamentauxMiseEnPage from "./pages/articles/FondamentauxMiseEnPage";
 import ChoisirTaillePolice from "./pages/articles/ChoisirTaillePolice";
 import Templates from "./pages/Templates";
 import AdminTemplates from "./pages/AdminTemplates";
+import AdminGuides from "./pages/AdminGuides"; // Import the new admin page
 import AddTemplate from "./pages/AddTemplate";
 import EditTemplate from "./pages/EditTemplate";
 import ErreursMiseEnPage from "./pages/articles/ErreursMiseEnPage";
@@ -48,6 +49,7 @@ const App = () => {
               <Route path="/about" element={<About />} />
               <Route path="/templates" element={<Templates />} />
               <Route path="/admin/templates" element={<AdminTemplates />} />
+              <Route path="/admin/guides" element={<AdminGuides />} /> {/* New route for admin guides */}
               <Route path="/admin/templates/new" element={<AddTemplate />} />
               <Route path="/admin/templates/edit/:id" element={<EditTemplate />} />
               <Route path="*" element={<NotFound />} />

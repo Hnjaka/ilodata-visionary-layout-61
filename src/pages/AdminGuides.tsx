@@ -1,0 +1,281 @@
+
+import React, { useState, useEffect } from 'react';
+import { PlusCircle, Save, Trash } from 'lucide-react';
+import Header from '@/components/Header';
+import Footer from '@/components/Footer';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { 
+  Table, 
+  TableBody, 
+  TableCell, 
+  TableHead, 
+  TableHeader, 
+  TableRow 
+} from '@/components/ui/table';
+import { Form, FormField, FormItem, FormLabel, FormControl } from '@/components/ui/form';
+import { useForm } from 'react-hook-form';
+import { getCategoryData } from '@/data/guidesData';
+import { toast } from '@/components/ui/use-toast';
+
+const AdminGuides = () => {
+  // Load initial data from guidesData.ts
+  const [categories, setCategories] = useState(getCategoryData());
+  
+  // State for adding new categories
+  const [newCategory, setNewCategory] = useState({ title: '', icon: 'Book' });
+  
+  // State for adding new articles
+  const [newArticle, setNewArticle] = useState({ title: '', slug: '', categoryIndex: 0 });
+  
+  // Handle adding a new category
+  const handleAddCategory = () => {
+    if (!newCategory.title.trim()) {
+      toast({
+        title: "Erreur",
+        description: "Le titre de la rubrique ne peut pas être vide",
+        variant: "destructive"
+      });
+      return;
+    }
+    
+    const updatedCategories = [...categories, {
+      title: newCategory.title,
+      icon: 'Book', // Default icon for now
+      articles: []
+    }];
+    
+    setCategories(updatedCategories);
+    setNewCategory({ title: '', icon: 'Book' });
+    
+    toast({
+      title: "Succès",
+      description: "Nouvelle rubrique ajoutée",
+    });
+  };
+  
+  // Handle adding a new article
+  const handleAddArticle = () => {
+    if (!newArticle.title.trim() || !newArticle.slug.trim()) {
+      toast({
+        title: "Erreur",
+        description: "Le titre et le slug de l'article ne peuvent pas être vides",
+        variant: "destructive"
+      });
+      return;
+    }
+    
+    const categoryIndex = parseInt(String(newArticle.categoryIndex));
+    if (isNaN(categoryIndex) || categoryIndex < 0 || categoryIndex >= categories.length) {
+      toast({
+        title: "Erreur",
+        description: "Catégorie invalide",
+        variant: "destructive"
+      });
+      return;
+    }
+    
+    const updatedCategories = [...categories];
+    updatedCategories[categoryIndex].articles.push({
+      title: newArticle.title,
+      slug: newArticle.slug
+    });
+    
+    setCategories(updatedCategories);
+    setNewArticle({ title: '', slug: '', categoryIndex: categoryIndex });
+    
+    toast({
+      title: "Succès",
+      description: "Nouvel article ajouté",
+    });
+  };
+  
+  // Handle deleting a category
+  const handleDeleteCategory = (index: number) => {
+    if (window.confirm('Êtes-vous sûr de vouloir supprimer cette rubrique et tous ses articles ?')) {
+      const updatedCategories = [...categories];
+      updatedCategories.splice(index, 1);
+      setCategories(updatedCategories);
+      
+      toast({
+        title: "Supprimé",
+        description: "La rubrique a été supprimée",
+      });
+    }
+  };
+  
+  // Handle deleting an article
+  const handleDeleteArticle = (categoryIndex: number, articleIndex: number) => {
+    if (window.confirm('Êtes-vous sûr de vouloir supprimer cet article ?')) {
+      const updatedCategories = [...categories];
+      updatedCategories[categoryIndex].articles.splice(articleIndex, 1);
+      setCategories(updatedCategories);
+      
+      toast({
+        title: "Supprimé",
+        description: "L'article a été supprimé",
+      });
+    }
+  };
+  
+  // Export the data structure (would normally save to database)
+  const handleExportData = () => {
+    const dataStr = JSON.stringify(categories, null, 2);
+    console.log(dataStr);
+    navigator.clipboard.writeText(dataStr).then(() => {
+      toast({
+        title: "Exporté",
+        description: "Structure JSON copiée dans le presse-papier",
+      });
+    });
+  };
+
+  return (
+    <div className="min-h-screen flex flex-col">
+      <Header />
+      
+      <main className="flex-grow container mx-auto px-4 py-12">
+        <div className="flex items-center justify-between mb-8">
+          <h1 className="text-3xl font-bold text-slate-800">Gestion des rubriques et articles</h1>
+          <Button onClick={handleExportData} variant="outline">
+            Exporter en JSON
+          </Button>
+        </div>
+        
+        {/* Categories Section */}
+        <section className="mb-12">
+          <h2 className="text-xl font-semibold mb-4 text-slate-800">Rubriques</h2>
+          
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead>Titre</TableHead>
+                <TableHead>Nombre d'articles</TableHead>
+                <TableHead className="w-24 text-right">Actions</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {categories.map((category, index) => (
+                <TableRow key={index}>
+                  <TableCell className="font-medium">{category.title}</TableCell>
+                  <TableCell>{category.articles.length}</TableCell>
+                  <TableCell className="text-right">
+                    <Button 
+                      variant="ghost" 
+                      size="sm"
+                      onClick={() => handleDeleteCategory(index)}
+                    >
+                      <Trash className="h-4 w-4 text-red-500" />
+                    </Button>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+          
+          <div className="mt-6 bg-slate-50 p-4 rounded-lg">
+            <h3 className="text-lg font-medium mb-4">Ajouter une rubrique</h3>
+            <div className="flex gap-4 items-end">
+              <div className="flex-1">
+                <FormLabel htmlFor="categoryTitle">Titre de la rubrique</FormLabel>
+                <Input
+                  id="categoryTitle"
+                  value={newCategory.title}
+                  onChange={(e) => setNewCategory({...newCategory, title: e.target.value})}
+                  placeholder="Nouvelle rubrique"
+                />
+              </div>
+              <Button onClick={handleAddCategory}>
+                <PlusCircle className="h-4 w-4 mr-2" />
+                Ajouter
+              </Button>
+            </div>
+          </div>
+        </section>
+        
+        {/* Articles Section */}
+        <section>
+          <h2 className="text-xl font-semibold mb-4 text-slate-800">Articles</h2>
+          
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead>Titre</TableHead>
+                <TableHead>Slug</TableHead>
+                <TableHead>Rubrique</TableHead>
+                <TableHead className="w-24 text-right">Actions</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {categories.flatMap((category, categoryIndex) =>
+                category.articles.map((article, articleIndex) => (
+                  <TableRow key={`${categoryIndex}-${articleIndex}`}>
+                    <TableCell className="font-medium">{article.title}</TableCell>
+                    <TableCell>{article.slug}</TableCell>
+                    <TableCell>{category.title}</TableCell>
+                    <TableCell className="text-right">
+                      <Button 
+                        variant="ghost" 
+                        size="sm"
+                        onClick={() => handleDeleteArticle(categoryIndex, articleIndex)}
+                      >
+                        <Trash className="h-4 w-4 text-red-500" />
+                      </Button>
+                    </TableCell>
+                  </TableRow>
+                ))
+              )}
+            </TableBody>
+          </Table>
+          
+          <div className="mt-6 bg-slate-50 p-4 rounded-lg">
+            <h3 className="text-lg font-medium mb-4">Ajouter un article</h3>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+              <div>
+                <FormLabel htmlFor="articleTitle">Titre de l'article</FormLabel>
+                <Input
+                  id="articleTitle"
+                  value={newArticle.title}
+                  onChange={(e) => setNewArticle({...newArticle, title: e.target.value})}
+                  placeholder="Titre de l'article"
+                />
+              </div>
+              <div>
+                <FormLabel htmlFor="articleSlug">Slug (URL)</FormLabel>
+                <Input
+                  id="articleSlug"
+                  value={newArticle.slug}
+                  onChange={(e) => setNewArticle({...newArticle, slug: e.target.value})}
+                  placeholder="nom-article-url"
+                />
+              </div>
+              <div>
+                <FormLabel htmlFor="articleCategory">Rubrique</FormLabel>
+                <select
+                  id="articleCategory"
+                  value={newArticle.categoryIndex}
+                  onChange={(e) => setNewArticle({...newArticle, categoryIndex: parseInt(e.target.value)})}
+                  className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+                >
+                  {categories.map((category, index) => (
+                    <option key={index} value={index}>
+                      {category.title}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            </div>
+            <Button onClick={handleAddArticle}>
+              <PlusCircle className="h-4 w-4 mr-2" />
+              Ajouter l'article
+            </Button>
+          </div>
+        </section>
+      </main>
+
+      <Footer />
+    </div>
+  );
+};
+
+export default AdminGuides;

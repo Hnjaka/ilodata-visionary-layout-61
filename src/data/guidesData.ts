@@ -82,3 +82,34 @@ export const getCategoryData = () => {
     }
   ];
 };
+
+// Map icon names to actual components for the admin interface
+export const getIconByName = (name: string) => {
+  const iconMap: {[key: string]: any} = {
+    'Book': Book,
+    'FileText': FileText,
+    'Shapes': Shapes,
+    'Printer': Printer,
+    'ImageIcon': ImageIcon,
+    'PanelLeft': PanelLeft,
+    'LayoutTemplate': LayoutTemplate,
+    'FileCode': FileCode
+  };
+  
+  return iconMap[name] || Book;
+};
+
+// Function to get the name of an icon component
+export const getIconName = (iconComponent: any) => {
+  const iconEntries = Object.entries({
+    Book, FileText, Shapes, Printer, ImageIcon, PanelLeft, LayoutTemplate, FileCode
+  });
+  
+  for (const [name, component] of iconEntries) {
+    if (component === iconComponent) {
+      return name;
+    }
+  }
+  
+  return 'Book'; // Default
+};
