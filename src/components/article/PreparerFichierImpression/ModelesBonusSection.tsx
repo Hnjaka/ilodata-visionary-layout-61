@@ -5,7 +5,11 @@ import { Link } from 'react-router-dom';
 const ModelesBonusSection = () => {
   return (
     <section id="modeles-bonus">
-      <h2>5. Bonus : Modèles professionnels gratuits</h2>
+      <h2>
+        <Link to="/modeles" className="text-ilodata-600 hover:text-ilodata-800 no-underline">
+          5. Bonus : Modèles professionnels gratuits
+        </Link>
+      </h2>
       <p>
         Vous souhaitez gagner du temps ? ILODATA met à votre disposition une collection de modèles Word professionnels gratuits à télécharger. Ces templates vous offrent :
       </p>

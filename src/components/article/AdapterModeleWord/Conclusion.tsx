@@ -18,7 +18,9 @@ const Conclusion = () => {
         </p>
         <div className="font-medium">
           <p className="text-slate-700 mb-3">
-            <strong>Bonus :</strong> Vous souhaitez gagner du temps ? ILODATA met à votre disposition une collection de modèles Word professionnels gratuits à télécharger. 
+            <Link to="/modeles" className="text-ilodata-600 hover:underline">
+              <strong>Bonus :</strong> Vous souhaitez gagner du temps ?
+            </Link> ILODATA met à votre disposition une collection de modèles Word professionnels gratuits à télécharger. 
             Ces templates vous offrent une base optimisée que vous pouvez personnaliser en appliquant nos astuces ci-dessus.
           </p>
           <p className="mb-3">

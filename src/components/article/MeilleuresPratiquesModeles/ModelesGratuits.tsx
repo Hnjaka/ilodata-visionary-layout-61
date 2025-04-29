@@ -5,7 +5,11 @@ import { Link } from 'react-router-dom';
 const ModelesGratuits = () => {
   return (
     <section id="modeles-gratuits" className="mb-12">
-      <h2 className="text-2xl font-bold mb-4">Bonus : Modèles gratuits pour vous faire gagner du temps</h2>
+      <h2 className="text-2xl font-bold mb-4">
+        <Link to="/modeles" className="text-slate-800 hover:text-ilodata-600 no-underline">
+          Bonus : Modèles gratuits pour vous faire gagner du temps
+        </Link>
+      </h2>
       <p className="text-slate-700 mb-4">
         Vous souhaitez partir sur une base professionnelle ? ILODATA met à votre disposition une collection de modèles Word gratuits, 
         spécialement conçus pour les auteurs et éditeurs. Ces templates optimisés vous offrent :
