@@ -13,7 +13,7 @@ import { z } from 'zod';
 
 // Define the schema for this part of the form
 export const contentSchema = z.object({
-  content: z.string().optional(),
+  content: z.string().min(1, "Le contenu de l'article est requis"),
 });
 
 // Extract the type from the schema
@@ -36,6 +36,7 @@ const ContentField: React.FC<ContentFieldProps> = ({ form }) => {
               placeholder="Contenu de l'article en Markdown"
               className="min-h-[200px]"
               {...field}
+              value={field.value || ""} 
             />
           </FormControl>
           <FormMessage />
