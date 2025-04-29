@@ -43,7 +43,7 @@ const blogPosts: BlogPost[] = [
 const BlogCard = ({ post, delay }: { post: BlogPost; delay: string }) => {
   return (
     <article className={cn(
-      "glass-card h-full overflow-hidden transition-all duration-300 hover:shadow-lg hover:-translate-y-1 animate-fade-up",
+      "glass-card h-full overflow-hidden transition-all duration-300 hover:shadow-lg hover:-translate-y-1 animate-fade-up border-l-4 border-ilodata-600",
       delay
     )}>
       <div className="relative overflow-hidden aspect-[16/9]">
