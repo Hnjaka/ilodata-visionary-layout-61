@@ -1,5 +1,5 @@
 
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useEditor, EditorContent } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
 import Heading from '@tiptap/extension-heading';
@@ -14,8 +14,11 @@ import {
   Heading3, 
   ListOrdered,
   List, 
-  Quote
+  Quote,
+  Code
 } from 'lucide-react';
+import { Textarea } from '@/components/ui/textarea';
+import { Switch } from '@/components/ui/switch';
 
 interface RichTextEditorProps {
   value: string;
@@ -23,6 +26,9 @@ interface RichTextEditorProps {
 }
 
 const RichTextEditor: React.FC<RichTextEditorProps> = ({ value, onChange }) => {
+  const [isCodeView, setIsCodeView] = useState(false);
+  const [codeViewContent, setCodeViewContent] = useState(value);
+
   const editor = useEditor({
     extensions: [
       StarterKit.configure({
@@ -35,7 +41,9 @@ const RichTextEditor: React.FC<RichTextEditorProps> = ({ value, onChange }) => {
     ],
     content: value,
     onUpdate: ({ editor }) => {
-      onChange(editor.getHTML());
+      const html = editor.getHTML();
+      onChange(html);
+      setCodeViewContent(html);
     },
   });
 
@@ -43,8 +51,29 @@ const RichTextEditor: React.FC<RichTextEditorProps> = ({ value, onChange }) => {
   useEffect(() => {
     if (editor && value !== editor.getHTML()) {
       editor.commands.setContent(value);
+      setCodeViewContent(value);
     }
   }, [value, editor]);
+
+  // Handle code view content changes
+  const handleCodeViewChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setCodeViewContent(e.target.value);
+    onChange(e.target.value);
+    // Update editor content if we switch back to rich text
+    if (editor) {
+      editor.commands.setContent(e.target.value);
+    }
+  };
+
+  // Toggle between rich text and code view
+  const toggleCodeView = () => {
+    setIsCodeView(!isCodeView);
+    // Ensure content is synchronized
+    if (editor && isCodeView) {
+      // Switching from code to rich text
+      editor.commands.setContent(codeViewContent);
+    }
+  };
 
   if (!editor) {
     return null;
@@ -86,84 +115,109 @@ const RichTextEditor: React.FC<RichTextEditorProps> = ({ value, onChange }) => {
 
   return (
     <div className="border rounded-md overflow-hidden">
-      <div className="bg-slate-100 p-2 border-b flex flex-wrap gap-1">
-        <Button 
-          type="button"
-          variant={editor.isActive('bold') ? 'secondary' : 'ghost'}
-          size="sm" 
-          onClick={() => toggleFormat('bold')}
-        >
-          <Bold className="h-4 w-4" />
-        </Button>
-        <Button 
-          type="button"
-          variant={editor.isActive('italic') ? 'secondary' : 'ghost'}
-          size="sm" 
-          onClick={() => toggleFormat('italic')}
-        >
-          <Italic className="h-4 w-4" />
-        </Button>
-        <Button 
-          type="button"
-          variant={editor.isActive('underline') ? 'secondary' : 'ghost'}
-          size="sm" 
-          onClick={() => toggleFormat('underline')}
-        >
-          <UnderlineIcon className="h-4 w-4" />
-        </Button>
-        <span className="border-r h-6 mx-1"></span>
-        <Button 
-          type="button"
-          variant={editor.isActive('heading', { level: 1 }) ? 'secondary' : 'ghost'}
-          size="sm" 
-          onClick={() => toggleFormat('h1')}
-        >
-          <Heading1 className="h-4 w-4" />
-        </Button>
-        <Button 
-          type="button"
-          variant={editor.isActive('heading', { level: 2 }) ? 'secondary' : 'ghost'}
-          size="sm" 
-          onClick={() => toggleFormat('h2')}
-        >
-          <Heading2 className="h-4 w-4" />
-        </Button>
-        <Button 
-          type="button"
-          variant={editor.isActive('heading', { level: 3 }) ? 'secondary' : 'ghost'}
-          size="sm" 
-          onClick={() => toggleFormat('h3')}
-        >
-          <Heading3 className="h-4 w-4" />
-        </Button>
-        <span className="border-r h-6 mx-1"></span>
-        <Button 
-          type="button"
-          variant={editor.isActive('bulletList') ? 'secondary' : 'ghost'}
-          size="sm" 
-          onClick={() => toggleFormat('bulletList')}
-        >
-          <List className="h-4 w-4" />
-        </Button>
-        <Button 
-          type="button"
-          variant={editor.isActive('orderedList') ? 'secondary' : 'ghost'}
-          size="sm" 
-          onClick={() => toggleFormat('orderedList')}
-        >
-          <ListOrdered className="h-4 w-4" />
-        </Button>
-        <Button 
-          type="button"
-          variant={editor.isActive('blockquote') ? 'secondary' : 'ghost'}
-          size="sm" 
-          onClick={() => toggleFormat('blockquote')}
-        >
-          <Quote className="h-4 w-4" />
-        </Button>
+      <div className="bg-slate-100 p-2 border-b flex flex-wrap gap-1 items-center justify-between">
+        <div className="flex flex-wrap gap-1">
+          {!isCodeView && (
+            <>
+              <Button 
+                type="button"
+                variant={editor.isActive('bold') ? 'secondary' : 'ghost'}
+                size="sm" 
+                onClick={() => toggleFormat('bold')}
+              >
+                <Bold className="h-4 w-4" />
+              </Button>
+              <Button 
+                type="button"
+                variant={editor.isActive('italic') ? 'secondary' : 'ghost'}
+                size="sm" 
+                onClick={() => toggleFormat('italic')}
+              >
+                <Italic className="h-4 w-4" />
+              </Button>
+              <Button 
+                type="button"
+                variant={editor.isActive('underline') ? 'secondary' : 'ghost'}
+                size="sm" 
+                onClick={() => toggleFormat('underline')}
+              >
+                <UnderlineIcon className="h-4 w-4" />
+              </Button>
+              <span className="border-r h-6 mx-1"></span>
+              <Button 
+                type="button"
+                variant={editor.isActive('heading', { level: 1 }) ? 'secondary' : 'ghost'}
+                size="sm" 
+                onClick={() => toggleFormat('h1')}
+              >
+                <Heading1 className="h-4 w-4" />
+              </Button>
+              <Button 
+                type="button"
+                variant={editor.isActive('heading', { level: 2 }) ? 'secondary' : 'ghost'}
+                size="sm" 
+                onClick={() => toggleFormat('h2')}
+              >
+                <Heading2 className="h-4 w-4" />
+              </Button>
+              <Button 
+                type="button"
+                variant={editor.isActive('heading', { level: 3 }) ? 'secondary' : 'ghost'}
+                size="sm" 
+                onClick={() => toggleFormat('h3')}
+              >
+                <Heading3 className="h-4 w-4" />
+              </Button>
+              <span className="border-r h-6 mx-1"></span>
+              <Button 
+                type="button"
+                variant={editor.isActive('bulletList') ? 'secondary' : 'ghost'}
+                size="sm" 
+                onClick={() => toggleFormat('bulletList')}
+              >
+                <List className="h-4 w-4" />
+              </Button>
+              <Button 
+                type="button"
+                variant={editor.isActive('orderedList') ? 'secondary' : 'ghost'}
+                size="sm" 
+                onClick={() => toggleFormat('orderedList')}
+              >
+                <ListOrdered className="h-4 w-4" />
+              </Button>
+              <Button 
+                type="button"
+                variant={editor.isActive('blockquote') ? 'secondary' : 'ghost'}
+                size="sm" 
+                onClick={() => toggleFormat('blockquote')}
+              >
+                <Quote className="h-4 w-4" />
+              </Button>
+            </>
+          )}
+        </div>
+        <div className="flex items-center gap-2">
+          <span className="text-xs text-slate-600">Mode HTML</span>
+          <Switch 
+            checked={isCodeView}
+            onCheckedChange={toggleCodeView}
+          />
+          <Code className="h-4 w-4 text-slate-600" />
+        </div>
       </div>
-      <div className="p-3 min-h-[200px] prose prose-slate max-w-none">
-        <EditorContent editor={editor} />
+      <div className="min-h-[200px]">
+        {isCodeView ? (
+          <Textarea
+            value={codeViewContent}
+            onChange={handleCodeViewChange}
+            className="min-h-[200px] font-mono text-sm p-3 border-none focus-visible:ring-0 resize-none w-full"
+            placeholder="<p>Contenu de l'article en HTML...</p>"
+          />
+        ) : (
+          <div className="p-3 min-h-[200px] prose prose-slate max-w-none">
+            <EditorContent editor={editor} />
+          </div>
+        )}
       </div>
     </div>
   );
