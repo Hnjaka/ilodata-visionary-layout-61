@@ -5,7 +5,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from '@/components/ui/use-toast';
 import { supabase } from '@/integrations/supabase/client';
 import { CategoryType } from '@/types/guides';
-import { getIconByName } from '@/data/guidesData';
+import { getIconByName, getIconName } from '@/data/guidesData';
 import { categoryFormSchema, CategoryFormValues } from './CategoryFormSchema';
 
 interface UseCategoryProps {
