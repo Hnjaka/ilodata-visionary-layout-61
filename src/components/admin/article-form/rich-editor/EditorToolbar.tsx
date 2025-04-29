@@ -32,7 +32,7 @@ const EditorToolbar: React.FC<EditorToolbarProps> = ({
   isCodeView, 
   showLinkForm,
   setShowLinkForm,
-  linkUrl,
+  linkUrl = '',
   onLinkSubmit,
   onRemoveLink,
   onOpenLinkForm
@@ -157,7 +157,7 @@ const EditorToolbar: React.FC<EditorToolbarProps> = ({
       <LinkEditor
         editor={editor}
         showForm={showLinkForm}
-        setShowForm={setShowLinkForm}
+        setShowForm={setShowForm}
         initialUrl={linkUrl || ''}
         onSubmit={onLinkSubmit}
         onRemove={onRemoveLink}

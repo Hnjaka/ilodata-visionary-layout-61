@@ -54,7 +54,7 @@ export const useRichEditor = ({ value, onChange }: UseRichEditorProps) => {
 
   // Handle code view content changes
   const handleCodeViewChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    const newContent = e.target.value;
+    const newContent = e.target.value || '';
     setCodeViewContent(newContent);
     onChange(newContent);
     // Update editor content if we switch back to rich text
@@ -118,7 +118,7 @@ export const useRichEditor = ({ value, onChange }: UseRichEditorProps) => {
     toggleCodeView,
     showLinkForm,
     setShowLinkForm,
-    linkUrl,
+    linkUrl: linkUrl || '',  // Ensure linkUrl is never undefined
     setLinkUrl,
     openLinkForm,
     handleLinkSubmit,

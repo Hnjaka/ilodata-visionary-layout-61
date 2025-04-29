@@ -36,7 +36,7 @@ const RichTextEditor: React.FC<RichTextEditorProps> = ({ value, onChange }) => {
             isCodeView={isCodeView}
             showLinkForm={showLinkForm}
             setShowLinkForm={setShowLinkForm}
-            linkUrl={linkUrl || ''}
+            linkUrl={linkUrl || ''} 
             setLinkUrl={setLinkUrl}
             onLinkSubmit={handleLinkSubmit}
             onRemoveLink={removeLink}

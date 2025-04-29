@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Link, ExternalLink } from 'lucide-react';
@@ -23,8 +23,16 @@ const LinkEditor: React.FC<LinkEditorProps> = ({
   onSubmit,
   onRemove
 }) => {
-  const [url, setUrl] = useState(initialUrl);
-  const [isExternal, setIsExternal] = useState(initialUrl?.startsWith('http') || false);
+  const [url, setUrl] = useState(initialUrl || '');
+  const [isExternal, setIsExternal] = useState(initialUrl ? initialUrl.startsWith('http') : false);
+  
+  // Update url state when initialUrl changes
+  useEffect(() => {
+    if (initialUrl !== undefined) {
+      setUrl(initialUrl);
+      setIsExternal(initialUrl ? initialUrl.startsWith('http') : false);
+    }
+  }, [initialUrl]);
   
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -74,7 +82,7 @@ const LinkEditor: React.FC<LinkEditorProps> = ({
               </Button>
             </div>
             <Input
-              value={url}
+              value={url || ''}
               onChange={(e) => setUrl(e.target.value)}
               placeholder={isExternal ? "https://example.com" : "/modeles"}
             />
