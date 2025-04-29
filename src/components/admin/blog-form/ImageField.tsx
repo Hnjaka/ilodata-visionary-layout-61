@@ -41,23 +41,30 @@ export const ImageField: React.FC<ImageFieldProps> = ({ form }) => {
         body: { prompt }
       });
       
-      if (error || !data.imageUrl) {
+      if (error) {
         throw new Error(error?.message || "Erreur lors de la génération de l'image");
       }
       
-      // Mettre à jour le champ image avec l'URL générée
-      form.setValue('image', data.imageUrl);
+      if (data.error) {
+        throw new Error(data.error);
+      }
       
-      toast({
-        title: "Succès",
-        description: "Image générée avec succès"
-      });
+      // Mettre à jour le champ image avec l'URL générée
+      if (data.imageUrl) {
+        form.setValue('image', data.imageUrl);
+        toast({
+          title: "Succès",
+          description: "Image générée avec succès"
+        });
+      } else {
+        throw new Error("Aucune URL d'image retournée");
+      }
       
     } catch (error) {
       console.error("Erreur lors de la génération d'image:", error);
       toast({
         title: "Erreur",
-        description: "Impossible de générer l'image. Veuillez réessayer.",
+        description: error.message || "Impossible de générer l'image. Veuillez réessayer.",
         variant: "destructive"
       });
     } finally {

@@ -25,6 +25,15 @@ serve(async (req) => {
       );
     }
 
+    // Vérifier que la clé API est définie
+    if (!openAIApiKey) {
+      console.error('OpenAI API key is not defined in environment variables');
+      return new Response(
+        JSON.stringify({ error: "Clé API OpenAI non configurée. Veuillez configurer la clé API dans les secrets de la fonction Edge." }),
+        { headers: { ...corsHeaders, 'Content-Type': 'application/json' }, status: 500 }
+      );
+    }
+
     // Enrichir le prompt pour de meilleurs résultats
     const enhancedPrompt = `Une image professionnelle et attrayante représentant: ${prompt}. Style moderne, haute qualité, adapté pour un blog professionnel.`;
 
