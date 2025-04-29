@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
@@ -19,6 +20,7 @@ import AddTemplate from "./pages/AddTemplate";
 import EditTemplate from "./pages/EditTemplate";
 import ErreursMiseEnPage from "./pages/articles/ErreursMiseEnPage";
 import PersonnaliserModeleWord from "./pages/articles/PersonnaliserModeleWord";
+import AdapterModeleWord from "./pages/articles/AdapterModeleWord";
 
 const queryClient = new QueryClient();
 
@@ -43,6 +45,7 @@ const App = () => {
               <Route path="/admin/templates/edit/:id" element={<EditTemplate />} />
               <Route path="/guides/erreurs-mise-en-page" element={<ErreursMiseEnPage />} />
               <Route path="/guides/personnaliser-modele-word" element={<PersonnaliserModeleWord />} />
+              <Route path="/guides/adapter-modele-word" element={<AdapterModeleWord />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
           </BrowserRouter>
