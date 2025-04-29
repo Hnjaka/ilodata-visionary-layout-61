@@ -7,7 +7,12 @@ import GuidesContent from '@/components/admin/guides/GuidesContent';
 import { useGuidesData } from '@/hooks/useGuidesData';
 
 const AdminGuides = () => {
-  const { categories, setCategories, loading, refreshData } = useGuidesData();
+  // Utilisation du hook avec vérification des valeurs retournées
+  const result = useGuidesData();
+  const categories = result?.categories || [];
+  const setCategories = result?.setCategories || (() => {});
+  const loading = result?.loading || false;
+  const refreshData = result?.refreshData || (async () => {});
 
   return (
     <div className="min-h-screen flex flex-col">

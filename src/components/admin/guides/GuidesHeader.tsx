@@ -10,6 +10,14 @@ interface GuidesHeaderProps {
 }
 
 const GuidesHeader: React.FC<GuidesHeaderProps> = ({ categories, onRefresh }) => {
+  const handleRefresh = async () => {
+    try {
+      await onRefresh();
+    } catch (error) {
+      console.error("Erreur lors du rafraîchissement:", error);
+    }
+  };
+
   return (
     <div className="flex flex-col mb-8">
       <div className="flex justify-between items-center">
@@ -17,14 +25,14 @@ const GuidesHeader: React.FC<GuidesHeaderProps> = ({ categories, onRefresh }) =>
         <div className="flex space-x-2">
           <Button
             variant="outline"
-            onClick={onRefresh}
+            onClick={handleRefresh}
           >
             <RefreshCw className="h-4 w-4 mr-2" />
             Actualiser
           </Button>
           <Button>
             <Plus className="h-4 w-4 mr-2" />
-            {categories.length > 0 ? "Nouvel Article" : "Nouvelle Rubrique"}
+            {Array.isArray(categories) && categories.length > 0 ? "Nouvel Article" : "Nouvelle Rubrique"}
           </Button>
         </div>
       </div>

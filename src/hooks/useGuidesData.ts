@@ -25,35 +25,46 @@ export const useGuidesData = () => {
         // Fetch articles for each category
         const categoriesWithArticles = await Promise.all(
           (categoriesData || []).map(async (category) => {
-            const { data: articlesData, error: articlesError } = await supabase
-              .from('guide_articles')
-              .select('*')
-              .eq('category_id', category.id)
-              .order('position');
+            try {
+              const { data: articlesData, error: articlesError } = await supabase
+                .from('guide_articles')
+                .select('*')
+                .eq('category_id', category.id)
+                .order('position');
+                
+              if (articlesError) throw articlesError;
               
-            if (articlesError) throw articlesError;
-            
-            // Map the icon string to the actual icon component
-            const iconComponent = getIconByName(category.icon);
-            
-            // Format articles to match ArticleType
-            const formattedArticles: ArticleType[] = (articlesData || []).map(article => ({
-              id: article.id,
-              title: article.title,
-              slug: article.slug,
-              content: article.content || '',
-              layout: (article.layout || 'standard') as 'standard' | 'wide' | 'sidebar',
-              position: article.position,
-              category_id: article.category_id
-            }));
-            
-            return {
-              id: category.id,
-              title: category.title,
-              icon: iconComponent,
-              articles: formattedArticles,
-              position: category.position
-            };
+              // Map the icon string to the actual icon component
+              const iconComponent = getIconByName(category.icon);
+              
+              // Format articles to match ArticleType
+              const formattedArticles: ArticleType[] = (articlesData || []).map(article => ({
+                id: article.id,
+                title: article.title || '',
+                slug: article.slug || '',
+                content: article.content || '',
+                layout: (article.layout || 'standard') as 'standard' | 'wide' | 'sidebar',
+                position: article.position || 0,
+                category_id: article.category_id
+              }));
+              
+              return {
+                id: category.id,
+                title: category.title || '',
+                icon: iconComponent,
+                articles: formattedArticles,
+                position: category.position || 0
+              };
+            } catch (error) {
+              console.error(`Error fetching articles for category ${category.id}:`, error);
+              return {
+                id: category.id,
+                title: category.title || '',
+                icon: getIconByName(category.icon),
+                articles: [],
+                position: category.position || 0
+              };
+            }
           })
         );
         
@@ -65,6 +76,7 @@ export const useGuidesData = () => {
           description: "Erreur lors du chargement des données",
           variant: "destructive"
         });
+        setCategories([]);
       } finally {
         setLoading(false);
       }
@@ -91,35 +103,46 @@ export const useGuidesData = () => {
       // Fetch articles for each category
       const categoriesWithArticles = await Promise.all(
         (categoriesData || []).map(async (category) => {
-          const { data: articlesData, error: articlesError } = await supabase
-            .from('guide_articles')
-            .select('*')
-            .eq('category_id', category.id)
-            .order('position');
+          try {
+            const { data: articlesData, error: articlesError } = await supabase
+              .from('guide_articles')
+              .select('*')
+              .eq('category_id', category.id)
+              .order('position');
+              
+            if (articlesError) throw articlesError;
             
-          if (articlesError) throw articlesError;
-          
-          // Map the icon string to the actual icon component
-          const iconComponent = getIconByName(category.icon);
-          
-          // Format articles to match ArticleType
-          const formattedArticles: ArticleType[] = (articlesData || []).map(article => ({
-            id: article.id,
-            title: article.title,
-            slug: article.slug,
-            content: article.content || '',
-            layout: (article.layout || 'standard') as 'standard' | 'wide' | 'sidebar',
-            position: article.position,
-            category_id: article.category_id
-          }));
-          
-          return {
-            id: category.id,
-            title: category.title,
-            icon: iconComponent,
-            articles: formattedArticles,
-            position: category.position
-          };
+            // Map the icon string to the actual icon component
+            const iconComponent = getIconByName(category.icon);
+            
+            // Format articles to match ArticleType
+            const formattedArticles: ArticleType[] = (articlesData || []).map(article => ({
+              id: article.id,
+              title: article.title || '',
+              slug: article.slug || '',
+              content: article.content || '',
+              layout: (article.layout || 'standard') as 'standard' | 'wide' | 'sidebar',
+              position: article.position || 0,
+              category_id: article.category_id
+            }));
+            
+            return {
+              id: category.id,
+              title: category.title || '',
+              icon: iconComponent,
+              articles: formattedArticles,
+              position: category.position || 0
+            };
+          } catch (error) {
+            console.error(`Error fetching articles for category ${category.id}:`, error);
+            return {
+              id: category.id,
+              title: category.title || '',
+              icon: getIconByName(category.icon),
+              articles: [],
+              position: category.position || 0
+            };
+          }
         })
       );
       
@@ -131,6 +154,7 @@ export const useGuidesData = () => {
         description: "Erreur lors du rafraîchissement des données",
         variant: "destructive"
       });
+      setCategories([]);
     } finally {
       setLoading(false);
     }
