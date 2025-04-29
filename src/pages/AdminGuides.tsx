@@ -69,7 +69,9 @@ const AdminGuides = () => {
       return;
     }
     
+    // Parse the categoryIndex as a number since it might be coming as a string
     const categoryIndex = parseInt(String(newArticle.categoryIndex));
+    
     if (isNaN(categoryIndex) || categoryIndex < 0 || categoryIndex >= categories.length) {
       toast({
         title: "Erreur",
