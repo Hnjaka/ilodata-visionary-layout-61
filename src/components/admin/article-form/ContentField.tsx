@@ -9,7 +9,7 @@ import {
 } from '@/components/ui/form';
 import { z } from 'zod';
 import { UseFormReturn } from 'react-hook-form';
-import RichTextEditor from './RichTextEditor';
+import RichTextEditor from './rich-editor/RichTextEditor';
 
 // Define the schema for this part of the form
 export const contentSchema = z.object({
