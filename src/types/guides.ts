@@ -9,6 +9,8 @@ export interface ArticleType {
   layout?: 'standard' | 'wide' | 'sidebar';
   position?: number;
   category_id?: string;
+  created_at?: string;
+  updated_at?: string;
 }
 
 export interface CategoryType {
@@ -17,4 +19,6 @@ export interface CategoryType {
   icon: LucideIcon | string;
   articles: ArticleType[];
   position?: number;
+  created_at?: string;
+  updated_at?: string;
 }

@@ -9,7 +9,7 @@ import CategoryForm from '@/components/admin/CategoryForm';
 import ArticleList from '@/components/admin/ArticleList';
 import ArticleForm from '@/components/admin/ArticleForm';
 import SearchBar from '@/components/admin/SearchBar';
-import { CategoryType } from '@/types/guides';
+import { CategoryType, ArticleType } from '@/types/guides';
 import { supabase } from '@/integrations/supabase/client';
 import { getIconByName } from '@/data/guidesData';
 import LoadingSpinner from '@/components/LoadingSpinner';
@@ -26,7 +26,7 @@ const AdminGuides = () => {
   const [editCategoryIndex, setEditCategoryIndex] = useState<number | null>(null);
 
   // States for editing articles
-  const [editArticle, setEditArticle] = useState<any | null>(null);
+  const [editArticle, setEditArticle] = useState<ArticleType | null>(null);
   const [editArticleCategoryIndex, setEditArticleCategoryIndex] = useState<number | null>(null);
   const [editArticleIndex, setEditArticleIndex] = useState<number | null>(null);
   
@@ -57,10 +57,23 @@ const AdminGuides = () => {
             // Map the icon string to the actual icon component
             const iconComponent = getIconByName(category.icon);
             
+            // Format articles to match ArticleType
+            const formattedArticles: ArticleType[] = (articlesData || []).map(article => ({
+              id: article.id,
+              title: article.title,
+              slug: article.slug,
+              content: article.content || '',
+              layout: (article.layout || 'standard') as 'standard' | 'wide' | 'sidebar',
+              position: article.position,
+              category_id: article.category_id
+            }));
+            
             return {
-              ...category,
+              id: category.id,
+              title: category.title,
               icon: iconComponent,
-              articles: articlesData || []
+              articles: formattedArticles,
+              position: category.position
             };
           })
         );
@@ -82,7 +95,7 @@ const AdminGuides = () => {
 
     // Set up a subscription for real-time updates
     const categoriesChannel = supabase
-      .channel('categories-changes')
+      .channel('admin-categories-changes')
       .on('postgres_changes', 
         { event: '*', schema: 'public', table: 'guide_categories' }, 
         () => {
@@ -92,7 +105,7 @@ const AdminGuides = () => {
       .subscribe();
 
     const articlesChannel = supabase
-      .channel('articles-changes')
+      .channel('admin-articles-changes')
       .on('postgres_changes', 
         { event: '*', schema: 'public', table: 'guide_articles' }, 
         () => {

@@ -30,7 +30,7 @@ export const useArticleFormSubmit = (props: UseArticleFormProps) => {
         description: "Catégorie invalide",
         variant: "destructive"
       });
-      return;
+      return categoryIndex;
     }
     
     const updatedCategories = [...categories];
@@ -47,7 +47,7 @@ export const useArticleFormSubmit = (props: UseArticleFormProps) => {
             description: "Catégorie invalide",
             variant: "destructive"
           });
-          return;
+          return categoryIndex;
         }
         
         if (!updatedCategories[editArticleCategoryIndex].articles) {
@@ -67,15 +67,8 @@ export const useArticleFormSubmit = (props: UseArticleFormProps) => {
           // Just update in the same category
           if (updatedCategories[categoryIndex].articles && 
               editArticleIndex < updatedCategories[categoryIndex].articles.length) {
-            updatedCategories[categoryIndex].articles[editArticleIndex] = {
-              ...editArticle,
-              title: title,
-              slug: slug,
-              content: content || '',
-              layout: layout
-            };
-
-            // Sync with Supabase
+            
+            // Update in Supabase
             await supabase
               .from('guide_articles')
               .update({
@@ -86,6 +79,15 @@ export const useArticleFormSubmit = (props: UseArticleFormProps) => {
                 category_id: selectedCategory.id
               })
               .eq('id', editArticle.id);
+              
+            // Update in local state  
+            updatedCategories[categoryIndex].articles[editArticleIndex] = {
+              ...editArticle,
+              title: title,
+              slug: slug,
+              content: content || '',
+              layout: layout
+            };
           }
         }
         
@@ -151,17 +153,6 @@ const handleArticleCategoryChange = async (
   // Get article to move
   const articleToMove = updatedCategories[oldCategoryIndex].articles[articleIndex];
   
-  // Remove from old category if it exists
-  if (updatedCategories[oldCategoryIndex].articles.length > articleIndex) {
-    updatedCategories[oldCategoryIndex].articles.splice(articleIndex, 1);
-  }
-  
-  // Add to new category
-  updatedCategories[newCategoryIndex].articles.push({
-    ...articleData,
-    id: articleToMove.id
-  });
-
   // Update in Supabase
   if (articleToMove && articleToMove.id) {
     await supabase
@@ -175,6 +166,17 @@ const handleArticleCategoryChange = async (
       })
       .eq('id', articleToMove.id);
   }
+  
+  // Remove from old category if it exists
+  if (updatedCategories[oldCategoryIndex].articles.length > articleIndex) {
+    updatedCategories[oldCategoryIndex].articles.splice(articleIndex, 1);
+  }
+  
+  // Add to new category
+  updatedCategories[newCategoryIndex].articles.push({
+    ...articleData,
+    id: articleToMove.id
+  });
 };
 
 const handleNewArticleCreation = async (
@@ -224,39 +226,4 @@ const handleNewArticleCreation = async (
     title: "Succès",
     description: "Nouvel article ajouté",
   });
-};
-
-// Function to save all categories data
-const saveCategoriesDataToSupabase = async (categories: any[]) => {
-  // This is a simplified approach
-  // In a real-world scenario, you would handle incremental updates
-  for (const category of categories) {
-    // Update or create category
-    const iconName = typeof category.icon === 'string' ? category.icon : getIconName(category.icon);
-    
-    if (category.id) {
-      // Update existing category
-      await supabase
-        .from('guide_categories')
-        .update({
-          title: category.title,
-          icon: iconName
-        })
-        .eq('id', category.id);
-    } else {
-      // Create new category
-      const { data: newCategory, error } = await supabase
-        .from('guide_categories')
-        .insert({
-          title: category.title,
-          icon: iconName
-        })
-        .select()
-        .single();
-        
-      if (!error && newCategory) {
-        category.id = newCategory.id;
-      }
-    }
-  }
 };

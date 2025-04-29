@@ -81,20 +81,9 @@ const CategoryForm: React.FC<CategoryFormProps> = ({
 
   // Handle adding/editing a category
   const onSubmit = async (values: CategoryFormValues) => {
-    // Get the icon component from the name
-    const IconComponent = getIconByName(values.icon);
-    
     try {
       if (editCategory && editCategoryIndex !== null) {
         // Update existing category
-        const updatedCategories = [...categories];
-        updatedCategories[editCategoryIndex] = {
-          ...editCategory,
-          title: values.title,
-          icon: IconComponent
-        };
-        
-        // Update in Supabase
         const { error } = await supabase
           .from('guide_categories')
           .update({
@@ -104,6 +93,14 @@ const CategoryForm: React.FC<CategoryFormProps> = ({
           .eq('id', editCategory.id);
           
         if (error) throw error;
+        
+        // Update local state
+        const updatedCategories = [...categories];
+        updatedCategories[editCategoryIndex] = {
+          ...editCategory,
+          title: values.title,
+          icon: getIconByName(values.icon)
+        };
         
         setCategories(updatedCategories);
         
@@ -118,8 +115,6 @@ const CategoryForm: React.FC<CategoryFormProps> = ({
         
       } else {
         // Add new category
-        
-        // First create in Supabase
         const { data: newCategory, error } = await supabase
           .from('guide_categories')
           .insert({
@@ -136,8 +131,9 @@ const CategoryForm: React.FC<CategoryFormProps> = ({
         const updatedCategories = [...categories, {
           id: newCategory.id,
           title: values.title,
-          icon: IconComponent,
-          articles: []
+          icon: getIconByName(values.icon),
+          articles: [],
+          position: categories.length
         }];
         
         setCategories(updatedCategories);

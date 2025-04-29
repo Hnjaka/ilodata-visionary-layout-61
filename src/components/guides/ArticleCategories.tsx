@@ -4,7 +4,7 @@ import ArticleCategory from './ArticleCategory';
 import { supabase } from '@/integrations/supabase/client';
 import { getIconByName } from '@/data/guidesData';
 import LoadingSpinner from '@/components/LoadingSpinner';
-import { CategoryType } from '@/types/guides';
+import { CategoryType, ArticleType } from '@/types/guides';
 
 const ArticleCategories = () => {
   const [categories, setCategories] = useState<CategoryType[]>([]);
@@ -35,10 +35,23 @@ const ArticleCategories = () => {
             // Map the icon string to the actual icon component
             const iconComponent = getIconByName(category.icon);
             
+            // Format articles to match ArticleType
+            const formattedArticles: ArticleType[] = (articlesData || []).map(article => ({
+              id: article.id,
+              title: article.title,
+              slug: article.slug,
+              content: article.content || '',
+              layout: (article.layout || 'standard') as 'standard' | 'wide' | 'sidebar',
+              position: article.position,
+              category_id: article.category_id
+            }));
+            
             return {
-              ...category,
+              id: category.id,
+              title: category.title,
               icon: iconComponent,
-              articles: articlesData || []
+              articles: formattedArticles,
+              position: category.position
             };
           })
         );
@@ -52,6 +65,33 @@ const ArticleCategories = () => {
     };
     
     fetchCategoriesAndArticles();
+
+    // Set up a subscription for real-time updates
+    const categoriesChannel = supabase
+      .channel('public:guide_categories')
+      .on('postgres_changes', 
+        { event: '*', schema: 'public', table: 'guide_categories' }, 
+        () => {
+          fetchCategoriesAndArticles();
+        }
+      )
+      .subscribe();
+
+    const articlesChannel = supabase
+      .channel('public:guide_articles')
+      .on('postgres_changes', 
+        { event: '*', schema: 'public', table: 'guide_articles' }, 
+        () => {
+          fetchCategoriesAndArticles();
+        }
+      )
+      .subscribe();
+
+    // Cleanup subscriptions
+    return () => {
+      supabase.removeChannel(categoriesChannel);
+      supabase.removeChannel(articlesChannel);
+    };
   }, []);
   
   if (loading) {
@@ -68,7 +108,7 @@ const ArticleCategories = () => {
         <ArticleCategory 
           key={category.id || index} 
           title={category.title} 
-          icon={category.icon} 
+          icon={typeof category.icon === 'string' ? getIconByName(category.icon) : category.icon} 
           articles={category.articles} 
         />
       ))}
