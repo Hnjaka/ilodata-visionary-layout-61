@@ -20,7 +20,7 @@ interface BlogPost {
 const Blog = () => {
   const [posts, setPosts] = useState<BlogPost[]>([]);
   const [loading, setLoading] = useState(true);
-  const { ref, inView } = useIntersectionObserver({ threshold: 0.1 });
+  const { observerRef, isIntersecting } = useIntersectionObserver({ threshold: 0.1 });
 
   useEffect(() => {
     document.title = "Blog | ilodata.com";
@@ -99,8 +99,8 @@ const Blog = () => {
 
         {/* Blog Posts Grid */}
         <section 
-          ref={ref} 
-          className={`py-16 bg-white ${inView ? 'fade-in-section is-visible' : 'fade-in-section'}`}
+          ref={observerRef} 
+          className={`py-16 bg-white ${isIntersecting ? 'fade-in-section is-visible' : 'fade-in-section'}`}
         >
           <div className="container mx-auto px-4 md:px-6">
             {loading ? (

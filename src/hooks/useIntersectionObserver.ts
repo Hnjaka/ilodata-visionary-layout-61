@@ -1,49 +1,37 @@
 
-import { useEffect, useRef, RefObject } from 'react';
+import { useState, useRef, useEffect } from 'react';
 
 interface UseIntersectionObserverProps {
   threshold?: number;
   rootMargin?: string;
-  onIntersect?: (entry: IntersectionObserverEntry) => void;
 }
 
-/**
- * Custom hook for handling intersection observer functionality
- * @param options Configuration options for the intersection observer
- * @returns A ref to attach to the target element
- */
-export function useIntersectionObserver<T extends HTMLElement = HTMLDivElement>({
-  threshold = 0.1,
-  rootMargin = '0px',
-  onIntersect = (entry) => {
-    if (entry.isIntersecting && entry.target.classList.contains('fade-in-section')) {
-      entry.target.classList.add('is-visible');
-    }
-  },
-}: UseIntersectionObserverProps = {}): RefObject<T> {
-  const ref = useRef<T>(null);
+export const useIntersectionObserver = ({ 
+  threshold = 0.1, 
+  rootMargin = '0px' 
+}: UseIntersectionObserverProps = {}) => {
+  const [isIntersecting, setIsIntersecting] = useState(false);
+  const observerRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach(entry => {
-          onIntersect(entry);
-        });
+      ([entry]) => {
+        setIsIntersecting(entry.isIntersecting);
       },
       { threshold, rootMargin }
     );
 
-    const currentRef = ref.current;
-    if (currentRef) {
-      observer.observe(currentRef);
+    const currentElement = observerRef.current;
+    if (currentElement) {
+      observer.observe(currentElement);
     }
 
     return () => {
-      if (currentRef) {
-        observer.unobserve(currentRef);
+      if (currentElement) {
+        observer.unobserve(currentElement);
       }
     };
-  }, [threshold, rootMargin, onIntersect]);
+  }, [rootMargin, threshold]);
 
-  return ref;
-}
+  return { observerRef, isIntersecting };
+};

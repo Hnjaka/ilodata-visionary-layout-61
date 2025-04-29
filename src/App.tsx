@@ -19,6 +19,7 @@ import AdminBlog from "./pages/AdminBlog";
 import AddTemplate from "./pages/AddTemplate";
 import EditTemplate from "./pages/EditTemplate";
 import ArticleDisplay from "./pages/articles/ArticleDisplay";
+import Blog from "./pages/Blog";
 
 const queryClient = new QueryClient();
 
@@ -36,6 +37,7 @@ const App = () => {
               <Route path="/guides" element={<GuidesConseils />} />
               <Route path="/guides/:slug" element={<ArticleDisplay />} />
               <Route path="/about" element={<About />} />
+              <Route path="/blog" element={<Blog />} />
               <Route path="/templates" element={<Templates />} />
               <Route path="/admin/templates" element={<AdminTemplates />} />
               <Route path="/admin/guides" element={<AdminGuides />} />

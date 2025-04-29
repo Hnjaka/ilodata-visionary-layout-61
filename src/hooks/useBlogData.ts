@@ -7,7 +7,7 @@ import { getIconByName } from '@/data/guidesData';
 export type BlogCategory = {
   id: string;
   title: string;
-  icon: React.ComponentType<any>;
+  icon: string; // Changed from React.ComponentType<any> to string to match DB schema
   position: number;
   articles: BlogArticle[];
 };
@@ -54,9 +54,6 @@ export const useBlogData = () => {
                 
               if (articlesError) throw articlesError;
               
-              // Map the icon string to the actual icon component
-              const iconComponent = getIconByName(category.icon);
-              
               // Format articles to match BlogArticle type
               const formattedArticles: BlogArticle[] = (articlesData || []).map(article => ({
                 id: article.id,
@@ -74,7 +71,7 @@ export const useBlogData = () => {
               return {
                 id: category.id,
                 title: category.title,
-                icon: iconComponent,
+                icon: category.icon, // Store as string
                 position: category.position,
                 articles: formattedArticles,
               };
@@ -83,7 +80,7 @@ export const useBlogData = () => {
               return {
                 id: category.id,
                 title: category.title,
-                icon: getIconByName(category.icon),
+                icon: category.icon, // Store as string
                 position: category.position,
                 articles: [],
               };
@@ -132,9 +129,6 @@ export const useBlogData = () => {
               
             if (articlesError) throw articlesError;
             
-            // Map the icon string to the actual icon component
-            const iconComponent = getIconByName(category.icon);
-            
             // Format articles to match BlogArticle type
             const formattedArticles: BlogArticle[] = (articlesData || []).map(article => ({
               id: article.id,
@@ -152,7 +146,7 @@ export const useBlogData = () => {
             return {
               id: category.id,
               title: category.title,
-              icon: iconComponent,
+              icon: category.icon, // Store as string
               position: category.position,
               articles: formattedArticles,
             };
@@ -161,7 +155,7 @@ export const useBlogData = () => {
             return {
               id: category.id,
               title: category.title,
-              icon: getIconByName(category.icon),
+              icon: category.icon, // Store as string
               position: category.position,
               articles: [],
             };

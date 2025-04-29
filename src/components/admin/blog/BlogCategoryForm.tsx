@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
@@ -9,7 +8,7 @@ import { Button } from '@/components/ui/button';
 import { toast } from '@/components/ui/use-toast';
 import { BlogCategory } from '@/hooks/useBlogData';
 import { supabase } from '@/integrations/supabase/client';
-import IconSelector from '@/components/admin/category-form/IconSelector';
+import { IconSelector } from '@/components/admin/category-form/IconSelector';
 
 interface BlogCategoryFormProps {
   categories: BlogCategory[];

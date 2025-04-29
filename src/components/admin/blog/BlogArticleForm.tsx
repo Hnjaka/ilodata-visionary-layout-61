@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
@@ -415,8 +414,6 @@ const BlogArticleForm: React.FC<BlogArticleFormProps> = ({
                   <RichTextEditor
                     value={field.value || ''}
                     onChange={field.onChange}
-                    placeholder="Contenu de l'article..."
-                    className="min-h-[300px]"
                   />
                 </FormControl>
                 <FormMessage />
