@@ -50,9 +50,10 @@ const ArticleForm: React.FC<ArticleFormProps> = ({
   // Update form values when editing an article
   useEffect(() => {
     if (editArticle && editArticleCategoryIndex !== null) {
+      // Make sure to provide default values for potentially undefined fields
       form.reset({
-        title: editArticle.title,
-        slug: editArticle.slug,
+        title: editArticle.title || "",
+        slug: editArticle.slug || "",
         categoryIndex: editArticleCategoryIndex,
         content: editArticle.content || "",
         layout: editArticle.layout || "standard"
