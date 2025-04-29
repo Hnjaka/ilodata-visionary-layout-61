@@ -3,11 +3,12 @@ import React from 'react';
 import { useEditor, EditorContent } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
 import Heading from '@tiptap/extension-heading';
+import Underline from '@tiptap/extension-underline';
 import { Button } from '@/components/ui/button';
 import { 
   Bold, 
   Italic, 
-  Underline,
+  Underline as UnderlineIcon,
   Heading1,
   Heading2, 
   Heading3, 
@@ -30,6 +31,7 @@ const RichTextEditor: React.FC<RichTextEditorProps> = ({ value, onChange }) => {
       Heading.configure({
         levels: [1, 2, 3],
       }),
+      Underline, // Add the Underline extension
     ],
     content: value,
     onUpdate: ({ editor }) => {
@@ -100,7 +102,7 @@ const RichTextEditor: React.FC<RichTextEditorProps> = ({ value, onChange }) => {
           size="sm" 
           onClick={() => toggleFormat('underline')}
         >
-          <Underline className="h-4 w-4" />
+          <UnderlineIcon className="h-4 w-4" />
         </Button>
         <span className="border-r h-6 mx-1"></span>
         <Button 
