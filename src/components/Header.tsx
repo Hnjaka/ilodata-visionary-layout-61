@@ -58,7 +58,7 @@ const Header = () => {
             <Link to="/contact" className="text-slate-800 font-medium hover:text-ilodata-600 transition-colors">
               Contact
             </Link>
-            <Link to="#blog" className="text-slate-800 font-medium hover:text-ilodata-600 transition-colors">
+            <Link to="/blog" className="text-slate-800 font-medium hover:text-ilodata-600 transition-colors">
               Blog
             </Link>
           </nav>
@@ -125,7 +125,7 @@ const Header = () => {
                 Contact
               </Link>
               <Link 
-                to="#blog" 
+                to="/blog" 
                 className="text-slate-800 font-medium hover:text-ilodata-600 transition-colors py-2"
                 onClick={() => setIsMobileMenuOpen(false)}
               >
