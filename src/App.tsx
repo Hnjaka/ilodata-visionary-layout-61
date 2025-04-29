@@ -16,7 +16,7 @@ import FondamentauxMiseEnPage from "./pages/articles/FondamentauxMiseEnPage";
 import ChoisirTaillePolice from "./pages/articles/ChoisirTaillePolice";
 import Templates from "./pages/Templates";
 import AdminTemplates from "./pages/AdminTemplates";
-import AdminGuides from "./pages/AdminGuides"; // Import the new admin page
+import AdminGuides from "./pages/AdminGuides";
 import AddTemplate from "./pages/AddTemplate";
 import EditTemplate from "./pages/EditTemplate";
 import ErreursMiseEnPage from "./pages/articles/ErreursMiseEnPage";
@@ -24,6 +24,7 @@ import PersonnaliserModeleWord from "./pages/articles/PersonnaliserModeleWord";
 import AdapterModeleWord from "./pages/articles/AdapterModeleWord";
 import MeilleuresPratiquesModeles from "./pages/articles/MeilleuresPratiquesModeles";
 import PreparerFichierImpression from "./pages/articles/PreparerFichierImpression";
+import ArticleDisplay from "./pages/articles/ArticleDisplay";
 
 const queryClient = new QueryClient();
 
@@ -46,10 +47,11 @@ const App = () => {
               <Route path="/guides/adapter-modele-word" element={<AdapterModeleWord />} />
               <Route path="/guides/meilleures-pratiques-modeles" element={<MeilleuresPratiquesModeles />} />
               <Route path="/guides/preparer-fichier-impression" element={<PreparerFichierImpression />} />
+              <Route path="/guides/:slug" element={<ArticleDisplay />} /> {/* Nouvelle route dynamique pour les articles */}
               <Route path="/about" element={<About />} />
               <Route path="/templates" element={<Templates />} />
               <Route path="/admin/templates" element={<AdminTemplates />} />
-              <Route path="/admin/guides" element={<AdminGuides />} /> {/* New route for admin guides */}
+              <Route path="/admin/guides" element={<AdminGuides />} />
               <Route path="/admin/templates/new" element={<AddTemplate />} />
               <Route path="/admin/templates/edit/:id" element={<EditTemplate />} />
               <Route path="*" element={<NotFound />} />
