@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useEditor, EditorContent } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
 import Heading from '@tiptap/extension-heading';
@@ -38,6 +38,13 @@ const RichTextEditor: React.FC<RichTextEditorProps> = ({ value, onChange }) => {
       onChange(editor.getHTML());
     },
   });
+
+  // Update editor content when value prop changes (important for editing existing articles)
+  useEffect(() => {
+    if (editor && value !== editor.getHTML()) {
+      editor.commands.setContent(value);
+    }
+  }, [value, editor]);
 
   if (!editor) {
     return null;
