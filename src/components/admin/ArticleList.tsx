@@ -12,6 +12,7 @@ import {
 } from '@/components/ui/table';
 import { toast } from '@/components/ui/use-toast';
 import { CategoryType, ArticleType } from '@/types/guides';
+import { supabase } from '@/integrations/supabase/client';
 
 interface ArticleListProps {
   categories: CategoryType[];
@@ -27,7 +28,7 @@ const ArticleList: React.FC<ArticleListProps> = ({
   onEditArticle
 }) => {
   // Handle deleting an article
-  const handleDeleteArticle = (categoryIndex: number, articleIndex: number) => {
+  const handleDeleteArticle = async (categoryIndex: number, articleIndex: number) => {
     if (!categories[categoryIndex] || !categories[categoryIndex].articles) {
       toast({
         title: "Erreur",
@@ -37,15 +38,44 @@ const ArticleList: React.FC<ArticleListProps> = ({
       return;
     }
 
+    const article = categories[categoryIndex].articles[articleIndex];
+    
+    if (!article?.id) {
+      toast({
+        title: "Erreur",
+        description: "Identifiant de l'article manquant",
+        variant: "destructive"
+      });
+      return;
+    }
+
     if (window.confirm('Êtes-vous sûr de vouloir supprimer cet article ?')) {
-      const updatedCategories = [...categories];
-      if (updatedCategories[categoryIndex]?.articles) {
-        updatedCategories[categoryIndex].articles.splice(articleIndex, 1);
-        setCategories(updatedCategories);
+      try {
+        // Delete from Supabase first
+        const { error } = await supabase
+          .from('guide_articles')
+          .delete()
+          .eq('id', article.id);
         
+        if (error) throw error;
+        
+        // If successful, update the local state
+        const updatedCategories = [...categories];
+        if (updatedCategories[categoryIndex]?.articles) {
+          updatedCategories[categoryIndex].articles.splice(articleIndex, 1);
+          setCategories(updatedCategories);
+          
+          toast({
+            title: "Supprimé",
+            description: "L'article a été supprimé",
+          });
+        }
+      } catch (error) {
+        console.error('Error deleting article:', error);
         toast({
-          title: "Supprimé",
-          description: "L'article a été supprimé",
+          title: "Erreur",
+          description: "Erreur lors de la suppression de l'article",
+          variant: "destructive"
         });
       }
     }
