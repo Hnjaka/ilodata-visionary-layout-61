@@ -18,7 +18,8 @@ const PreparerFichierImpression = () => {
     { id: 'resolution', title: 'La résolution' },
     { id: 'format-fichier', title: 'Format de fichier et vérifications' },
     { id: 'modeles-bonus', title: 'Modèles professionnels gratuits' },
-    { id: 'services', title: "Besoin d'une expertise professionnelle" }
+    { id: 'services', title: "Besoin d'une expertise professionnelle" },
+    { id: 'conclusion', title: 'Conclusion' }
   ];
 
   const breadcrumbs = [
