@@ -16,9 +16,10 @@ import { CategoryType } from '@/types/guides';
 interface ArticleListProps {
   categories: CategoryType[];
   setCategories: React.Dispatch<React.SetStateAction<CategoryType[]>>;
+  searchTerm: string;
 }
 
-const ArticleList: React.FC<ArticleListProps> = ({ categories, setCategories }) => {
+const ArticleList: React.FC<ArticleListProps> = ({ categories, setCategories, searchTerm }) => {
   // Handle deleting an article
   const handleDeleteArticle = (categoryIndex: number, articleIndex: number) => {
     if (window.confirm('Êtes-vous sûr de vouloir supprimer cet article ?')) {
@@ -33,6 +34,22 @@ const ArticleList: React.FC<ArticleListProps> = ({ categories, setCategories }) 
     }
   };
 
+  // Filter articles based on search term
+  const filteredArticles = categories.flatMap((category, categoryIndex) =>
+    category.articles
+      .filter(article => 
+        article.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        article.slug.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        category.title.toLowerCase().includes(searchTerm.toLowerCase())
+      )
+      .map((article, articleIndex) => ({
+        article,
+        categoryIndex,
+        articleIndex,
+        categoryTitle: category.title
+      }))
+  );
+
   return (
     <Table>
       <TableHeader>
@@ -44,12 +61,12 @@ const ArticleList: React.FC<ArticleListProps> = ({ categories, setCategories }) 
         </TableRow>
       </TableHeader>
       <TableBody>
-        {categories.flatMap((category, categoryIndex) =>
-          category.articles.map((article, articleIndex) => (
+        {filteredArticles.length > 0 ? (
+          filteredArticles.map(({ article, categoryIndex, articleIndex, categoryTitle }) => (
             <TableRow key={`${categoryIndex}-${articleIndex}`}>
               <TableCell className="font-medium">{article.title}</TableCell>
               <TableCell>{article.slug}</TableCell>
-              <TableCell>{category.title}</TableCell>
+              <TableCell>{categoryTitle}</TableCell>
               <TableCell className="text-right">
                 <Button 
                   variant="ghost" 
@@ -61,6 +78,12 @@ const ArticleList: React.FC<ArticleListProps> = ({ categories, setCategories }) 
               </TableCell>
             </TableRow>
           ))
+        ) : (
+          <TableRow>
+            <TableCell colSpan={4} className="text-center py-6 text-slate-500">
+              {searchTerm ? "Aucun article trouvé pour cette recherche" : "Aucun article disponible"}
+            </TableCell>
+          </TableRow>
         )}
       </TableBody>
     </Table>

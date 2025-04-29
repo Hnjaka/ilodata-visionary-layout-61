@@ -16,9 +16,10 @@ import { CategoryType } from '@/types/guides';
 interface CategoryListProps {
   categories: CategoryType[];
   setCategories: React.Dispatch<React.SetStateAction<CategoryType[]>>;
+  searchTerm: string;
 }
 
-const CategoryList: React.FC<CategoryListProps> = ({ categories, setCategories }) => {
+const CategoryList: React.FC<CategoryListProps> = ({ categories, setCategories, searchTerm }) => {
   // Handle deleting a category
   const handleDeleteCategory = (index: number) => {
     if (window.confirm('Êtes-vous sûr de vouloir supprimer cette rubrique et tous ses articles ?')) {
@@ -33,6 +34,11 @@ const CategoryList: React.FC<CategoryListProps> = ({ categories, setCategories }
     }
   };
 
+  // Filter categories based on search term
+  const filteredCategories = categories.filter(category =>
+    category.title.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
   return (
     <Table>
       <TableHeader>
@@ -43,21 +49,29 @@ const CategoryList: React.FC<CategoryListProps> = ({ categories, setCategories }
         </TableRow>
       </TableHeader>
       <TableBody>
-        {categories.map((category, index) => (
-          <TableRow key={index}>
-            <TableCell className="font-medium">{category.title}</TableCell>
-            <TableCell>{category.articles.length}</TableCell>
-            <TableCell className="text-right">
-              <Button 
-                variant="ghost" 
-                size="sm"
-                onClick={() => handleDeleteCategory(index)}
-              >
-                <Trash className="h-4 w-4 text-red-500" />
-              </Button>
+        {filteredCategories.length > 0 ? (
+          filteredCategories.map((category, index) => (
+            <TableRow key={index}>
+              <TableCell className="font-medium">{category.title}</TableCell>
+              <TableCell>{category.articles.length}</TableCell>
+              <TableCell className="text-right">
+                <Button 
+                  variant="ghost" 
+                  size="sm"
+                  onClick={() => handleDeleteCategory(index)}
+                >
+                  <Trash className="h-4 w-4 text-red-500" />
+                </Button>
+              </TableCell>
+            </TableRow>
+          ))
+        ) : (
+          <TableRow>
+            <TableCell colSpan={3} className="text-center py-6 text-slate-500">
+              {searchTerm ? "Aucune rubrique trouvée pour cette recherche" : "Aucune rubrique disponible"}
             </TableCell>
           </TableRow>
-        ))}
+        )}
       </TableBody>
     </Table>
   );
