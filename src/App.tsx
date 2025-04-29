@@ -40,16 +40,16 @@ const App = () => {
               <Route path="/guides" element={<GuidesConseils />} />
               <Route path="/guides/fondamentaux-mise-en-page" element={<FondamentauxMiseEnPage />} />
               <Route path="/guides/choisir-taille-police" element={<ChoisirTaillePolice />} />
-              <Route path="/about" element={<About />} />
-              <Route path="/templates" element={<Templates />} />
-              <Route path="/admin/templates" element={<AdminTemplates />} />
-              <Route path="/admin/templates/new" element={<AddTemplate />} />
-              <Route path="/admin/templates/edit/:id" element={<EditTemplate />} />
               <Route path="/guides/erreurs-mise-en-page" element={<ErreursMiseEnPage />} />
               <Route path="/guides/personnaliser-modele-word" element={<PersonnaliserModeleWord />} />
               <Route path="/guides/adapter-modele-word" element={<AdapterModeleWord />} />
               <Route path="/guides/meilleures-pratiques-modeles" element={<MeilleuresPratiquesModeles />} />
               <Route path="/guides/preparer-fichier-impression" element={<PreparerFichierImpression />} />
+              <Route path="/about" element={<About />} />
+              <Route path="/templates" element={<Templates />} />
+              <Route path="/admin/templates" element={<AdminTemplates />} />
+              <Route path="/admin/templates/new" element={<AddTemplate />} />
+              <Route path="/admin/templates/edit/:id" element={<EditTemplate />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
           </BrowserRouter>
