@@ -1,6 +1,7 @@
 
 import { CategoryType, ArticleType } from '@/types/guides';
 import { ArticleFormValues } from '@/components/admin/article-form/formSchema';
+import { UseFormReturn } from 'react-hook-form';
 
 export interface UseArticleFormProps {
   categories: CategoryType[];
@@ -14,10 +15,11 @@ export interface UseArticleFormProps {
 }
 
 export interface ArticleFormState {
-  form: ReturnType<typeof useArticleFormBase>;
+  form: UseFormReturn<ArticleFormValues>;
   onSubmit: (values: ArticleFormValues) => void;
   handleCancel: () => void;
   isEditing: boolean;
   categories: CategoryType[];
   editArticle: ArticleType | null;
 }
+
