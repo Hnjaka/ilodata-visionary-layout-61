@@ -46,6 +46,12 @@ const Header = () => {
             <Link to="/services" className="text-slate-800 font-medium hover:text-ilodata-600 transition-colors">
               Services
             </Link>
+            <Link 
+              to="/templates" 
+              className="text-slate-800 font-medium hover:text-ilodata-600 transition-colors"
+            >
+              Modèles
+            </Link>
             <Link to="/about" className="text-slate-800 font-medium hover:text-ilodata-600 transition-colors">
               À propos
             </Link>
@@ -54,12 +60,6 @@ const Header = () => {
             </Link>
             <Link to="#blog" className="text-slate-800 font-medium hover:text-ilodata-600 transition-colors">
               Blog
-            </Link>
-            <Link 
-              to="/templates" 
-              className="text-slate-800 font-medium hover:text-ilodata-600 transition-colors"
-            >
-              Modèles
             </Link>
           </nav>
 
@@ -104,6 +104,13 @@ const Header = () => {
                 Services
               </Link>
               <Link 
+                to="/templates" 
+                className="text-slate-800 font-medium hover:text-ilodata-600 transition-colors py-2"
+                onClick={() => setIsMobileMenuOpen(false)}
+              >
+                Modèles
+              </Link>
+              <Link 
                 to="/about" 
                 className="text-slate-800 font-medium hover:text-ilodata-600 transition-colors py-2"
                 onClick={() => setIsMobileMenuOpen(false)}
@@ -123,13 +130,6 @@ const Header = () => {
                 onClick={() => setIsMobileMenuOpen(false)}
               >
                 Blog
-              </Link>
-              <Link 
-                to="/templates" 
-                className="text-slate-800 font-medium hover:text-ilodata-600 transition-colors py-2"
-                onClick={() => setIsMobileMenuOpen(false)}
-              >
-                Modèles
               </Link>
               <Link 
                 to="/contact" 
