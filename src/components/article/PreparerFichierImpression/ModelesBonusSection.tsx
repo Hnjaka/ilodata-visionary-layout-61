@@ -18,7 +18,7 @@ const ModelesBonusSection = () => {
         <span className="inline-flex items-center rounded-md bg-blue-50 px-2 py-1 text-sm font-medium text-blue-700 ring-1 ring-inset ring-blue-700/10 mr-2">
           📥 
         </span>
-        <Link to="/modeles" className="text-ilodata-600 hover:text-ilodata-800 font-medium">
+        <Link to="/templates" className="text-ilodata-600 hover:text-ilodata-800 font-medium">
           Téléchargez-les dès maintenant
         </Link> et personnalisez-les en appliquant nos astuces ci-dessus !
       </p>
