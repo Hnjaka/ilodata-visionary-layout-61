@@ -20,7 +20,7 @@ const ModelesGratuits = () => {
       <div className="flex items-center p-4 bg-green-50 rounded-lg mb-6 border-l-4 border-green-500">
         <span className="text-green-500 font-bold mr-2">📥</span>
         <p className="text-slate-700">
-          <Link to="/templates" className="text-ilodata-600 hover:underline">Téléchargez-les dès maintenant</Link> et personnalisez-les en appliquant nos astuces !
+          <Link to="/modeles" className="text-ilodata-600 hover:underline">Téléchargez-les dès maintenant</Link> et personnalisez-les en appliquant nos astuces !
         </p>
       </div>
     </section>

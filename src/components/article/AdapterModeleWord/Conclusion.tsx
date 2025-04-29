@@ -22,7 +22,7 @@ const Conclusion = () => {
             Ces templates vous offrent une base optimisée que vous pouvez personnaliser en appliquant nos astuces ci-dessus.
           </p>
           <p className="mb-3">
-            <Link to="/templates" className="text-ilodata-600 hover:underline">
+            <Link to="/modeles" className="text-ilodata-600 hover:underline">
               Découvrir nos modèles gratuits
             </Link>
           </p>
