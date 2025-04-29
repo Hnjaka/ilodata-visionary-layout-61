@@ -9,7 +9,7 @@ const Step5 = () => {
         <div>
           <h3 className="text-xl font-semibold mb-3">Comment enregistrer un modèle personnalisé</h3>
           <ol className="list-decimal pl-6 text-slate-700 space-y-2">
-            <li>Une fois les modifications effectuées, allez dans Fichier > Enregistrer sous.</li>
+            <li>Une fois les modifications effectuées, allez dans Fichier {'>'}  Enregistrer sous.</li>
             <li>Choisissez le format Modèle Word (*.dotx).</li>
             <li>Cela vous permettra de réutiliser votre modèle à chaque création de nouveau document.</li>
           </ol>

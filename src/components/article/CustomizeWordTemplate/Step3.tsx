@@ -9,7 +9,7 @@ const Step3 = () => {
         <div>
           <h3 className="text-xl font-semibold mb-3">Modifier les marges selon vos besoins</h3>
           <p className="text-slate-700">
-            Accédez à Mise en page > Marges et choisissez parmi les options proposées ou définissez des marges personnalisées selon le format souhaité (ex : pour des rapports ou thèses).
+            Accédez à Mise en page {'>'}  Marges et choisissez parmi les options proposées ou définissez des marges personnalisées selon le format souhaité (ex : pour des rapports ou thèses).
           </p>
         </div>
         <div>
