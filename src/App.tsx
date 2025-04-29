@@ -22,6 +22,7 @@ import ErreursMiseEnPage from "./pages/articles/ErreursMiseEnPage";
 import PersonnaliserModeleWord from "./pages/articles/PersonnaliserModeleWord";
 import AdapterModeleWord from "./pages/articles/AdapterModeleWord";
 import MeilleuresPratiquesModeles from "./pages/articles/MeilleuresPratiquesModeles";
+import PreparerFichierImpression from "./pages/articles/PreparerFichierImpression";
 
 const queryClient = new QueryClient();
 
@@ -48,6 +49,7 @@ const App = () => {
               <Route path="/guides/personnaliser-modele-word" element={<PersonnaliserModeleWord />} />
               <Route path="/guides/adapter-modele-word" element={<AdapterModeleWord />} />
               <Route path="/guides/meilleures-pratiques-modeles" element={<MeilleuresPratiquesModeles />} />
+              <Route path="/guides/preparer-fichier-impression" element={<PreparerFichierImpression />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
           </BrowserRouter>
