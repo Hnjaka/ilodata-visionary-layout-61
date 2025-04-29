@@ -25,9 +25,18 @@ const availableIcons = [
 
 interface IconSelectorProps {
   form: UseFormReturn<CategoryFormValues>;
+  selectedIcon?: string; // Add as optional prop for direct usage
+  onSelect?: (iconName: string) => void; // Add as optional prop for direct usage
 }
 
-export const IconSelector: React.FC<IconSelectorProps> = ({ form }) => {
+export const IconSelector: React.FC<IconSelectorProps> = ({ form, selectedIcon, onSelect }) => {
+  // Handle direct usage or form usage
+  const handleChange = (value: string) => {
+    if (onSelect) {
+      onSelect(value);
+    }
+  };
+
   return (
     <FormField
       control={form.control}
@@ -36,9 +45,12 @@ export const IconSelector: React.FC<IconSelectorProps> = ({ form }) => {
         <FormItem className="w-1/3">
           <FormLabel>Icône</FormLabel>
           <Select 
-            onValueChange={field.onChange}
-            defaultValue={field.value}
-            value={field.value}
+            onValueChange={(value) => {
+              field.onChange(value);
+              handleChange(value);
+            }}
+            defaultValue={selectedIcon || field.value}
+            value={selectedIcon || field.value}
           >
             <FormControl>
               <SelectTrigger>

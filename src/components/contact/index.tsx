@@ -10,13 +10,13 @@ const Contact = () => {
   const recipientEmail = "contact@ilodata.com";
   
   // Use our custom intersection observer hook
-  const sectionRef = useIntersectionObserver();
+  const { observerRef, isIntersecting } = useIntersectionObserver();
 
   return (
     <section id="contact" className="section-padding bg-gradient-to-b from-blue-50 to-white">
       <div 
-        ref={sectionRef} 
-        className="container mx-auto px-4 md:px-6 fade-in-section"
+        ref={observerRef}
+        className={`container mx-auto px-4 md:px-6 fade-in-section ${isIntersecting ? 'is-visible' : ''}`}
       >
         <div className="text-center mb-16">
           <div className="flex justify-center mb-4">

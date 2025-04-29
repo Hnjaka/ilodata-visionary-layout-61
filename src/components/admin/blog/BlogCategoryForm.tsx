@@ -39,7 +39,7 @@ const BlogCategoryForm: React.FC<BlogCategoryFormProps> = ({
     resolver: zodResolver(formSchema),
     defaultValues: {
       title: editCategory?.title || "",
-      icon: editCategory?.icon ? (typeof editCategory.icon === 'string' ? editCategory.icon : 'book') : 'book',
+      icon: editCategory?.icon ? (typeof editCategory.icon === 'string' ? editCategory.icon : 'Book') : 'Book',
     },
   });
 
@@ -47,7 +47,7 @@ const BlogCategoryForm: React.FC<BlogCategoryFormProps> = ({
   React.useEffect(() => {
     if (editCategory) {
       form.setValue("title", editCategory.title);
-      form.setValue("icon", typeof editCategory.icon === 'string' ? editCategory.icon : 'book');
+      form.setValue("icon", typeof editCategory.icon === 'string' ? editCategory.icon : 'Book');
     }
   }, [editCategory, form]);
 
@@ -120,7 +120,7 @@ const BlogCategoryForm: React.FC<BlogCategoryFormProps> = ({
       // Reset form
       form.reset({
         title: "",
-        icon: "book"
+        icon: "Book"
       });
       
     } catch (error) {
@@ -138,12 +138,8 @@ const BlogCategoryForm: React.FC<BlogCategoryFormProps> = ({
     setEditCategoryIndex(null);
     form.reset({
       title: "",
-      icon: "book"
+      icon: "Book"
     });
-  };
-
-  const handleIconChange = (iconName: string) => {
-    form.setValue("icon", iconName);
   };
 
   return (
@@ -167,22 +163,7 @@ const BlogCategoryForm: React.FC<BlogCategoryFormProps> = ({
             )}
           />
           
-          <FormField
-            control={form.control}
-            name="icon"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Icône</FormLabel>
-                <FormControl>
-                  <IconSelector
-                    selectedIcon={field.value}
-                    onSelect={handleIconChange}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+          <IconSelector form={form} />
           
           <div className="flex space-x-2">
             <Button type="submit">
