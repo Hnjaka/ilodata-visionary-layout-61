@@ -7,9 +7,9 @@ import {
   FormControl,
   FormMessage,
 } from '@/components/ui/form';
-import { Textarea } from '@/components/ui/textarea';
-import { UseFormReturn } from 'react-hook-form';
 import { z } from 'zod';
+import { UseFormReturn } from 'react-hook-form';
+import RichTextEditor from './RichTextEditor';
 
 // Define the schema for this part of the form
 export const contentSchema = z.object({
@@ -32,12 +32,9 @@ const ContentField: React.FC<ContentFieldProps> = ({ form }) => {
         <FormItem>
           <FormLabel>Contenu de l'article</FormLabel>
           <FormControl>
-            <Textarea
-              placeholder="Contenu de l'article en Markdown"
-              className="min-h-[200px]"
-              {...field}
-              // Ensure value is never undefined to prevent destructuring errors
+            <RichTextEditor 
               value={field.value || ""}
+              onChange={field.onChange}
             />
           </FormControl>
           <FormMessage />

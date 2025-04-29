@@ -59,16 +59,18 @@ const ArticleDisplay = () => {
   const generateTocItems = () => {
     if (!article || !article.content) return [];
     
+    // Use a more robust regex to handle rich text HTML
     const headingRegex = /<h([2-3])[^>]*>(.*?)<\/h\1>/g;
     const tocItems = [];
     let match;
     
     while ((match = headingRegex.exec(article.content)) !== null) {
       const level = match[1];
-      const title = match[2].replace(/<[^>]*>/g, ''); // Remove any HTML tags inside the heading
+      // Strip HTML tags from the heading content
+      const title = match[2].replace(/<[^>]*>/g, ''); 
       const id = title.toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]/g, '');
       
-      tocItems.push({ id, title });
+      tocItems.push({ id, title, level });
     }
     
     return tocItems;
@@ -93,14 +95,27 @@ const ArticleDisplay = () => {
     { label: category?.title || "Article", url: "/guides" },
   ];
 
+  // Process the article content to add IDs to headings for the TOC
+  const processContent = () => {
+    if (!article?.content) return '';
+    
+    return article.content.replace(
+      /<h([2-3])([^>]*)>(.*?)<\/h\1>/g, 
+      (match, level, attrs, content) => {
+        const id = content.replace(/<[^>]*>/g, '').toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]/g, '');
+        return `<h${level}${attrs} id="${id}">${content}</h${level}>`;
+      }
+    );
+  };
+
   return (
     <ArticleLayout 
       title={article.title} 
       breadcrumbs={breadcrumbs}
       tocItems={generateTocItems()}
     >
-      {/* Render article content */}
-      <div dangerouslySetInnerHTML={{ __html: article.content }} />
+      {/* Render article content with processed headings */}
+      <div className="prose prose-slate max-w-none" dangerouslySetInnerHTML={{ __html: processContent() }} />
     </ArticleLayout>
   );
 };
