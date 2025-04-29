@@ -36,7 +36,7 @@ const ContentField: React.FC<ContentFieldProps> = ({ form }) => {
               placeholder="Contenu de l'article en Markdown"
               className="min-h-[200px]"
               {...field}
-              value={field.value || ""} 
+              value={field.value || ""}
             />
           </FormControl>
           <FormMessage />

@@ -1,11 +1,8 @@
 
-import React, { useEffect } from 'react';
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { toast } from '@/components/ui/use-toast';
+import React from 'react';
 import { Form } from "@/components/ui/form";
-import { CategoryType } from '@/types/guides';
-import { articleFormSchema, ArticleFormValues } from './article-form/formSchema';
+import { CategoryType, ArticleType } from '@/types/guides';
+import { useArticleForm } from '@/hooks/useArticleForm';
 
 // Import subcomponents
 import TitleSlugFields from './article-form/TitleSlugFields';
@@ -17,189 +14,24 @@ import FormActions from './article-form/FormActions';
 interface ArticleFormProps {
   categories: CategoryType[];
   setCategories: React.Dispatch<React.SetStateAction<CategoryType[]>>;
-  editArticle: any | null;
+  editArticle: ArticleType | null;
   editArticleCategoryIndex: number | null;
   editArticleIndex: number | null;
-  setEditArticle: React.Dispatch<React.SetStateAction<any | null>>;
+  setEditArticle: React.Dispatch<React.SetStateAction<ArticleType | null>>;
   setEditArticleCategoryIndex: React.Dispatch<React.SetStateAction<number | null>>;
   setEditArticleIndex: React.Dispatch<React.SetStateAction<number | null>>;
 }
 
-const ArticleForm: React.FC<ArticleFormProps> = ({ 
-  categories, 
-  setCategories,
-  editArticle,
-  editArticleCategoryIndex,
-  editArticleIndex,
-  setEditArticle,
-  setEditArticleCategoryIndex,
-  setEditArticleIndex
-}) => {
-  // Initialize react-hook-form
-  const form = useForm<ArticleFormValues>({
-    resolver: zodResolver(articleFormSchema),
-    defaultValues: {
-      title: "",
-      slug: "",
-      categoryIndex: categories.length > 0 ? 0 : undefined,
-      content: "",
-      layout: "standard"
-    }
-  });
-
-  // Update form values when editing an article
-  useEffect(() => {
-    if (editArticle && editArticleCategoryIndex !== null) {
-      form.reset({
-        title: editArticle?.title || "",
-        slug: editArticle?.slug || "",
-        categoryIndex: editArticleCategoryIndex,
-        content: editArticle?.content || "",
-        layout: editArticle?.layout || "standard"
-      });
-    }
-  }, [editArticle, editArticleCategoryIndex, form]);
-
-  // Handle adding/editing an article
-  const onSubmit = (values: ArticleFormValues) => {
-    const { title, slug, categoryIndex, content, layout } = values;
-    
-    // Validate categoryIndex
-    if (categoryIndex === undefined || 
-        categoryIndex < 0 || 
-        categoryIndex >= categories.length) {
-      toast({
-        title: "Erreur",
-        description: "Catégorie invalide",
-        variant: "destructive"
-      });
-      return;
-    }
-    
-    const updatedCategories = [...categories];
-
-    if (editArticle && editArticleCategoryIndex !== null && editArticleIndex !== null) {
-      // Handle article edit
-      
-      // Ensure the categories and articles arrays exist
-      if (!updatedCategories[editArticleCategoryIndex]) {
-        toast({
-          title: "Erreur",
-          description: "Catégorie invalide",
-          variant: "destructive"
-        });
-        return;
-      }
-      
-      if (!updatedCategories[editArticleCategoryIndex].articles) {
-        updatedCategories[editArticleCategoryIndex].articles = [];
-      }
-      
-      if (editArticleCategoryIndex !== categoryIndex) {
-        // Ensure the target category exists and has an articles array
-        if (!updatedCategories[categoryIndex]) {
-          toast({
-            title: "Erreur",
-            description: "Catégorie cible invalide",
-            variant: "destructive"
-          });
-          return;
-        }
-        
-        // Ensure the target category's articles array exists
-        if (!updatedCategories[categoryIndex].articles) {
-          updatedCategories[categoryIndex].articles = [];
-        }
-        
-        // Remove from old category if it exists
-        if (updatedCategories[editArticleCategoryIndex].articles.length > editArticleIndex) {
-          updatedCategories[editArticleCategoryIndex].articles.splice(editArticleIndex, 1);
-        }
-        
-        // Add to new category
-        updatedCategories[categoryIndex].articles.push({
-          title: title,
-          slug: slug,
-          content: content || '',
-          layout: layout
-        });
-      } else {
-        // Just update in the same category
-        if (updatedCategories[categoryIndex].articles && 
-            editArticleIndex < updatedCategories[categoryIndex].articles.length) {
-          updatedCategories[categoryIndex].articles[editArticleIndex] = {
-            title: title,
-            slug: slug,
-            content: content || '',
-            layout: layout
-          };
-        }
-      }
-      
-      toast({
-        title: "Succès",
-        description: "Article modifié",
-      });
-      
-      // Reset edit mode
-      setEditArticle(null);
-      setEditArticleCategoryIndex(null);
-      setEditArticleIndex(null);
-      
-    } else {
-      // Add new article
-      // Ensure the category exists
-      if (!updatedCategories[categoryIndex]) {
-        toast({
-          title: "Erreur",
-          description: "Catégorie invalide",
-          variant: "destructive"
-        });
-        return;
-      }
-      
-      // Ensure the category's articles array exists
-      if (!updatedCategories[categoryIndex].articles) {
-        updatedCategories[categoryIndex].articles = [];
-      }
-      
-      updatedCategories[categoryIndex].articles.push({
-        title: title,
-        slug: slug,
-        content: content || '',
-        layout: layout
-      });
-      
-      toast({
-        title: "Succès",
-        description: "Nouvel article ajouté",
-      });
-    }
-    
-    setCategories(updatedCategories);
-    form.reset({
-      title: "",
-      slug: "",
-      categoryIndex: categoryIndex,
-      content: "",
-      layout: "standard"
-    });
-  };
-
-  // Cancel editing
-  const handleCancel = () => {
-    setEditArticle(null);
-    setEditArticleCategoryIndex(null);
-    setEditArticleIndex(null);
-    form.reset({
-      title: "",
-      slug: "",
-      categoryIndex: categories.length > 0 ? 0 : undefined,
-      content: "",
-      layout: "standard"
-    });
-  };
-
+const ArticleForm: React.FC<ArticleFormProps> = (props) => {
+  const { 
+    categories,
+    editArticle,
+    form,
+    onSubmit,
+    handleCancel,
+    isEditing
+  } = useArticleForm(props);
+  
   return (
     <div className="mt-6 bg-slate-50 p-4 rounded-lg">
       <h3 className="text-lg font-medium mb-4">
@@ -216,7 +48,7 @@ const ArticleForm: React.FC<ArticleFormProps> = ({
           <ContentField form={form} />
           
           <FormActions 
-            isEditing={!!editArticle}
+            isEditing={isEditing}
             isCategoryAvailable={categories.length > 0}
             onCancel={handleCancel}
           />

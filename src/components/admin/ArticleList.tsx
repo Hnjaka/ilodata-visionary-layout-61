@@ -11,13 +11,13 @@ import {
   TableRow 
 } from '@/components/ui/table';
 import { toast } from '@/components/ui/use-toast';
-import { CategoryType } from '@/types/guides';
+import { CategoryType, ArticleType } from '@/types/guides';
 
 interface ArticleListProps {
   categories: CategoryType[];
   setCategories: React.Dispatch<React.SetStateAction<CategoryType[]>>;
   searchTerm: string;
-  onEditArticle: (article: any, categoryIndex: number, articleIndex: number) => void;
+  onEditArticle: (article: ArticleType, categoryIndex: number, articleIndex: number) => void;
 }
 
 const ArticleList: React.FC<ArticleListProps> = ({ 
@@ -56,17 +56,21 @@ const ArticleList: React.FC<ArticleListProps> = ({
     .filter(category => category && Array.isArray(category.articles)) // Only include categories that exist and have articles array
     .flatMap((category, categoryIndex) =>
       (category.articles || [])
-        .filter((article = {}) => ( // Ensure article exists before accessing properties and provide default empty object
-          ((article?.title || '').toLowerCase().includes((searchTerm || '').toLowerCase())) ||
-          ((article?.slug || '').toLowerCase().includes((searchTerm || '').toLowerCase())) ||
-          ((category?.title || '').toLowerCase().includes((searchTerm || '').toLowerCase())) ||
-          ((article?.content || '').toLowerCase().includes((searchTerm || '').toLowerCase()))
-        ))
-        .map((article = {}, articleIndex) => ({
+        .filter((article) => {
+          if (!article) return false;
+          const searchTermLower = (searchTerm || '').toLowerCase();
+          return (
+            ((article.title || '').toLowerCase().includes(searchTermLower)) ||
+            ((article.slug || '').toLowerCase().includes(searchTermLower)) ||
+            ((category.title || '').toLowerCase().includes(searchTermLower)) ||
+            ((article.content || '').toLowerCase().includes(searchTermLower))
+          );
+        })
+        .map((article, articleIndex) => ({
           article,
           categoryIndex,
           articleIndex,
-          categoryTitle: category?.title || ''
+          categoryTitle: category.title || ''
         }))
     );
 
@@ -92,14 +96,14 @@ const ArticleList: React.FC<ArticleListProps> = ({
       </TableHeader>
       <TableBody>
         {filteredArticles.length > 0 ? (
-          filteredArticles.map(({ article = {}, categoryIndex, articleIndex, categoryTitle }) => (
+          filteredArticles.map(({ article, categoryIndex, articleIndex, categoryTitle }) => (
             <TableRow key={`${categoryIndex}-${articleIndex}`}>
-              <TableCell className="font-medium">{article?.title || ''}</TableCell>
-              <TableCell>{article?.slug || ''}</TableCell>
+              <TableCell className="font-medium">{article.title || ''}</TableCell>
+              <TableCell>{article.slug || ''}</TableCell>
               <TableCell>{categoryTitle}</TableCell>
-              <TableCell>{article?.layout || 'Standard'}</TableCell>
+              <TableCell>{article.layout || 'Standard'}</TableCell>
               <TableCell className="max-w-xs truncate">
-                {truncateContent(article?.content)}
+                {truncateContent(article.content)}
               </TableCell>
               <TableCell className="text-right">
                 <div className="flex justify-end space-x-2">
