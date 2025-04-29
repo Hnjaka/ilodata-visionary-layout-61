@@ -7,7 +7,8 @@ import {
   ImageIcon, 
   PanelLeft, 
   LayoutTemplate,
-  FileCode
+  FileCode,
+  LucideIcon
 } from "lucide-react";
 
 export const getCategoryData = () => {
@@ -83,9 +84,14 @@ export const getCategoryData = () => {
   ];
 };
 
+// Type définition pour la map des icônes
+type IconMap = {
+  [key: string]: LucideIcon;
+};
+
 // Map icon names to actual components for the admin interface
-export const getIconByName = (name: string) => {
-  const iconMap: {[key: string]: any} = {
+export const getIconByName = (name: string): LucideIcon => {
+  const iconMap: IconMap = {
     'Book': Book,
     'FileText': FileText,
     'Shapes': Shapes,
@@ -100,7 +106,7 @@ export const getIconByName = (name: string) => {
 };
 
 // Function to get the name of an icon component
-export const getIconName = (iconComponent: any) => {
+export const getIconName = (iconComponent: LucideIcon): string => {
   const iconEntries = Object.entries({
     Book, FileText, Shapes, Printer, ImageIcon, PanelLeft, LayoutTemplate, FileCode
   });

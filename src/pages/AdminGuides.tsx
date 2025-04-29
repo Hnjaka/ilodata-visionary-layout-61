@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { PlusCircle, Save, Trash } from 'lucide-react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
@@ -15,8 +15,9 @@ import {
 } from '@/components/ui/table';
 import { Form, FormField, FormItem, FormLabel, FormControl } from '@/components/ui/form';
 import { useForm } from 'react-hook-form';
-import { getCategoryData } from '@/data/guidesData';
+import { getCategoryData, getIconByName } from '@/data/guidesData';
 import { toast } from '@/components/ui/use-toast';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 
 const AdminGuides = () => {
   // Load initial data from guidesData.ts
@@ -39,9 +40,12 @@ const AdminGuides = () => {
       return;
     }
     
+    // Use getIconByName to get the actual component
+    const IconComponent = getIconByName(newCategory.icon);
+    
     const updatedCategories = [...categories, {
       title: newCategory.title,
-      icon: 'Book', // Default icon for now
+      icon: IconComponent, // Using the actual component
       articles: []
     }];
     
@@ -118,6 +122,11 @@ const AdminGuides = () => {
     }
   };
   
+  // Available icons for selection
+  const availableIcons = [
+    'Book', 'FileText', 'Shapes', 'Printer', 'ImageIcon', 'PanelLeft', 'LayoutTemplate', 'FileCode'
+  ];
+  
   // Export the data structure (would normally save to database)
   const handleExportData = () => {
     const dataStr = JSON.stringify(categories, null, 2);
@@ -184,6 +193,24 @@ const AdminGuides = () => {
                   onChange={(e) => setNewCategory({...newCategory, title: e.target.value})}
                   placeholder="Nouvelle rubrique"
                 />
+              </div>
+              <div className="w-1/3">
+                <FormLabel htmlFor="categoryIcon">Icône</FormLabel>
+                <Select 
+                  value={newCategory.icon}
+                  onValueChange={(value) => setNewCategory({...newCategory, icon: value})}
+                >
+                  <SelectTrigger>
+                    <SelectValue placeholder="Choisir une icône" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {availableIcons.map((icon) => (
+                      <SelectItem key={icon} value={icon}>
+                        {icon}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
               </div>
               <Button onClick={handleAddCategory}>
                 <PlusCircle className="h-4 w-4 mr-2" />
