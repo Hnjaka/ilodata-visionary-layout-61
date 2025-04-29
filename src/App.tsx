@@ -15,6 +15,7 @@ import About from "./pages/About";
 import Templates from "./pages/Templates";
 import AdminTemplates from "./pages/AdminTemplates";
 import AdminGuides from "./pages/AdminGuides";
+import AdminBlog from "./pages/AdminBlog";
 import AddTemplate from "./pages/AddTemplate";
 import EditTemplate from "./pages/EditTemplate";
 import ArticleDisplay from "./pages/articles/ArticleDisplay";
@@ -33,11 +34,12 @@ const App = () => {
               <Route path="/services" element={<Services />} />
               <Route path="/contact" element={<Contact />} />
               <Route path="/guides" element={<GuidesConseils />} />
-              <Route path="/guides/:slug" element={<ArticleDisplay />} /> {/* Route dynamique pour tous les articles */}
+              <Route path="/guides/:slug" element={<ArticleDisplay />} />
               <Route path="/about" element={<About />} />
               <Route path="/templates" element={<Templates />} />
               <Route path="/admin/templates" element={<AdminTemplates />} />
               <Route path="/admin/guides" element={<AdminGuides />} />
+              <Route path="/admin/blog" element={<AdminBlog />} />
               <Route path="/admin/templates/new" element={<AddTemplate />} />
               <Route path="/admin/templates/edit/:id" element={<EditTemplate />} />
               <Route path="*" element={<NotFound />} />
