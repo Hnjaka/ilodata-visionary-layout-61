@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
-import { ArrowDownToLine, Search } from 'lucide-react';
+import { ArrowDownToLine, Search, Settings } from 'lucide-react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { Input } from '@/components/ui/input';
@@ -8,6 +8,8 @@ import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
 import { Tables } from '@/integrations/supabase/types';
 import TemplateCard from '@/components/templates/TemplateCard';
+import { Button } from '@/components/ui/button';
+import { Link } from 'react-router-dom';
 import {
   Select,
   SelectContent,
@@ -124,6 +126,16 @@ const Templates = () => {
                   </SelectContent>
                 </Select>
               </div>
+            </div>
+            
+            {/* Admin button */}
+            <div className="mt-6 flex justify-end">
+              <Button variant="outline" asChild>
+                <Link to="/admin/templates" className="inline-flex items-center gap-1">
+                  <Settings size={16} />
+                  <span>Gérer les modèles</span>
+                </Link>
+              </Button>
             </div>
           </div>
         </section>
