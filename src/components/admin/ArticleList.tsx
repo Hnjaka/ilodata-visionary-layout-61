@@ -46,7 +46,8 @@ const ArticleList: React.FC<ArticleListProps> = ({
       .filter(article => 
         article.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
         article.slug.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        category.title.toLowerCase().includes(searchTerm.toLowerCase())
+        category.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        (article.content && article.content.toLowerCase().includes(searchTerm.toLowerCase()))
       )
       .map((article, articleIndex) => ({
         article,
@@ -56,6 +57,14 @@ const ArticleList: React.FC<ArticleListProps> = ({
       }))
   );
 
+  // Function to truncate content for display
+  const truncateContent = (content: string | undefined, maxLength: number = 100) => {
+    if (!content) return '–';
+    return content.length > maxLength 
+      ? `${content.substring(0, maxLength)}...` 
+      : content;
+  };
+
   return (
     <Table>
       <TableHeader>
@@ -63,6 +72,8 @@ const ArticleList: React.FC<ArticleListProps> = ({
           <TableHead>Titre</TableHead>
           <TableHead>Slug</TableHead>
           <TableHead>Rubrique</TableHead>
+          <TableHead>Mise en page</TableHead>
+          <TableHead>Contenu</TableHead>
           <TableHead className="w-32 text-right">Actions</TableHead>
         </TableRow>
       </TableHeader>
@@ -73,6 +84,10 @@ const ArticleList: React.FC<ArticleListProps> = ({
               <TableCell className="font-medium">{article.title}</TableCell>
               <TableCell>{article.slug}</TableCell>
               <TableCell>{categoryTitle}</TableCell>
+              <TableCell>{article.layout || 'Standard'}</TableCell>
+              <TableCell className="max-w-xs truncate">
+                {truncateContent(article.content)}
+              </TableCell>
               <TableCell className="text-right">
                 <div className="flex justify-end space-x-2">
                   <Button 
@@ -95,7 +110,7 @@ const ArticleList: React.FC<ArticleListProps> = ({
           ))
         ) : (
           <TableRow>
-            <TableCell colSpan={4} className="text-center py-6 text-slate-500">
+            <TableCell colSpan={6} className="text-center py-6 text-slate-500">
               {searchTerm ? "Aucun article trouvé pour cette recherche" : "Aucun article disponible"}
             </TableCell>
           </TableRow>
