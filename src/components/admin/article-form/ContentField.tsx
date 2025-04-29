@@ -36,6 +36,7 @@ const ContentField: React.FC<ContentFieldProps> = ({ form }) => {
               placeholder="Contenu de l'article en Markdown"
               className="min-h-[200px]"
               {...field}
+              // Ensure value is never undefined to prevent destructuring errors
               value={field.value || ""}
             />
           </FormControl>
