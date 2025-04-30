@@ -21,30 +21,50 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [isAdmin, setIsAdmin] = useState(false);
   const [isApproved, setIsApproved] = useState(false);
   const [permissionsChecked, setPermissionsChecked] = useState(false);
+  const [authChecked, setAuthChecked] = useState(false);
 
+  // Effet #1: Surveillance de l'état d'authentification et configuration initiale
   useEffect(() => {
     // Set up auth state listener first
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       (event, newSession) => {
-        console.log("Auth state changed:", event);
-        setSession(newSession);
-        setUser(newSession?.user ?? null);
-        
-        // Reset permission flags when auth state changes
-        if (!newSession?.user) {
+        if (event === 'SIGNED_OUT') {
+          // Reset all states on sign out
+          setSession(null);
+          setUser(null);
           setIsAdmin(false);
           setIsApproved(false);
           setPermissionsChecked(true);
-        } else if (newSession?.user && event !== 'TOKEN_REFRESHED') {
-          // Don't re-check permissions on token refresh to avoid loops
-          setPermissionsChecked(false);
+          console.log("User signed out, reset all states");
+          return;
+        }
+
+        // Only update session/user if there's a change to avoid loops
+        if (JSON.stringify(newSession?.user) !== JSON.stringify(user)) {
+          console.log("Auth state changed:", event);
+          setSession(newSession);
+          setUser(newSession?.user ?? null);
+          
+          // Reset permission flags when auth state changes
+          if (!newSession?.user) {
+            setIsAdmin(false);
+            setIsApproved(false);
+            setPermissionsChecked(true);
+          } else if (event !== 'TOKEN_REFRESHED') {
+            // Don't re-check permissions on token refresh
+            setPermissionsChecked(false);
+          }
         }
       }
     );
 
     // Initial session check
-    supabase.auth.getSession().then(({ data: { session: initialSession } }) => {
+    const checkInitialSession = async () => {
+      if (authChecked) return;
+
+      const { data: { session: initialSession } } = await supabase.auth.getSession();
       console.log("Initial session check:", initialSession ? "Session exists" : "No session");
+      
       setSession(initialSession);
       setUser(initialSession?.user ?? null);
       
@@ -55,16 +75,20 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       }
       
       setLoading(false);
-    });
+      setAuthChecked(true);
+    };
+
+    checkInitialSession();
 
     return () => {
       subscription.unsubscribe();
     };
-  }, []);
+  }, [authChecked, user]);
 
-  // Separate effect for checking permissions to avoid re-renders
+  // Effet #2: Vérification des autorisations utilisateur (séparé pour éviter les boucles)
   useEffect(() => {
     const checkUserPermissions = async () => {
+      // Ne vérifier les autorisations que si nous avons un utilisateur et que ce n'est pas déjà vérifié
       if (user && !permissionsChecked) {
         try {
           console.log("Checking permissions for user:", user.id);
