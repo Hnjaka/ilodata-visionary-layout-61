@@ -40,7 +40,7 @@ const ArticleFooter = () => {
               <p className="text-slate-700 mb-4">
                 Contactez-nous pour une solution professionnelle clé en main.
               </p>
-              <Link to="/contact" className="button-primary-sm">
+              <Link to="/contact" className="button-quote">
                 Nous contacter
               </Link>
             </div>

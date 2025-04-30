@@ -6,3 +6,15 @@
 .glass-card {
   @apply bg-white bg-opacity-90 backdrop-blur-sm border border-gray-200 rounded-lg shadow-lg;
 }
+
+.button-primary-sm {
+  @apply bg-ilodata-600 hover:bg-ilodata-700 text-white font-medium py-1.5 px-3 rounded text-sm transition-colors;
+}
+
+.button-secondary-sm {
+  @apply bg-slate-200 hover:bg-slate-300 text-slate-700 font-medium py-1.5 px-3 rounded text-sm transition-colors;
+}
+
+.button-quote {
+  @apply bg-green-600 hover:bg-green-700 text-white font-medium rounded px-4 py-2 shadow-sm transition-colors;
+}

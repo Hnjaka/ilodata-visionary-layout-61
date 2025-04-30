@@ -15,7 +15,7 @@ const CtaSection = () => {
           <Link to="/services" className="button-primary">
             Découvrir nos services
           </Link>
-          <Link to="/contact" className="button-primary">
+          <Link to="/contact" className="button-quote">
             Nous contacter
           </Link>
         </div>
