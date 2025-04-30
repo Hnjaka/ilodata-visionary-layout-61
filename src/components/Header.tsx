@@ -20,28 +20,28 @@ const Header = () => {
           </Link>
 
           <nav className="hidden md:flex items-center space-x-8">
-            <Link to="/" className="text-slate-800 font-medium hover:text-ilodata-600 transition-colors">
+            <Link to="/" className="text-slate-800 font-medium hover:text-ilodata-600 transition-colors transform hover:scale-110 duration-200">
               Accueil
             </Link>
-            <Link to="/guides" className="text-slate-800 font-medium hover:text-ilodata-600 transition-colors">
+            <Link to="/guides" className="text-slate-800 font-medium hover:text-ilodata-600 transition-colors transform hover:scale-110 duration-200">
               Conseils et Guides
             </Link>
-            <Link to="/services" className="text-slate-800 font-medium hover:text-ilodata-600 transition-colors">
+            <Link to="/services" className="text-slate-800 font-medium hover:text-ilodata-600 transition-colors transform hover:scale-110 duration-200">
               Services
             </Link>
             <Link 
               to="/templates" 
-              className="text-green-600 font-medium hover:text-green-700 transition-colors"
+              className="text-green-600 font-medium hover:text-green-700 transition-colors transform hover:scale-110 duration-200"
             >
               Modèles
             </Link>
-            <Link to="/about" className="text-slate-800 font-medium hover:text-ilodata-600 transition-colors">
+            <Link to="/about" className="text-slate-800 font-medium hover:text-ilodata-600 transition-colors transform hover:scale-110 duration-200">
               À propos
             </Link>
-            <Link to="/contact" className="text-slate-800 font-medium hover:text-ilodata-600 transition-colors">
+            <Link to="/contact" className="text-slate-800 font-medium hover:text-ilodata-600 transition-colors transform hover:scale-110 duration-200">
               Contact
             </Link>
-            <Link to="/blog" className="text-slate-800 font-medium hover:text-ilodata-600 transition-colors">
+            <Link to="/blog" className="text-slate-800 font-medium hover:text-ilodata-600 transition-colors transform hover:scale-110 duration-200">
               Blog
             </Link>
           </nav>
@@ -67,49 +67,49 @@ const Header = () => {
             <nav className="flex flex-col space-y-3">
               <Link 
                 to="/" 
-                className="text-slate-800 font-medium hover:text-ilodata-600 transition-colors py-2"
+                className="text-slate-800 font-medium hover:text-ilodata-600 transition-colors py-2 transform hover:scale-105 duration-200"
                 onClick={() => setIsMobileMenuOpen(false)}
               >
                 Accueil
               </Link>
               <Link 
                 to="/guides" 
-                className="text-slate-800 font-medium hover:text-ilodata-600 transition-colors py-2"
+                className="text-slate-800 font-medium hover:text-ilodata-600 transition-colors py-2 transform hover:scale-105 duration-200"
                 onClick={() => setIsMobileMenuOpen(false)}
               >
                 Conseils et Guides
               </Link>
               <Link 
                 to="/services" 
-                className="text-slate-800 font-medium hover:text-ilodata-600 transition-colors py-2"
+                className="text-slate-800 font-medium hover:text-ilodata-600 transition-colors py-2 transform hover:scale-105 duration-200"
                 onClick={() => setIsMobileMenuOpen(false)}
               >
                 Services
               </Link>
               <Link 
                 to="/templates" 
-                className="text-green-600 font-medium hover:text-green-700 transition-colors py-2"
+                className="text-green-600 font-medium hover:text-green-700 transition-colors py-2 transform hover:scale-105 duration-200"
                 onClick={() => setIsMobileMenuOpen(false)}
               >
                 Modèles
               </Link>
               <Link 
                 to="/about" 
-                className="text-slate-800 font-medium hover:text-ilodata-600 transition-colors py-2"
+                className="text-slate-800 font-medium hover:text-ilodata-600 transition-colors py-2 transform hover:scale-105 duration-200"
                 onClick={() => setIsMobileMenuOpen(false)}
               >
                 À propos
               </Link>
               <Link 
                 to="/contact" 
-                className="text-slate-800 font-medium hover:text-ilodata-600 transition-colors py-2"
+                className="text-slate-800 font-medium hover:text-ilodata-600 transition-colors py-2 transform hover:scale-105 duration-200"
                 onClick={() => setIsMobileMenuOpen(false)}
               >
                 Contact
               </Link>
               <Link 
                 to="/blog" 
-                className="text-slate-800 font-medium hover:text-ilodata-600 transition-colors py-2"
+                className="text-slate-800 font-medium hover:text-ilodata-600 transition-colors py-2 transform hover:scale-105 duration-200"
                 onClick={() => setIsMobileMenuOpen(false)}
               >
                 Blog
