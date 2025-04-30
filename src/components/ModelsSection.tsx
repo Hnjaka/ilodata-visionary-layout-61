@@ -3,6 +3,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { BookOpen, FileText, ArrowRight } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { useAuth } from '@/hooks/useAuth';
 
 interface ModelCardProps {
   icon: React.ElementType;
@@ -25,6 +26,8 @@ const ModelCard = ({ icon: Icon, title, delay }: ModelCardProps) => {
 };
 
 const ModelsSection = () => {
+  const { user, isAdmin } = useAuth();
+  
   return (
     <section className="section-padding bg-gradient-to-b from-blue-50 to-white">
       <div className="container mx-auto px-4 md:px-6">
@@ -57,13 +60,25 @@ const ModelsSection = () => {
         </div>
         
         <div className="text-center">
+          {/* Show templates button for everyone */}
           <Link 
             to="/templates" 
-            className="button-primary inline-flex items-center"
+            className="button-primary inline-flex items-center mr-2"
           >
             Voir les modèles disponibles
             <ArrowRight size={16} className="ml-1 transition-transform group-hover:translate-x-1" />
           </Link>
+          
+          {/* Show admin button only for logged in admins */}
+          {user && isAdmin && (
+            <Link 
+              to="/admin/templates" 
+              className="button-secondary inline-flex items-center ml-2"
+            >
+              Gérer les modèles
+              <ArrowRight size={16} className="ml-1 transition-transform group-hover:translate-x-1" />
+            </Link>
+          )}
         </div>
       </div>
     </section>

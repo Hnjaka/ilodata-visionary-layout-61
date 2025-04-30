@@ -3,6 +3,7 @@ import React, { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight, BookOpen } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { useAuth } from '@/hooks/useAuth';
 
 interface BlogPost {
   id: number;
@@ -77,7 +78,8 @@ const BlogCard = ({ post, delay }: { post: BlogPost; delay: string }) => {
 
 const Blog = () => {
   const sectionRef = useRef<HTMLDivElement>(null);
-
+  const { user, isAdmin } = useAuth();
+  
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
@@ -130,10 +132,19 @@ const Blog = () => {
         </div>
 
         <div className="text-center mt-12">
-          <Link to="/blog" className="button-secondary inline-flex items-center">
+          {/* Show all articles button for everyone */}
+          <Link to="/blog" className="button-secondary inline-flex items-center mr-2">
             Voir tous les articles
             <ArrowRight size={16} className="ml-1 transition-transform group-hover:translate-x-1" />
           </Link>
+          
+          {/* Show admin button only for logged in admins */}
+          {user && isAdmin && (
+            <Link to="/admin/blog" className="button-primary inline-flex items-center ml-2">
+              Gérer les articles
+              <ArrowRight size={16} className="ml-1 transition-transform group-hover:translate-x-1" />
+            </Link>
+          )}
         </div>
       </div>
     </section>
