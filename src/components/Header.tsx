@@ -47,7 +47,7 @@ const Header = () => {
           </nav>
 
           <div className="hidden md:block">
-            <Link to="/contact" className="button-primary">
+            <Link to="/contact" className="button-quote">
               Demandez un devis
             </Link>
           </div>
@@ -116,7 +116,7 @@ const Header = () => {
               </Link>
               <Link 
                 to="/contact" 
-                className="button-primary w-full text-center mt-2"
+                className="button-quote w-full text-center mt-2"
                 onClick={() => setIsMobileMenuOpen(false)}
               >
                 Demandez un devis

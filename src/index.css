@@ -114,6 +114,10 @@
     @apply bg-ilodata-500 hover:bg-ilodata-600 text-white font-medium rounded-full px-6 py-2.5 shadow-md transition-all duration-300 ease-in-out hover:shadow-lg active:scale-95;
   }
   
+  .button-quote {
+    @apply bg-green-600 hover:bg-green-700 text-white font-medium rounded-full px-6 py-2.5 shadow-md transition-all duration-300 ease-in-out hover:shadow-lg active:scale-95;
+  }
+  
   .button-secondary {
     @apply bg-white hover:bg-gray-50 text-ilodata-700 font-medium rounded-full px-6 py-2.5 border border-gray-200 shadow-sm transition-all duration-300 ease-in-out hover:shadow-md active:scale-95;
   }
