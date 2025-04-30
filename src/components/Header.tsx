@@ -1,5 +1,6 @@
+
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Menu, X, LogIn, LogOut, UserCircle } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useAuth } from '@/hooks/useAuth';
@@ -9,6 +10,7 @@ const Header = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const { user, isAdmin, signOut } = useAuth();
   const { toast } = useToast();
+  const navigate = useNavigate();
 
   const handleSignOut = async () => {
     try {
@@ -24,6 +26,11 @@ const Header = () => {
         variant: "destructive"
       });
     }
+  };
+
+  const handleLoginClick = () => {
+    navigate('/auth');
+    setIsMobileMenuOpen(false);
   };
 
   return (
@@ -108,12 +115,12 @@ const Header = () => {
                 <LogOut className="h-4 w-4 mr-1" /> Déconnexion
               </button>
             ) : (
-              <Link 
-                to="/auth" 
+              <button 
+                onClick={handleLoginClick}
                 className="flex items-center text-slate-700 hover:text-ilodata-600 transition-colors"
               >
                 <LogIn className="h-4 w-4 mr-1" /> Connexion
-              </Link>
+              </button>
             )}
             <Link to="/contact" className="button-quote">
               Demandez un devis
@@ -192,13 +199,12 @@ const Header = () => {
                   <LogOut className="h-4 w-4 mr-2" /> Déconnexion
                 </button>
               ) : (
-                <Link 
-                  to="/auth" 
+                <button 
+                  onClick={handleLoginClick}
                   className="text-slate-800 font-medium hover:text-ilodata-600 transition-colors py-2 flex items-center"
-                  onClick={() => setIsMobileMenuOpen(false)}
                 >
                   <LogIn className="h-4 w-4 mr-2" /> Connexion
-                </Link>
+                </button>
               )}
               
               {/* Admin links for mobile */}
