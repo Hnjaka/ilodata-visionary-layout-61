@@ -23,6 +23,8 @@ import Blog from "./pages/Blog";
 import BlogArticleDisplay from "./pages/BlogArticleDisplay";
 import CGU from "./pages/CGU";
 import Confidentialite from "./pages/Confidentialite";
+import MentionsLegales from "./pages/MentionsLegales";
+import FAQ from "./pages/FAQ";
 
 const queryClient = new QueryClient();
 
@@ -50,6 +52,8 @@ const App = () => {
               <Route path="/admin/templates/edit/:id" element={<EditTemplate />} />
               <Route path="/legal/cgu" element={<CGU />} />
               <Route path="/legal/confidentialite" element={<Confidentialite />} />
+              <Route path="/legal/mentions-legales" element={<MentionsLegales />} />
+              <Route path="/faq" element={<FAQ />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
           </BrowserRouter>
