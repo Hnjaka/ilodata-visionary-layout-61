@@ -9,6 +9,7 @@ import AuthForm from '@/components/auth/AuthForm';
 import AuthError from '@/components/auth/AuthError';
 import ResendConfirmationButton from '@/components/auth/ResendConfirmationButton';
 import ToggleAuthMode from '@/components/auth/ToggleAuthMode';
+import ForgotPasswordForm from '@/components/auth/ForgotPasswordForm';
 
 const Auth = () => {
   const { user } = useAuth();
@@ -19,11 +20,14 @@ const Auth = () => {
     setPassword,
     loading,
     isSignUp,
+    showForgotPassword,
     showConfirmationResend,
     errorMessage,
     handleAuth,
     handleResendConfirmation,
-    toggleSignUp
+    handleResetPassword,
+    toggleSignUp,
+    toggleForgotPassword
   } = useAuthForm();
   
   // Check if user is already logged in
@@ -38,33 +42,44 @@ const Auth = () => {
       <main className="flex-grow py-16">
         <div className="container mx-auto px-4 max-w-md">
           <div className="bg-white rounded-lg shadow-lg p-8">
-            <h1 className="text-2xl font-bold text-center mb-6">
-              {isSignUp ? "Créer un compte" : "Connexion"}
-            </h1>
-            
-            <AuthError errorMessage={errorMessage} />
-            
-            <AuthForm
-              email={email}
-              setEmail={setEmail}
-              password={password}
-              setPassword={setPassword}
-              isSignUp={isSignUp}
-              loading={loading}
-              onSubmit={handleAuth}
-            />
-            
-            {showConfirmationResend && (
-              <ResendConfirmationButton
+            {showForgotPassword ? (
+              <ForgotPasswordForm
+                onSubmit={handleResetPassword}
+                onCancel={toggleForgotPassword}
                 loading={loading}
-                onResend={handleResendConfirmation}
               />
+            ) : (
+              <>
+                <h1 className="text-2xl font-bold text-center mb-6">
+                  {isSignUp ? "Créer un compte" : "Connexion"}
+                </h1>
+                
+                <AuthError errorMessage={errorMessage} />
+                
+                <AuthForm
+                  email={email}
+                  setEmail={setEmail}
+                  password={password}
+                  setPassword={setPassword}
+                  isSignUp={isSignUp}
+                  loading={loading}
+                  onSubmit={handleAuth}
+                  onForgotPassword={toggleForgotPassword}
+                />
+                
+                {showConfirmationResend && (
+                  <ResendConfirmationButton
+                    loading={loading}
+                    onResend={handleResendConfirmation}
+                  />
+                )}
+                
+                <ToggleAuthMode
+                  isSignUp={isSignUp}
+                  onToggle={toggleSignUp}
+                />
+              </>
             )}
-            
-            <ToggleAuthMode
-              isSignUp={isSignUp}
-              onToggle={toggleSignUp}
-            />
           </div>
         </div>
       </main>

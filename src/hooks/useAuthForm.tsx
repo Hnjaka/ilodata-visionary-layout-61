@@ -9,6 +9,7 @@ export const useAuthForm = () => {
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [isSignUp, setIsSignUp] = useState(false);
+  const [showForgotPassword, setShowForgotPassword] = useState(false);
   const [showConfirmationResend, setShowConfirmationResend] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   
@@ -42,6 +43,33 @@ export const useAuthForm = () => {
         description: error.message || "Impossible d'envoyer l'email de confirmation.",
         variant: "destructive",
       });
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleResetPassword = async (resetEmail: string) => {
+    setLoading(true);
+    setErrorMessage(null);
+    
+    try {
+      console.log("Tentative de récupération de mot de passe pour:", resetEmail);
+      const { error } = await supabase.auth.resetPasswordForEmail(resetEmail, {
+        redirectTo: `${window.location.origin}/auth`,
+      });
+      
+      if (error) throw error;
+      
+      toast({
+        title: "Email envoyé",
+        description: "Vérifiez votre boîte de réception pour réinitialiser votre mot de passe.",
+      });
+      
+      setShowForgotPassword(false);
+      setEmail(resetEmail); // Pré-remplir l'email pour la connexion
+    } catch (error: any) {
+      console.error("Erreur lors de la récupération de mot de passe:", error);
+      setErrorMessage(error.message || "Une erreur s'est produite lors de l'envoi de l'email.");
     } finally {
       setLoading(false);
     }
@@ -120,6 +148,12 @@ export const useAuthForm = () => {
     setIsSignUp(!isSignUp);
     setErrorMessage(null);
     setShowConfirmationResend(false);
+    setShowForgotPassword(false);
+  };
+
+  const toggleForgotPassword = () => {
+    setShowForgotPassword(!showForgotPassword);
+    setErrorMessage(null);
   };
 
   return {
@@ -129,10 +163,13 @@ export const useAuthForm = () => {
     setPassword,
     loading,
     isSignUp,
+    showForgotPassword,
     showConfirmationResend,
     errorMessage,
     handleAuth,
     handleResendConfirmation,
-    toggleSignUp
+    handleResetPassword,
+    toggleSignUp,
+    toggleForgotPassword
   };
 };

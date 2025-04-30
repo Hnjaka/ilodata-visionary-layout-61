@@ -2,6 +2,7 @@
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { Mail, Lock } from 'lucide-react';
 
 interface AuthFormProps {
   email: string;
@@ -11,6 +12,7 @@ interface AuthFormProps {
   isSignUp: boolean;
   loading: boolean;
   onSubmit: (e: React.FormEvent) => Promise<void>;
+  onForgotPassword: () => void;
 }
 
 const AuthForm: React.FC<AuthFormProps> = ({
@@ -20,13 +22,14 @@ const AuthForm: React.FC<AuthFormProps> = ({
   setPassword,
   isSignUp,
   loading,
-  onSubmit
+  onSubmit,
+  onForgotPassword
 }) => {
   return (
     <form onSubmit={onSubmit} className="space-y-4">
       <div className="space-y-2">
-        <label htmlFor="email" className="block text-sm font-medium text-gray-700">
-          Email
+        <label htmlFor="email" className="block text-sm font-medium text-gray-700 flex items-center gap-1">
+          <Mail className="h-4 w-4" /> Email
         </label>
         <Input
           id="email"
@@ -39,8 +42,8 @@ const AuthForm: React.FC<AuthFormProps> = ({
       </div>
       
       <div className="space-y-2">
-        <label htmlFor="password" className="block text-sm font-medium text-gray-700">
-          Mot de passe
+        <label htmlFor="password" className="block text-sm font-medium text-gray-700 flex items-center gap-1">
+          <Lock className="h-4 w-4" /> Mot de passe
         </label>
         <Input
           id="password"
@@ -51,6 +54,18 @@ const AuthForm: React.FC<AuthFormProps> = ({
           placeholder="********"
         />
       </div>
+      
+      {!isSignUp && (
+        <div className="text-right">
+          <button
+            type="button"
+            onClick={onForgotPassword}
+            className="text-sm text-blue-600 hover:underline"
+          >
+            Mot de passe oublié ?
+          </button>
+        </div>
+      )}
       
       <Button
         type="submit"
