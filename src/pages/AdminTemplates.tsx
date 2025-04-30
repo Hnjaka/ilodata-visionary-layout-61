@@ -17,6 +17,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import { useAuth } from '@/hooks/useAuth';
 import { Tables } from '@/integrations/supabase/types';
+import ProtectedRoute from '@/components/admin/ProtectedRoute';
 
 type Template = Tables<"templates">;
 
@@ -25,7 +26,6 @@ const AdminTemplates = () => {
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
   const { toast } = useToast();
-  const { user } = useAuth();
 
   useEffect(() => {
     document.title = "Administration des Templates | ilodata.com";
@@ -85,7 +85,7 @@ const AdminTemplates = () => {
     navigate(`/admin/templates/edit/${id}`);
   };
 
-  return (
+  const AdminContent = () => (
     <div className="min-h-screen flex flex-col">
       <Header />
       
@@ -173,6 +173,12 @@ const AdminTemplates = () => {
       
       <Footer />
     </div>
+  );
+
+  return (
+    <ProtectedRoute requireAdmin>
+      <AdminContent />
+    </ProtectedRoute>
   );
 };
 

@@ -18,50 +18,54 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
   const { toast } = useToast();
   const [hasShownToast, setHasShownToast] = useState(false);
   
-  // Mémoiser la décision de redirection pour éviter les re-rendus inutiles
-  const redirectResult = useMemo(() => {
+  // Memoize the redirection decision to avoid re-renders
+  const redirectInfo = useMemo(() => {
+    // Don't make any decisions while still loading
+    if (loading) {
+      return { shouldRedirect: false, path: "", reason: "" };
+    }
+    
     if (!user) {
-      return { redirect: true, path: "/auth", reason: "not_logged_in" };
+      return { shouldRedirect: true, path: "/auth", reason: "not_logged_in" };
     }
     
     if (!isApproved) {
-      return { redirect: true, path: "/", reason: "not_approved" };
+      return { shouldRedirect: true, path: "/", reason: "not_approved" };
     }
     
     if (requireAdmin && !isAdmin) {
-      return { redirect: true, path: "/", reason: "not_admin" };
+      return { shouldRedirect: true, path: "/", reason: "not_admin" };
     }
     
-    return { redirect: false };
-  }, [user, isAdmin, isApproved, requireAdmin]);
+    return { shouldRedirect: false, path: "", reason: "" };
+  }, [user, isAdmin, isApproved, requireAdmin, loading]);
   
+  // Show toast messages when redirection happens
   useEffect(() => {
-    // Only show toast messages once when needed
-    if (!loading && !hasShownToast) {
-      if (redirectResult.reason === "not_logged_in") {
+    if (!loading && redirectInfo.shouldRedirect && !hasShownToast) {
+      if (redirectInfo.reason === "not_logged_in") {
         toast({
           title: "Accès non autorisé",
           description: "Vous devez vous connecter pour accéder à cette page.",
           variant: "destructive",
         });
-        setHasShownToast(true);
-      } else if (redirectResult.reason === "not_approved") {
+      } else if (redirectInfo.reason === "not_approved") {
         toast({
           title: "Accès non autorisé",
           description: "Votre compte doit être approuvé par un administrateur.",
           variant: "destructive",
         });
-        setHasShownToast(true);
-      } else if (redirectResult.reason === "not_admin") {
+      } else if (redirectInfo.reason === "not_admin") {
         toast({
           title: "Accès non autorisé",
           description: "Vous devez être administrateur pour accéder à cette page.",
           variant: "destructive",
         });
-        setHasShownToast(true);
       }
+      
+      setHasShownToast(true);
     }
-  }, [loading, redirectResult.reason, toast, hasShownToast]);
+  }, [loading, redirectInfo, toast, hasShownToast]);
   
   if (loading) {
     return (
@@ -71,8 +75,8 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
     );
   }
   
-  if (redirectResult.redirect) {
-    return <Navigate to={redirectResult.path} replace />;
+  if (redirectInfo.shouldRedirect) {
+    return <Navigate to={redirectInfo.path} replace />;
   }
   
   return <>{children}</>;
