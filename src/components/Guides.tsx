@@ -78,39 +78,27 @@ const Guides = () => {
               <Book className="h-6 w-6 text-ilodata-600" />
             </div>
           </div>
-          <h2 className="section-title text-center">Conseils et Guides pour réussir votre mise en page</h2>
+          <h2 className="section-title text-center">Pas sûr de comment faire ? On vous guide pas à pas</h2>
           <p className="section-subtitle">
-            Explorez notre collection de ressources pour parfaire vos compétences en mise en page et création de documents.
+            Même sans expérience, vous pouvez y arriver. Nos guides illustrés vous accompagnent à chaque étape :
           </p>
+          <ul className="max-w-lg mx-auto text-center text-slate-700 mt-6 space-y-2">
+            <li>Adapter les styles de texte</li>
+            <li>Créer un sommaire automatique</li>
+            <li>Gérer la pagination</li>
+            <li>Insérer une couverture</li>
+            <li>Exporter pour Amazon, l'impression ou le web</li>
+          </ul>
         </div>
 
-        <div className="grid md:grid-cols-3 gap-6 md:gap-8">
-          <GuideCard 
-            icon={Book}
-            title="Modèles de livre"
-            description="Découvrez nos modèles de mise en page sous Word, faciles à utiliser et compatibles avec tous les éditeurs de texte. Remplacez simplement le texte existant par le vôtre et obtenez un résultat professionnel en quelques clics."
-            buttonText="Voir les modèles"
-            link="/modeles"
-            delay="delay-100"
-          />
-          
-          <GuideCard 
-            icon={Video}
-            title="Tutoriels et vidéos"
-            description="Apprenez à maîtriser la mise en page de livre grâce à nos tutoriels pas à pas et nos vidéos explicatives. Parfait pour les auteurs qui souhaitent tout faire eux-mêmes."
-            buttonText="Accéder aux tutoriels"
-            link="/guides"
-            delay="delay-200"
-          />
-          
-          <GuideCard 
-            icon={FileText}
-            title="Articles et conseils"
-            description="Consultez nos articles pour des astuces et des conseils pratiques sur la mise en page, l'auto-édition et bien plus encore."
-            buttonText="Lire les articles"
-            link="/guides"
-            delay="delay-300"
-          />
+        <div className="text-center">
+          <Link 
+            to="/guides" 
+            className="button-primary inline-flex items-center"
+          >
+            Voir les guides
+            <ArrowRight size={16} className="ml-1 transition-transform group-hover:translate-x-1" />
+          </Link>
         </div>
       </div>
     </section>

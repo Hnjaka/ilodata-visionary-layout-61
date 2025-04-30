@@ -1,12 +1,11 @@
+
 import React, { useEffect } from 'react';
 import Header from '@/components/Header';
 import Hero from '@/components/Hero';
+import ModelsSection from '@/components/ModelsSection';
 import Guides from '@/components/Guides';
 import Services from '@/components/Services';
-import About from '@/components/About';
 import Testimonials from '@/components/Testimonials';
-import Portfolio from '@/components/Portfolio';
-import Blog from '@/components/Blog';
 import Contact from '@/components/Contact';
 import Footer from '@/components/Footer';
 
@@ -59,12 +58,10 @@ const Index = () => {
     <div className="min-h-screen flex flex-col overflow-x-hidden">
       <Header />
       <Hero />
+      <ModelsSection />
       <Guides />
       <Services />
-      <About />
       <Testimonials />
-      <Portfolio />
-      <Blog />
       <Contact />
       <Footer />
     </div>

@@ -1,3 +1,4 @@
+
 import React, { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { Layout, FileText, BookOpen, ArrowRight } from 'lucide-react';
@@ -91,54 +92,54 @@ const Services = () => {
               <Layout className="h-6 w-6 text-ilodata-600" />
             </div>
           </div>
-          <h2 className="section-title text-center">Nos services pour une mise en page de livre réussie</h2>
+          <h2 className="section-title text-center">Confiez-nous votre mise en page, nous nous occupons de tout</h2>
           <p className="section-subtitle">
-            Des solutions professionnelles pour tous vos besoins en matière de mise en page et de conception de documents.
+            Pas le temps ou besoin d'un rendu irréprochable ? Notre équipe professionnelle réalise la mise en page de votre livre selon les normes techniques des plateformes d'édition et d'impression.
           </p>
         </div>
 
         <div className="grid md:grid-cols-3 gap-6 md:gap-8">
           <ServiceCard 
             icon={FileText}
-            title="Modèles Word personnalisables"
-            description="Utilisez nos modèles de mise en page sous Word, faciles à adapter à votre texte."
+            title="PDF prêt pour l'impression"
+            description="Un document parfaitement formaté pour une impression professionnelle."
             features={[
-              "Compatibles avec tous les éditeurs de texte",
-              "Faciles à personnaliser",
-              "Résultat professionnel garanti",
-              "Idéal pour les auteurs indépendants"
+              "Format adapté à votre imprimeur",
+              "Marges et fond perdu ajustés",
+              "Résolution optimale des images",
+              "Polices incorporées"
             ]}
-            buttonText="Voir les modèles"
-            link="/modeles"
+            buttonText="Découvrir nos services"
+            link="/services"
             delay="delay-100"
           />
           
           <ServiceCard 
             icon={BookOpen}
-            title="Formation mise en page livre"
-            description="Apprenez à créer une mise en page professionnelle grâce à nos guides et tutoriels."
+            title="Fichier conforme à Amazon KDP"
+            description="Un fichier 100% compatible avec les exigences d'Amazon pour l'auto-édition."
             features={[
-              "Formations en ligne accessibles 24/7",
-              "Tutoriels pas à pas détaillés",
-              "Assistance personnalisée",
-              "Parfait pour les auteurs indépendants"
+              "Dimensions respectées",
+              "Table des matières interactive",
+              "Métadonnées complètes",
+              "Vérification de conformité"
             ]}
-            buttonText="En savoir plus"
-            link="/formation"
+            buttonText="Découvrir nos services"
+            link="/services"
             delay="delay-200"
           />
           
           <ServiceCard 
             icon={Layout}
-            title="Service de mise en page sur mesure"
-            description="Confiez-nous votre projet et bénéficiez d'une mise en page professionnelle adaptée à vos besoins."
+            title="Version numérique interactive"
+            description="Un ebook ou PDF interactif optimisé pour une lecture sur écran."
             features={[
-              "Mises en page personnalisées",
-              "Prise en charge complète de votre projet",
-              "Qualité professionnelle garantie",
-              "Délais rapides et respectés"
+              "Format ePub ou PDF interactif",
+              "Liens et sommaire cliquables",
+              "Compatible tous appareils",
+              "Optimisé pour le confort de lecture"
             ]}
-            buttonText="Demandez un devis"
+            buttonText="Demander un devis"
             link="/contact"
             delay="delay-300"
           />

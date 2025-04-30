@@ -1,7 +1,7 @@
 
 import React, { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowRight } from 'lucide-react';
+import { ArrowRight, Download } from 'lucide-react';
 
 const Hero = () => {
   const heroRef = useRef<HTMLDivElement>(null);
@@ -48,21 +48,21 @@ const Hero = () => {
           </div>
           
           <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold mb-6 tracking-tight text-white animate-fade-down delay-100">
-            <span className="block">Mise en page de livre :</span>
-            <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-200 to-blue-50">simplifiez-vous la vie !</span>
+            <span className="block">Créez une mise en page professionnelle,</span>
+            <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-200 to-blue-50">prête à imprimer ou publier</span>
           </h1>
           
           <p className="text-xl text-gray-100 max-w-3xl mx-auto mb-10 animate-fade-down delay-200">
-            Que vous soyez auteur indépendant ou éditeur, ilodata.com vous accompagne pour créer des livres professionnels. Réalisez vous-même votre mise en page grâce à nos modèles et guides, ou confiez-nous votre projet.
+            Transformez votre manuscrit en un document soigné, prêt pour Amazon KDP, l'impression papier ou la publication numérique.
           </p>
           
           <div className="flex flex-col sm:flex-row justify-center items-center gap-4 sm:gap-6 animate-fade-up delay-300">
-            <Link to="/modeles" className="button-primary group flex items-center gap-2 w-full sm:w-auto">
-              Trouver un modèle de mise en page
-              <ArrowRight size={18} className="transition-transform group-hover:translate-x-1" />
+            <Link to="/templates" className="button-primary group flex items-center gap-2 w-full sm:w-auto">
+              <Download size={18} />
+              Télécharger un modèle gratuit
             </Link>
             <Link to="/services" className="button-secondary w-full sm:w-auto">
-              Découvrir nos services
+              Voir nos services
             </Link>
           </div>
         </div>

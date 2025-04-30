@@ -13,10 +13,10 @@ interface TestimonialProps {
 
 const testimonials: TestimonialProps[] = [
   {
-    quote: "Grâce aux modèles Word d'ilodata.com, j'ai pu finaliser la mise en page de mon roman en quelques heures seulement. Un gain de temps incroyable !",
-    author: "Marie",
-    position: "Auteure indépendante",
-    image: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
+    quote: "J'ai essayé de faire la mise en page moi-même, mais je manquais de temps. Leur équipe a été réactive, à l'écoute, et le résultat est superbe !",
+    author: "Luc",
+    position: "Auteur autoédité",
+    image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
     rating: 5
   },
   {
@@ -85,18 +85,6 @@ const Testimonials = () => {
       <div className="absolute top-1/3 right-1/4 w-16 h-16 rounded-full bg-ilodata-200 opacity-30"></div>
       
       <div className="container mx-auto px-4 md:px-6 relative z-10">
-        <div className="text-center mb-16">
-          <div className="flex justify-center mb-4">
-            <div className="p-3 rounded-full bg-blue-100">
-              <Quote className="h-6 w-6 text-ilodata-600" />
-            </div>
-          </div>
-          <h2 className="section-title text-center">Ils nous font confiance</h2>
-          <p className="section-subtitle">
-            Découvrez les expériences de ceux qui ont fait confiance à nos services.
-          </p>
-        </div>
-
         <div 
           ref={sectionRef} 
           className="fade-in-section relative max-w-4xl mx-auto"
