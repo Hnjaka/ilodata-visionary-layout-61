@@ -9,7 +9,7 @@ const Header = () => {
 
   return (
     <header 
-      className="fixed top-0 left-0 right-0 z-50 py-4 bg-white/90 backdrop-blur-md shadow-sm"
+      className="fixed top-0 left-0 right-0 z-50 py-4 bg-white shadow-sm"
     >
       <div className="container mx-auto px-4 md:px-6">
         <div className="flex items-center justify-between">
@@ -33,7 +33,7 @@ const Header = () => {
               to="/templates" 
               className="text-slate-800 font-medium hover:text-ilodata-600 transition-colors"
             >
-              Modèles
+              Modèles et Templates
             </Link>
             <Link to="/about" className="text-slate-800 font-medium hover:text-ilodata-600 transition-colors">
               À propos
@@ -91,7 +91,7 @@ const Header = () => {
                 className="text-slate-800 font-medium hover:text-ilodata-600 transition-colors py-2"
                 onClick={() => setIsMobileMenuOpen(false)}
               >
-                Modèles
+                Modèles et Templates
               </Link>
               <Link 
                 to="/about" 
