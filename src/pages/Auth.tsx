@@ -69,10 +69,13 @@ const Auth = () => {
     try {
       if (isSignUp) {
         // Sign up
+        console.log("Tentative d'inscription avec:", { email });
         const { data, error } = await supabase.auth.signUp({
           email,
           password,
         });
+        
+        console.log("Résultat de l'inscription:", { data, error });
         
         if (error) throw error;
         
@@ -85,10 +88,13 @@ const Auth = () => {
         setIsSignUp(false);
       } else {
         // Sign in
-        const { error } = await supabase.auth.signInWithPassword({
+        console.log("Tentative de connexion avec:", { email });
+        const { data, error } = await supabase.auth.signInWithPassword({
           email,
           password,
         });
+        
+        console.log("Résultat de la connexion:", { data, error });
         
         if (error) throw error;
         
@@ -100,6 +106,7 @@ const Auth = () => {
         navigate('/');
       }
     } catch (error: any) {
+      console.error("Erreur d'authentification:", error);
       let message = "Une erreur s'est produite.";
       
       if (error.message) {
@@ -109,6 +116,8 @@ const Auth = () => {
           setShowConfirmationResend(true);
         } else if (error.message.includes("Invalid login credentials")) {
           message = "Email ou mot de passe incorrect.";
+        } else if (error.message.includes("Email logins are disabled")) {
+          message = "Les connexions par email sont désactivées. Veuillez contacter l'administrateur.";
         } else {
           message = error.message;
         }
