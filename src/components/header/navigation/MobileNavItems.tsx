@@ -22,6 +22,11 @@ const MobileNavItems: React.FC<MobileNavItemsProps> = ({
 }) => {
   if (!isOpen) return null;
   
+  const handleLogin = () => {
+    console.log("Mobile login button clicked");
+    onLoginClick();
+  };
+  
   return (
     <div className="md:hidden absolute top-full left-0 right-0 bg-white shadow-lg animate-fade-down">
       <div className="container mx-auto px-4 py-4">
@@ -87,7 +92,7 @@ const MobileNavItems: React.FC<MobileNavItemsProps> = ({
           ) : (
             <button 
               type="button"
-              onClick={onLoginClick}
+              onClick={handleLogin}
               className="text-slate-800 font-medium hover:text-ilodata-600 transition-colors py-2 flex items-center"
             >
               <LogIn className="h-4 w-4 mr-2" /> Connexion

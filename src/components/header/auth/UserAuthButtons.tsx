@@ -10,6 +10,11 @@ interface UserAuthButtonsProps {
 }
 
 const UserAuthButtons: React.FC<UserAuthButtonsProps> = ({ user, onSignOut, onLogin }) => {
+  const handleLogin = () => {
+    console.log("Login button clicked in UserAuthButtons");
+    onLogin();
+  };
+
   return (
     <div className="hidden md:flex items-center space-x-4">
       {user ? (
@@ -22,7 +27,7 @@ const UserAuthButtons: React.FC<UserAuthButtonsProps> = ({ user, onSignOut, onLo
       ) : (
         <button 
           type="button"
-          onClick={onLogin}
+          onClick={handleLogin}
           className="flex items-center text-slate-700 hover:text-ilodata-600 transition-colors"
         >
           <LogIn className="h-4 w-4 mr-1" /> Connexion
