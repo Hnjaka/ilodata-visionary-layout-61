@@ -68,7 +68,7 @@ const Footer = () => {
                 </Link>
               </li>
               <li>
-                <Link to="/modeles" className="text-slate-300 hover:text-white transition-colors">
+                <Link to="/templates" className="text-slate-300 hover:text-white transition-colors">
                   Modèles Word personnalisables
                 </Link>
               </li>
