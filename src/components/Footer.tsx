@@ -63,7 +63,7 @@ const Footer = () => {
             <h4 className="font-semibold text-lg mb-4">Services</h4>
             <ul className="space-y-2">
               <li>
-                <Link to="/services/mise-en-page" className="text-slate-300 hover:text-white transition-colors">
+                <Link to="/services" className="text-slate-300 hover:text-white transition-colors">
                   Mise en page professionnelle
                 </Link>
               </li>
@@ -73,7 +73,7 @@ const Footer = () => {
                 </Link>
               </li>
               <li>
-                <Link to="/formation" className="text-slate-300 hover:text-white transition-colors">
+                <Link to="/guides" className="text-slate-300 hover:text-white transition-colors">
                   Formation mise en page
                 </Link>
               </li>
@@ -89,12 +89,12 @@ const Footer = () => {
             <h4 className="font-semibold text-lg mb-4">Ressources</h4>
             <ul className="space-y-2">
               <li>
-                <Link to="/modeles" className="text-slate-300 hover:text-white transition-colors">
+                <Link to="/templates" className="text-slate-300 hover:text-white transition-colors">
                   Modèles de livre
                 </Link>
               </li>
               <li>
-                <Link to="/tutoriels" className="text-slate-300 hover:text-white transition-colors">
+                <Link to="/guides" className="text-slate-300 hover:text-white transition-colors">
                   Tutoriels et vidéos
                 </Link>
               </li>
