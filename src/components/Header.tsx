@@ -1,11 +1,30 @@
-
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Menu, X } from 'lucide-react';
+import { Menu, X, LogIn, LogOut, UserCircle } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { useAuth } from '@/hooks/useAuth';
+import { useToast } from '@/hooks/use-toast';
 
 const Header = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const { user, isAdmin, signOut } = useAuth();
+  const { toast } = useToast();
+
+  const handleSignOut = async () => {
+    try {
+      await signOut();
+      toast({
+        title: "Déconnexion réussie",
+        description: "Vous avez été déconnecté avec succès."
+      });
+    } catch (error) {
+      toast({
+        title: "Erreur",
+        description: "Un problème est survenu lors de la déconnexion.",
+        variant: "destructive"
+      });
+    }
+  };
 
   return (
     <header 
@@ -44,9 +63,58 @@ const Header = () => {
             <Link to="/blog" className="text-slate-800 font-medium hover:text-ilodata-600 transition-colors transform hover:scale-110 duration-200">
               Blog
             </Link>
+            
+            {/* Admin link if user is admin */}
+            {user && isAdmin && (
+              <div className="relative group">
+                <span className="text-slate-800 font-medium hover:text-ilodata-600 cursor-pointer transition-colors transform hover:scale-110 duration-200 flex items-center">
+                  <UserCircle className="mr-1 h-4 w-4" /> Admin
+                </span>
+                <div className="absolute left-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300">
+                  <div className="py-1" role="menu" aria-orientation="vertical">
+                    <Link 
+                      to="/admin/templates" 
+                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                      role="menuitem"
+                    >
+                      Templates
+                    </Link>
+                    <Link 
+                      to="/admin/guides" 
+                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                      role="menuitem"
+                    >
+                      Guides
+                    </Link>
+                    <Link 
+                      to="/admin/blog" 
+                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                      role="menuitem"
+                    >
+                      Blog
+                    </Link>
+                  </div>
+                </div>
+              </div>
+            )}
           </nav>
 
-          <div className="hidden md:block">
+          <div className="hidden md:flex items-center space-x-4">
+            {user ? (
+              <button 
+                onClick={handleSignOut}
+                className="flex items-center text-slate-700 hover:text-ilodata-600 transition-colors"
+              >
+                <LogOut className="h-4 w-4 mr-1" /> Déconnexion
+              </button>
+            ) : (
+              <Link 
+                to="/auth" 
+                className="flex items-center text-slate-700 hover:text-ilodata-600 transition-colors"
+              >
+                <LogIn className="h-4 w-4 mr-1" /> Connexion
+              </Link>
+            )}
             <Link to="/contact" className="button-quote">
               Demandez un devis
             </Link>
@@ -114,6 +182,55 @@ const Header = () => {
               >
                 Blog
               </Link>
+              
+              {/* Auth button for mobile */}
+              {user ? (
+                <button 
+                  onClick={handleSignOut}
+                  className="text-slate-800 font-medium hover:text-ilodata-600 transition-colors py-2 flex items-center"
+                >
+                  <LogOut className="h-4 w-4 mr-2" /> Déconnexion
+                </button>
+              ) : (
+                <Link 
+                  to="/auth" 
+                  className="text-slate-800 font-medium hover:text-ilodata-600 transition-colors py-2 flex items-center"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
+                  <LogIn className="h-4 w-4 mr-2" /> Connexion
+                </Link>
+              )}
+              
+              {/* Admin links for mobile */}
+              {user && isAdmin && (
+                <>
+                  <div className="py-2 font-medium text-slate-800">
+                    Admin:
+                  </div>
+                  <Link 
+                    to="/admin/templates" 
+                    className="text-slate-700 hover:text-ilodata-600 py-1 pl-4 transition-colors"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                  >
+                    Templates
+                  </Link>
+                  <Link 
+                    to="/admin/guides" 
+                    className="text-slate-700 hover:text-ilodata-600 py-1 pl-4 transition-colors"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                  >
+                    Guides
+                  </Link>
+                  <Link 
+                    to="/admin/blog" 
+                    className="text-slate-700 hover:text-ilodata-600 py-1 pl-4 transition-colors"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                  >
+                    Blog
+                  </Link>
+                </>
+              )}
+              
               <Link 
                 to="/contact" 
                 className="button-quote w-full text-center mt-2"

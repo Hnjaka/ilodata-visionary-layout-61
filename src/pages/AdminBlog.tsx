@@ -5,10 +5,12 @@ import Footer from '@/components/Footer';
 import BlogHeader from '@/components/admin/blog/BlogHeader';
 import BlogContent from '@/components/admin/blog/BlogContent';
 import { useBlogData } from '@/hooks/useBlogData';
+import { useAuth } from '@/hooks/useAuth';
 
 const AdminBlog = () => {
   // Utilisation du hook pour récupérer les données du blog
   const { categories, setCategories, loading, setLoading, refreshData } = useBlogData();
+  const { user } = useAuth();
 
   // Load data once on initial render
   useEffect(() => {

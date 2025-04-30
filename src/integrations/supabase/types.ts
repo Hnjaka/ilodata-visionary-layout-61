@@ -160,6 +160,33 @@ export type Database = {
         }
         Relationships: []
       }
+      profiles: {
+        Row: {
+          created_at: string
+          email: string
+          id: string
+          is_approved: boolean
+          role: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          email: string
+          id: string
+          is_approved?: boolean
+          role?: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          email?: string
+          id?: string
+          is_approved?: boolean
+          role?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       templates: {
         Row: {
           categorie: Database["public"]["Enums"]["template_category"]
@@ -204,7 +231,14 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      is_admin: {
+        Args: { user_id: string }
+        Returns: boolean
+      }
+      is_approved: {
+        Args: { user_id: string }
+        Returns: boolean
+      }
     }
     Enums: {
       template_category: "Livres" | "Magazines" | "CV" | "Flyers" | "Rapports"

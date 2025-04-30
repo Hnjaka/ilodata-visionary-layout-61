@@ -15,6 +15,7 @@ import {
 import { Pencil, Trash2, Plus, Eye, EyeOff } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
+import { useAuth } from '@/hooks/useAuth';
 import { Tables } from '@/integrations/supabase/types';
 
 type Template = Tables<"templates">;
@@ -24,6 +25,7 @@ const AdminTemplates = () => {
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
   const { toast } = useToast();
+  const { user } = useAuth();
 
   useEffect(() => {
     document.title = "Administration des Templates | ilodata.com";
