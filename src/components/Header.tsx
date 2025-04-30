@@ -31,9 +31,9 @@ const Header = () => {
             </Link>
             <Link 
               to="/templates" 
-              className="text-slate-800 font-medium hover:text-ilodata-600 transition-colors"
+              className="text-green-600 font-medium hover:text-green-700 transition-colors"
             >
-              Modèles et Templates
+              Modèles
             </Link>
             <Link to="/about" className="text-slate-800 font-medium hover:text-ilodata-600 transition-colors">
               À propos
@@ -88,10 +88,10 @@ const Header = () => {
               </Link>
               <Link 
                 to="/templates" 
-                className="text-slate-800 font-medium hover:text-ilodata-600 transition-colors py-2"
+                className="text-green-600 font-medium hover:text-green-700 transition-colors py-2"
                 onClick={() => setIsMobileMenuOpen(false)}
               >
-                Modèles et Templates
+                Modèles
               </Link>
               <Link 
                 to="/about" 
