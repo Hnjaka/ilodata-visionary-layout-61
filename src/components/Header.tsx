@@ -29,6 +29,7 @@ const Header = () => {
   };
 
   const handleLoginClick = () => {
+    console.log("Login button clicked, navigating to /auth");
     navigate('/auth');
     setIsMobileMenuOpen(false);
   };
@@ -116,6 +117,7 @@ const Header = () => {
               </button>
             ) : (
               <button 
+                type="button"
                 onClick={handleLoginClick}
                 className="flex items-center text-slate-700 hover:text-ilodata-600 transition-colors"
               >
@@ -200,6 +202,7 @@ const Header = () => {
                 </button>
               ) : (
                 <button 
+                  type="button"
                   onClick={handleLoginClick}
                   className="text-slate-800 font-medium hover:text-ilodata-600 transition-colors py-2 flex items-center"
                 >
