@@ -48,21 +48,17 @@ const Hero = () => {
           </div>
           
           <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold mb-6 tracking-tight text-white animate-fade-down delay-100">
-            <span className="block">Créez une mise en page professionnelle,</span>
-            <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-200 to-blue-50">prête à imprimer ou publier</span>
+            <span className="block">Besoin d'une mise en page professionnelle ?</span>
+            <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-200 to-blue-50">Nous créons votre fichier Word prêt à imprimer ou à publier.</span>
           </h1>
           
-          <p className="text-xl text-gray-100 max-w-3xl mx-auto mb-10 animate-fade-down delay-200">
-            Transformez votre manuscrit en un document soigné, prêt pour Amazon KDP, l'impression papier ou la publication numérique.
-          </p>
-          
           <div className="flex flex-col sm:flex-row justify-center items-center gap-4 sm:gap-6 animate-fade-up delay-300">
-            <Link to="/templates" className="button-primary group flex items-center gap-2 w-full sm:w-auto">
+            <Link to="/services" className="button-primary group flex items-center gap-2 w-full sm:w-auto">
+              Voir nos services
+            </Link>
+            <Link to="/templates" className="button-secondary w-full sm:w-auto flex items-center gap-2">
               <Download size={18} />
               Télécharger un modèle gratuit
-            </Link>
-            <Link to="/services" className="button-secondary w-full sm:w-auto">
-              Voir nos services
             </Link>
           </div>
         </div>
