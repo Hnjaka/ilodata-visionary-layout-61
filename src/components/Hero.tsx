@@ -48,9 +48,12 @@ const Hero = () => {
           </div>
           
           <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold mb-6 tracking-tight text-white animate-fade-down delay-100">
-            <span className="block">Besoin d'une mise en page professionnelle ?</span>
-            <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-200 to-blue-50">Nous créons votre fichier Word prêt à imprimer ou à publier.</span>
+            Besoin d'une mise en page professionnelle ?
           </h1>
+          
+          <p className="text-xl md:text-2xl text-blue-100 max-w-3xl mx-auto mb-8 animate-fade-down delay-200">
+            Nous créons votre fichier Word prêt à imprimer ou à publier.
+          </p>
           
           <div className="flex flex-col sm:flex-row justify-center items-center gap-4 sm:gap-6 animate-fade-up delay-300">
             <Link to="/services" className="button-primary group flex items-center gap-2 w-full sm:w-auto">
