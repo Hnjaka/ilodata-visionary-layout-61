@@ -6,32 +6,34 @@ import BlogHeader from '@/components/admin/blog/BlogHeader';
 import BlogContent from '@/components/admin/blog/BlogContent';
 import { useBlogData } from '@/hooks/useBlogData';
 import { useAuth } from '@/hooks/useAuth';
+import ProtectedRoute from '@/components/admin/ProtectedRoute';
 
 const AdminBlog = () => {
-  // Utilisation du hook pour récupérer les données du blog
-  const { categories, setCategories, loading, setLoading, refreshData } = useBlogData();
-  const { user } = useAuth();
+  // Use the blog data hook for retrieving data
+  const { categories, setCategories, loading, refreshData } = useBlogData();
 
-  // Load data once on initial render
+  // Load data on initial render
   useEffect(() => {
     refreshData();
-  }, []);
+  }, [refreshData]);
 
   return (
-    <div className="min-h-screen flex flex-col">
-      <Header />
-      
-      <main className="flex-grow container mx-auto px-4 py-12">
-        <BlogHeader categories={categories} onRefresh={refreshData} />
-        <BlogContent 
-          categories={categories} 
-          setCategories={setCategories} 
-          loading={loading} 
-        />
-      </main>
+    <ProtectedRoute requireAdmin>
+      <div className="min-h-screen flex flex-col">
+        <Header />
+        
+        <main className="flex-grow container mx-auto px-4 py-12">
+          <BlogHeader categories={categories} onRefresh={refreshData} />
+          <BlogContent 
+            categories={categories} 
+            setCategories={setCategories} 
+            loading={loading} 
+          />
+        </main>
 
-      <Footer />
-    </div>
+        <Footer />
+      </div>
+    </ProtectedRoute>
   );
 };
 
