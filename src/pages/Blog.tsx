@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
@@ -8,6 +7,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { BlogArticle } from '@/hooks/useBlogData';
 import { Pagination, PaginationContent, PaginationItem, PaginationLink } from '@/components/ui/pagination';
 import { Button } from '@/components/ui/button';
+import { useAuth } from '@/hooks/useAuth';
 
 interface BlogPost extends BlogArticle {
   category_title?: string;
@@ -18,6 +18,7 @@ const Blog: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
   const postsPerPage = 6;
+  const { user, isAdmin } = useAuth();
 
   useEffect(() => {
     const fetchBlogPosts = async () => {
@@ -78,12 +79,16 @@ const Blog: React.FC = () => {
               <h1 className="text-3xl md:text-4xl font-bold mb-2">Blog</h1>
               <p className="text-slate-600">Articles, conseils et inspiration pour vos projets éditoriaux</p>
             </div>
-            <Link to="/admin/blog">
-              <Button variant="outline" className="flex items-center gap-2">
-                <Settings size={18} />
-                Administration
-              </Button>
-            </Link>
+            
+            {/* Admin button only shown to logged-in admins */}
+            {user && isAdmin && (
+              <Link to="/admin/blog">
+                <Button variant="outline" className="flex items-center gap-2">
+                  <Settings size={18} />
+                  Administration
+                </Button>
+              </Link>
+            )}
           </div>
           
           {loading ? (
