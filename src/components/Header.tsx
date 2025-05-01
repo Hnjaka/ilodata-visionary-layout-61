@@ -48,6 +48,9 @@ const Header = () => {
     setIsMobileMenuOpen(false);
   };
 
+  // Debug log to check isAdmin value
+  console.log('Header - User:', user?.email, 'isAdmin:', isAdmin);
+
   return (
     <header 
       className="fixed top-0 left-0 right-0 z-50 py-4 bg-white shadow-sm"
@@ -55,7 +58,7 @@ const Header = () => {
       <div className="container mx-auto px-4 md:px-6">
         <div className="flex items-center justify-between">
           <HeaderLogo />
-          <DesktopNavItems isAdmin={isAdmin && !!user} />
+          <DesktopNavItems isAdmin={!!isAdmin && !!user} />
           <UserAuthButtons 
             user={user} 
             onSignOut={handleSignOut} 
@@ -69,7 +72,7 @@ const Header = () => {
       </div>
 
       <MobileNavItems 
-        isAdmin={isAdmin && !!user}
+        isAdmin={!!isAdmin && !!user}
         isOpen={isMobileMenuOpen}
         user={user}
         onLinkClick={handleNavLinkClick}

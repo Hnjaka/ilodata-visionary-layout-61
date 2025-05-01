@@ -8,6 +8,9 @@ interface DesktopNavItemsProps {
 }
 
 const DesktopNavItems: React.FC<DesktopNavItemsProps> = ({ isAdmin }) => {
+  // Debug log to check isAdmin value in DesktopNavItems
+  console.log('DesktopNavItems - isAdmin:', isAdmin);
+  
   return (
     <nav className="hidden md:flex items-center space-x-8">
       <Link to="/" className="text-slate-800 font-medium hover:text-ilodata-600 transition-colors transform hover:scale-110 duration-200">

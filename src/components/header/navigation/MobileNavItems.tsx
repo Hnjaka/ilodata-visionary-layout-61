@@ -22,6 +22,9 @@ const MobileNavItems: React.FC<MobileNavItemsProps> = ({
 }) => {
   if (!isOpen) return null;
   
+  // Debug log to check isAdmin value in MobileNavItems
+  console.log('MobileNavItems - isAdmin:', isAdmin, 'User:', user?.email);
+  
   const handleLogin = () => {
     console.log("Mobile login button clicked");
     onLoginClick();
@@ -100,7 +103,7 @@ const MobileNavItems: React.FC<MobileNavItemsProps> = ({
           )}
           
           {/* Admin links for mobile */}
-          {user && isAdmin && (
+          {isAdmin && (
             <>
               <div className="py-2 font-medium text-slate-800">
                 Admin:
