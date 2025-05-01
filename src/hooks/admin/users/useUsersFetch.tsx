@@ -2,17 +2,7 @@
 import { useState, useCallback } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
-
-interface UserData {
-  id: string;
-  email: string;
-  first_name?: string | null;
-  last_name?: string | null;
-  is_approved: boolean;
-  role: string;
-  created_at: string;
-  last_sign_in_at?: string | null;
-}
+import { UserData } from './types';
 
 export const useUsersFetch = () => {
   const [loading, setLoading] = useState(false);
@@ -30,8 +20,26 @@ export const useUsersFetch = () => {
       if (error) {
         throw error;
       }
+      
+      // Get the auth users data to merge with profiles
+      const { data: authUsers, error: authError } = await supabase.auth.admin.listUsers();
+      
+      if (authError) {
+        console.warn('Impossible de récupérer les données d\'authentification:', authError);
+        // Continue with profiles data only
+        return data as UserData[];
+      }
+      
+      // Merge profiles with auth data when possible
+      const mergedUsers = data.map(profile => {
+        const authUser = authUsers?.users?.find(u => u.id === profile.id);
+        return {
+          ...profile,
+          last_sign_in_at: authUser?.last_sign_in_at || null
+        } as UserData;
+      });
 
-      return data as UserData[];
+      return mergedUsers;
     } catch (error: any) {
       console.error('Erreur lors de la récupération des utilisateurs:', error);
       toast({

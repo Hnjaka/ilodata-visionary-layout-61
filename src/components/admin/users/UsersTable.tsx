@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { 
   Table, 
   TableBody, 
@@ -50,11 +50,28 @@ const UsersTable: React.FC<UsersTableProps> = ({
   const [selectedUserId, setSelectedUserId] = useState<string | null>(null);
   const [editDialogOpen, setEditDialogOpen] = useState(false);
   const [selectedUser, setSelectedUser] = useState<UserData | null>(null);
+  const [localUsers, setLocalUsers] = useState<UserData[]>(users);
+
+  // Synchroniser l'état local avec les props
+  useEffect(() => {
+    setLocalUsers(users);
+  }, [users]);
 
   const handleApproveClick = async (userId: string) => {
-    await onApprove(userId);
-    // Ne pas appeler onRefresh ici, il sera géré par le parent
-    return true; // Return boolean to match expected type
+    const success = await onApprove(userId);
+    
+    if (success) {
+      // Mettre à jour l'état local pour avoir un feedback instantané
+      setLocalUsers(prevUsers => 
+        prevUsers.map(user => 
+          user.id === userId 
+            ? { ...user, is_approved: true } 
+            : user
+        )
+      );
+    }
+    
+    return success;
   };
 
   const handleDeleteClick = (userId: string) => {
@@ -64,12 +81,18 @@ const UsersTable: React.FC<UsersTableProps> = ({
 
   const handleConfirmDelete = async () => {
     if (selectedUserId) {
-      await onDelete(selectedUserId);
-      // Ne pas appeler onRefresh ici, il sera géré par le parent
-      setDeleteDialogOpen(false);
-      setSelectedUserId(null);
+      const success = await onDelete(selectedUserId);
+      
+      if (success) {
+        // Mettre à jour l'état local pour avoir un feedback instantané
+        setLocalUsers(prevUsers => prevUsers.filter(user => user.id !== selectedUserId));
+        setDeleteDialogOpen(false);
+        setSelectedUserId(null);
+      }
+      
+      return success;
     }
-    return true; // Add return value to match the expected type
+    return false;
   };
 
   const handleEditClick = (user: UserData) => {
@@ -79,7 +102,41 @@ const UsersTable: React.FC<UsersTableProps> = ({
 
   const handleRoleUpdate = async (userId: string, newRole: string) => {
     console.log(`Updating user ${userId} role to: ${newRole}`);
-    return await onUpdateRole(userId, newRole);
+    const success = await onUpdateRole(userId, newRole);
+    
+    if (success) {
+      // Mettre à jour l'état local pour avoir un feedback instantané
+      setLocalUsers(prevUsers => 
+        prevUsers.map(user => 
+          user.id === userId 
+            ? { ...user, role: newRole } 
+            : user
+        )
+      );
+    }
+    
+    return success;
+  };
+
+  const handleProfileUpdate = async (data: { first_name?: string; last_name?: string; email?: string }) => {
+    if (selectedUser) {
+      const success = await onUpdateProfile(selectedUser.id, data);
+      
+      if (success) {
+        // Mettre à jour l'état local pour avoir un feedback instantané
+        setLocalUsers(prevUsers => 
+          prevUsers.map(user => 
+            user.id === selectedUser.id 
+              ? { ...user, ...data } 
+              : user
+          )
+        );
+        setEditDialogOpen(false);
+      }
+      
+      return success;
+    }
+    return false;
   };
 
   const formatDate = (dateStr: string | null | undefined) => {
@@ -101,14 +158,14 @@ const UsersTable: React.FC<UsersTableProps> = ({
           </TableRow>
         </TableHeader>
         <TableBody>
-          {users.length === 0 ? (
+          {localUsers.length === 0 ? (
             <TableRow>
               <TableCell colSpan={6} className="text-center py-8 text-gray-500">
                 Aucun utilisateur trouvé
               </TableCell>
             </TableRow>
           ) : (
-            users.map((user) => (
+            localUsers.map((user) => (
               <TableRow key={user.id}>
                 <TableCell>{user.email}</TableCell>
                 <TableCell>
@@ -153,16 +210,7 @@ const UsersTable: React.FC<UsersTableProps> = ({
           open={editDialogOpen}
           onOpenChange={setEditDialogOpen}
           user={selectedUser}
-          onSave={async (data) => {
-            if (selectedUser) {
-              const success = await onUpdateProfile(selectedUser.id, data);
-              if (success) {
-                setEditDialogOpen(false);
-              }
-              return success;
-            }
-            return false;
-          }}
+          onSave={handleProfileUpdate}
         />
       )}
     </>
