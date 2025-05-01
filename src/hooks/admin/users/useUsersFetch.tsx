@@ -4,6 +4,17 @@ import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import { UserData } from './types';
 
+// Define interface for auth user structure
+interface AuthUser {
+  id: string;
+  last_sign_in_at: string | null;
+  // Add other fields if needed
+}
+
+interface AuthResponse {
+  users?: AuthUser[];
+}
+
 export const useUsersFetch = () => {
   const [loading, setLoading] = useState(false);
   const { toast } = useToast();
