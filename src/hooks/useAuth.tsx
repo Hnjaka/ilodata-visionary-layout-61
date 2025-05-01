@@ -76,30 +76,24 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
   const checkUserStatus = async (userId: string) => {
     try {
-      // Check if user is an admin
-      const { data: adminData, error: adminError } = await supabase.rpc(
-        'is_admin',
-        { user_id: userId }
-      );
+      // Get user profile directly instead of using RPC function
+      const { data: profileData, error: profileError } = await supabase
+        .from('profiles')
+        .select('role, is_approved')
+        .eq('id', userId)
+        .single();
       
-      if (adminError) {
-        console.error("Error checking admin status:", adminError);
-      } else {
-        console.log("Is admin:", adminData);
-        setIsAdmin(adminData);
+      if (profileError) {
+        console.error("Error fetching user profile:", profileError);
+        return;
       }
       
-      // Check if user is approved
-      const { data: approvedData, error: approvedError } = await supabase.rpc(
-        'is_approved',
-        { user_id: userId }
-      );
-      
-      if (approvedError) {
-        console.error("Error checking approval status:", approvedError);
-      } else {
-        console.log("Is approved:", approvedData);
-        setIsApproved(approvedData);
+      if (profileData) {
+        // Case insensitive check for admin role
+        const isUserAdmin = profileData.role?.toLowerCase() === 'admin';
+        console.log("User role:", profileData.role, "Is admin:", isUserAdmin);
+        setIsAdmin(isUserAdmin);
+        setIsApproved(!!profileData.is_approved);
       }
     } catch (error) {
       console.error("Error checking user status:", error);
