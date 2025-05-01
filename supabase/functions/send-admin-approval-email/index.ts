@@ -37,8 +37,9 @@ serve(async (req) => {
       throw new Error("Missing required parameters: userEmail and userId");
     }
 
+    console.log(`Preparing to send approval email for user: ${userEmail} (${userId}) to admin: ${ADMIN_EMAIL}`);
+
     // Create approval token with user ID
-    // In a real app, you might want to encrypt or sign this token
     const approvalToken = btoa(JSON.stringify({ 
       userId, 
       exp: Date.now() + 7 * 24 * 60 * 60 * 1000 // 7 days expiry
@@ -46,6 +47,9 @@ serve(async (req) => {
     
     // Create the approval link
     const approvalLink = `${PROJECT_URL}/functions/v1/approve-user?token=${encodeURIComponent(approvalToken)}`;
+
+    console.log(`Generated approval link: ${approvalLink}`);
+    console.log(`Using Resend API key: ${resendApiKey ? "API key present" : "No API key found"}`);
 
     // Send email to admin
     const { data: emailData, error: emailError } = await resend.emails.send({
@@ -74,7 +78,7 @@ serve(async (req) => {
       throw new Error(`Failed to send admin notification: ${emailError.message}`);
     }
 
-    console.log("Admin notification sent:", emailData);
+    console.log("Admin notification sent successfully:", emailData);
 
     return new Response(
       JSON.stringify({ success: true, message: "Admin notification sent successfully" }),

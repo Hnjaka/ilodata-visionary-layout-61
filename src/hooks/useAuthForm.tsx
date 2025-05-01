@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
@@ -18,6 +17,8 @@ export const useAuthForm = () => {
 
   const notifyAdmin = async (userId: string, userEmail: string) => {
     try {
+      console.log("Notifying admin about new user registration:", { userId, userEmail });
+      
       const { data, error } = await supabase.functions.invoke('send-admin-approval-email', {
         body: { userId, userEmail }
       });
@@ -27,7 +28,7 @@ export const useAuthForm = () => {
         return false;
       }
 
-      console.log("Admin notification sent:", data);
+      console.log("Admin notification response:", data);
       return true;
     } catch (error) {
       console.error("Error calling admin notification function:", error);
@@ -67,8 +68,35 @@ export const useAuthForm = () => {
     setErrorMessage(null);
     
     try {
+      if (email) {
+        // Get user ID from email
+        const { data: { users }, error: usersError } = await supabase.auth.admin.listUsers({
+          filters: {
+            email: email
+          }
+        });
+        
+        if (usersError) {
+          console.error("Error fetching user:", usersError);
+          throw new Error("Impossible de trouver l'utilisateur.");
+        }
+        
+        if (users && users.length > 0) {
+          const userId = users[0].id;
+          const adminNotified = await notifyAdmin(userId, email);
+          
+          if (!adminNotified) {
+            throw new Error("Impossible de notifier l'administrateur. Veuillez réessayer plus tard.");
+          }
+        } else {
+          throw new Error("Utilisateur non trouvé.");
+        }
+      } else {
+        throw new Error("Veuillez entrer votre email avant de demander une nouvelle confirmation.");
+      }
+      
       toast({
-        title: "Information",
+        title: "Demande envoyée",
         description: "Un administrateur a été notifié de votre inscription et examinera votre demande prochainement.",
       });
     } catch (error: any) {
