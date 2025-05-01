@@ -10,43 +10,29 @@ export const useAuthForm = () => {
   const [loading, setLoading] = useState(false);
   const [isSignUp, setIsSignUp] = useState(false);
   const [showForgotPassword, setShowForgotPassword] = useState(false);
-  const [showConfirmationResend, setShowConfirmationResend] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   
   const navigate = useNavigate();
   const { toast } = useToast();
 
-  const handleResendConfirmation = async () => {
-    if (!email) {
-      setErrorMessage("Veuillez saisir votre email pour recevoir un lien de confirmation.");
-      return;
-    }
-
-    setLoading(true);
+  const notifyAdmin = async (userId: string, userEmail: string) => {
     try {
-      const { error } = await supabase.auth.resend({
-        type: 'signup',
-        email,
+      const { data, error } = await supabase.functions.invoke('send-admin-approval-email', {
+        body: { userId, userEmail }
       });
-      
-      if (error) throw error;
-      
-      toast({
-        title: "Email de confirmation envoyé",
-        description: "Veuillez vérifier votre boîte de réception pour confirmer votre email.",
-      });
-      
-      setShowConfirmationResend(false);
-    } catch (error: any) {
-      toast({
-        title: "Erreur",
-        description: error.message || "Impossible d'envoyer l'email de confirmation.",
-        variant: "destructive",
-      });
-    } finally {
-      setLoading(false);
+
+      if (error) {
+        console.error("Error notifying admin:", error);
+        return false;
+      }
+
+      console.log("Admin notification sent:", data);
+      return true;
+    } catch (error) {
+      console.error("Error calling admin notification function:", error);
+      return false;
     }
-  };
+  }
 
   const handleResetPassword = async (resetEmail: string) => {
     setLoading(true);
@@ -79,7 +65,6 @@ export const useAuthForm = () => {
     e.preventDefault();
     setLoading(true);
     setErrorMessage(null);
-    setShowConfirmationResend(false);
     
     try {
       if (isSignUp) {
@@ -94,12 +79,19 @@ export const useAuthForm = () => {
         
         if (error) throw error;
         
+        // Notify admin about the new user
+        if (data.user) {
+          const adminNotified = await notifyAdmin(data.user.id, email);
+          if (!adminNotified) {
+            console.warn("Could not notify admin, but user was created");
+          }
+        }
+        
         toast({
           title: "Inscription réussie",
-          description: "Votre demande a été enregistrée. Un administrateur examinera votre compte.",
+          description: "Votre demande a été enregistrée. Un administrateur examinera votre compte et vous recevrez une confirmation une fois approuvé.",
         });
         
-        setShowConfirmationResend(false);
         setIsSignUp(false);
       } else {
         // Sign in
@@ -127,8 +119,7 @@ export const useAuthForm = () => {
       if (error.message) {
         // Handle specific error messages
         if (error.message.includes("Email not confirmed")) {
-          message = "Votre compte n'a pas encore été approuvé par un administrateur.";
-          setShowConfirmationResend(false);
+          message = "Votre compte n'a pas encore été approuvé par un administrateur. Veuillez patienter.";
         } else if (error.message.includes("Invalid login credentials")) {
           message = "Email ou mot de passe incorrect.";
         } else if (error.message.includes("Email logins are disabled")) {
@@ -147,7 +138,6 @@ export const useAuthForm = () => {
   const toggleSignUp = () => {
     setIsSignUp(!isSignUp);
     setErrorMessage(null);
-    setShowConfirmationResend(false);
     setShowForgotPassword(false);
   };
 
@@ -164,10 +154,8 @@ export const useAuthForm = () => {
     loading,
     isSignUp,
     showForgotPassword,
-    showConfirmationResend,
     errorMessage,
     handleAuth,
-    handleResendConfirmation,
     handleResetPassword,
     toggleSignUp,
     toggleForgotPassword
