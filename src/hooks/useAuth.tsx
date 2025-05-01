@@ -1,155 +1,132 @@
 
-import { useState, useEffect, createContext, useContext, ReactNode } from 'react';
+import React, { createContext, useContext, useEffect, useState } from 'react';
+import { User, Session } from '@supabase/supabase-js';
 import { supabase } from '@/integrations/supabase/client';
-import { Session, User } from '@supabase/supabase-js';
 
 interface AuthContextType {
-  session: Session | null;
   user: User | null;
+  session: Session | null;
   loading: boolean;
   isAdmin: boolean;
   isApproved: boolean;
   signOut: () => Promise<void>;
 }
 
-const AuthContext = createContext<AuthContextType | undefined>(undefined);
+const AuthContext = createContext<AuthContextType>({
+  user: null,
+  session: null, 
+  loading: true,
+  isAdmin: false,
+  isApproved: false,
+  signOut: async () => {},
+});
 
-export function AuthProvider({ children }: { children: ReactNode }) {
-  const [session, setSession] = useState<Session | null>(null);
+export const useAuth = () => {
+  return useContext(AuthContext);
+};
+
+interface AuthProviderProps {
+  children: React.ReactNode;
+}
+
+export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
+  const [session, setSession] = useState<Session | null>(null);
   const [loading, setLoading] = useState(true);
   const [isAdmin, setIsAdmin] = useState(false);
   const [isApproved, setIsApproved] = useState(false);
-  const [permissionsChecked, setPermissionsChecked] = useState(false);
-  const [authChecked, setAuthChecked] = useState(false);
 
-  // Effet #1: Surveillance de l'état d'authentification et configuration initiale
   useEffect(() => {
-    // Set up auth state listener first
+    // Set up auth state listener FIRST
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      (event, newSession) => {
-        if (event === 'SIGNED_OUT') {
-          // Reset all states on sign out
-          setSession(null);
-          setUser(null);
+      (event, session) => {
+        console.log("Auth state changed:", event, session);
+        setSession(session);
+        setUser(session?.user ?? null);
+        
+        // When auth state changes, we'll check the user's admin status and approval status
+        if (session?.user) {
+          checkUserStatus(session.user.id);
+        } else {
           setIsAdmin(false);
           setIsApproved(false);
-          setPermissionsChecked(true);
-          console.log("User signed out, reset all states");
-          return;
-        }
-
-        // Only update session/user if there's a change to avoid loops
-        if (JSON.stringify(newSession?.user) !== JSON.stringify(user)) {
-          console.log("Auth state changed:", event);
-          setSession(newSession);
-          setUser(newSession?.user ?? null);
-          
-          // Reset permission flags when auth state changes
-          if (!newSession?.user) {
-            setIsAdmin(false);
-            setIsApproved(false);
-            setPermissionsChecked(true);
-          } else if (event !== 'TOKEN_REFRESHED') {
-            // Don't re-check permissions on token refresh
-            setPermissionsChecked(false);
-          }
         }
       }
     );
 
-    // Initial session check
-    const checkInitialSession = async () => {
-      if (authChecked) return;
-
-      const { data: { session: initialSession } } = await supabase.auth.getSession();
-      console.log("Initial session check:", initialSession ? "Session exists" : "No session");
+    // THEN check for existing session
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      console.log("Got existing session:", session);
+      setSession(session);
+      setUser(session?.user ?? null);
       
-      setSession(initialSession);
-      setUser(initialSession?.user ?? null);
-      
-      if (!initialSession?.user) {
-        setIsAdmin(false);
-        setIsApproved(false);
-        setPermissionsChecked(true);
+      if (session?.user) {
+        checkUserStatus(session.user.id);
       }
-      
       setLoading(false);
-      setAuthChecked(true);
-    };
-
-    checkInitialSession();
+    }).catch((error) => {
+      console.error("Error getting session:", error);
+      setLoading(false);
+    });
 
     return () => {
       subscription.unsubscribe();
     };
-  }, [authChecked, user]);
+  }, []);
 
-  // Effet #2: Vérification des autorisations utilisateur (séparé pour éviter les boucles)
-  useEffect(() => {
-    const checkUserPermissions = async () => {
-      // Ne vérifier les autorisations que si nous avons un utilisateur et que ce n'est pas déjà vérifié
-      if (user && !permissionsChecked) {
-        try {
-          console.log("Checking permissions for user:", user.id);
-          
-          // Check if user is admin
-          const { data: adminData, error: adminError } = await supabase
-            .rpc('is_admin', { user_id: user.id });
-            
-          if (!adminError) {
-            console.log("Admin check result:", adminData);
-            setIsAdmin(adminData || false);
-          }
-
-          // Check if user is approved
-          const { data: approvedData, error: approvedError } = await supabase
-            .rpc('is_approved', { user_id: user.id });
-            
-          if (!approvedError) {
-            console.log("Approved check result:", approvedData);
-            setIsApproved(approvedData || false);
-          }
-          
-          setPermissionsChecked(true);
-        } catch (error) {
-          console.error("Error checking permissions:", error);
-          setIsAdmin(false);
-          setIsApproved(false);
-          setPermissionsChecked(true);
-        }
+  const checkUserStatus = async (userId: string) => {
+    try {
+      // Check if user is an admin
+      const { data: adminData, error: adminError } = await supabase.rpc(
+        'is_admin',
+        { user_id: userId }
+      );
+      
+      if (adminError) {
+        console.error("Error checking admin status:", adminError);
+      } else {
+        console.log("Is admin:", adminData);
+        setIsAdmin(adminData);
       }
-    };
-
-    checkUserPermissions();
-  }, [user, permissionsChecked]);
-
-  // Sign out function
-  const signOut = async () => {
-    await supabase.auth.signOut();
+      
+      // Check if user is approved
+      const { data: approvedData, error: approvedError } = await supabase.rpc(
+        'is_approved',
+        { user_id: userId }
+      );
+      
+      if (approvedError) {
+        console.error("Error checking approval status:", approvedError);
+      } else {
+        console.log("Is approved:", approvedData);
+        setIsApproved(approvedData);
+      }
+    } catch (error) {
+      console.error("Error checking user status:", error);
+    }
   };
 
-  // Memoize the context value to prevent unnecessary re-renders
-  const contextValue = {
-    session,
+  const signOut = async () => {
+    try {
+      await supabase.auth.signOut();
+      setUser(null);
+      setSession(null);
+      setIsAdmin(false);
+      setIsApproved(false);
+    } catch (error) {
+      console.error("Error signing out:", error);
+      throw error;
+    }
+  };
+
+  const value = {
     user,
-    loading: loading || (user && !permissionsChecked), // Consider loading until permissions are checked
+    session,
+    loading,
     isAdmin,
     isApproved,
-    signOut
+    signOut,
   };
 
-  return (
-    <AuthContext.Provider value={contextValue}>
-      {children}
-    </AuthContext.Provider>
-  );
-}
-
-export function useAuth() {
-  const context = useContext(AuthContext);
-  if (context === undefined) {
-    throw new Error('useAuth must be used within an AuthProvider');
-  }
-  return context;
-}
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
+};

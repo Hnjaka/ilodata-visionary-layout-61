@@ -96,7 +96,7 @@ export const useAuthForm = () => {
         
         toast({
           title: "Inscription réussie",
-          description: "Votre compte a été créé. Vous devez confirmer votre email avant de pouvoir vous connecter.",
+          description: "Votre demande a été enregistrée. Un administrateur examinera votre compte.",
         });
         
         setShowConfirmationResend(false);
@@ -127,8 +127,8 @@ export const useAuthForm = () => {
       if (error.message) {
         // Handle specific error messages
         if (error.message.includes("Email not confirmed")) {
-          message = "Votre email n'a pas été confirmé. Veuillez vérifier votre boîte de réception.";
-          setShowConfirmationResend(true);
+          message = "Votre compte n'a pas encore été approuvé par un administrateur.";
+          setShowConfirmationResend(false);
         } else if (error.message.includes("Invalid login credentials")) {
           message = "Email ou mot de passe incorrect.";
         } else if (error.message.includes("Email logins are disabled")) {
