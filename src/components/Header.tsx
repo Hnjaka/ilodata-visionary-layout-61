@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/hooks/useAuth';
 import { useToast } from '@/hooks/use-toast';
@@ -27,9 +27,6 @@ const Header = () => {
       
       // La notification est maintenant gérée dans le composant UserAuthButtons
       console.log("Sign out successful from Header component");
-      
-      // Forcer une mise à jour de l'interface après la déconnexion
-      navigate('/', { replace: true });
     } catch (error) {
       console.error("Erreur lors de la déconnexion:", error);
       toast({

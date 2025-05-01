@@ -2,6 +2,7 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { LogIn, LogOut, User } from 'lucide-react';
+import { useToast } from '@/hooks/use-toast';
 
 interface MobileNavItemsProps {
   isAdmin: boolean;
@@ -9,7 +10,7 @@ interface MobileNavItemsProps {
   user: any;
   onLinkClick: () => void;
   onLoginClick: () => void;
-  onSignOut: () => void;
+  onSignOut: () => Promise<void>;
 }
 
 const MobileNavItems: React.FC<MobileNavItemsProps> = ({ 
@@ -23,6 +24,7 @@ const MobileNavItems: React.FC<MobileNavItemsProps> = ({
   if (!isOpen) return null;
   
   const navigate = useNavigate();
+  const { toast } = useToast();
   
   // Debug log to check isAdmin value in MobileNavItems
   console.log('MobileNavItems - isAdmin:', isAdmin, 'User:', user?.email);
@@ -37,9 +39,19 @@ const MobileNavItems: React.FC<MobileNavItemsProps> = ({
     try {
       console.log("Mobile logout button clicked");
       await onSignOut();
+      toast({
+        title: "Déconnexion réussie",
+        description: "Vous avez été déconnecté avec succès."
+      });
+      navigate('/', { replace: true });
       onLinkClick(); // Fermer le menu après clic
     } catch (error) {
       console.error("Error during sign out:", error);
+      toast({
+        title: "Erreur de déconnexion",
+        description: "Un problème est survenu lors de la déconnexion.",
+        variant: "destructive"
+      });
     }
   };
   

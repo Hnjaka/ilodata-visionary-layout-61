@@ -127,11 +127,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       }
       
       console.log("Sign out successful in useAuth hook");
-      // Mettre à jour l'état immédiatement après la déconnexion réussie
-      setUser(null);
-      setSession(null);
-      setIsAdmin(false);
-      setIsApproved(false);
+      // Ne pas mettre à jour l'état ici, l'événement onAuthStateChange s'en chargera
     } catch (error) {
       console.error("Error signing out:", error);
       throw error;
