@@ -48,9 +48,11 @@ export const useUsersAdmin = () => {
   const approveUser = useCallback(async (userId: string) => {
     setLoading(true);
     try {
-      const { error } = await supabase.functions.invoke('approve-user', {
-        body: { userId }
-      });
+      // Correction: Au lieu d'utiliser la fonction Edge, mettre directement à jour la table des profils
+      const { error } = await supabase
+        .from('profiles')
+        .update({ is_approved: true })
+        .eq('id', userId);
 
       if (error) throw error;
 
