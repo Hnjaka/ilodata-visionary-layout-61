@@ -87,7 +87,7 @@ const MobileNavItems: React.FC<MobileNavItemsProps> = ({
             Services
           </Link>
           <Link 
-            to="/templates" 
+            to="/modeles" 
             className="text-green-600 font-medium hover:text-green-700 transition-colors py-2 transform hover:scale-105 duration-200"
             onClick={onLinkClick}
           >

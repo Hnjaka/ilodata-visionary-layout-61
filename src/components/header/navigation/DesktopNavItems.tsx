@@ -23,7 +23,7 @@ const DesktopNavItems: React.FC<DesktopNavItemsProps> = ({ isAdmin }) => {
         Services
       </Link>
       <Link 
-        to="/templates" 
+        to="/modeles" 
         className="text-green-600 font-medium hover:text-green-700 transition-colors transform hover:scale-110 duration-200"
       >
         Modèles
