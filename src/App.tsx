@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
@@ -17,6 +18,7 @@ import Templates from "./pages/Templates";
 import AdminTemplates from "./pages/AdminTemplates";
 import AdminGuides from "./pages/AdminGuides";
 import AdminBlog from "./pages/AdminBlog";
+import AdminUsers from "./pages/AdminUsers";
 import AddTemplate from "./pages/AddTemplate";
 import EditTemplate from "./pages/EditTemplate";
 import ArticleDisplay from "./pages/articles/ArticleDisplay";
@@ -64,6 +66,11 @@ const App = () => {
                 <Route path="/admin/blog" element={
                   <ProtectedRoute>
                     <AdminBlog />
+                  </ProtectedRoute>
+                } />
+                <Route path="/admin/users" element={
+                  <ProtectedRoute>
+                    <AdminUsers />
                   </ProtectedRoute>
                 } />
                 <Route path="/admin/templates/new" element={

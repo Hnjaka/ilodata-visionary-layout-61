@@ -27,25 +27,20 @@ serve(async (req) => {
       );
     }
 
-    // Create a Supabase client with the user's JWT
-    const supabaseClient = createClient(
+    // Create a Supabase client with admin privileges
+    const supabaseAdmin = createClient(
       Deno.env.get("SUPABASE_URL") ?? "",
-      Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? "",
-      {
-        global: {
-          headers: {
-            Authorization: authHeader,
-          },
-        },
-      }
+      Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? ""
     );
 
-    // Get the authenticated user
-    const { data: { user }, error: userError } = await supabaseClient.auth.getUser();
+    // Get the current user from the token
+    const { data: { user: adminUser }, error: authError } = await supabaseAdmin.auth.getUser(
+      authHeader.replace('Bearer ', '')
+    );
     
-    if (userError || !user) {
+    if (authError || !adminUser) {
       return new Response(
-        JSON.stringify({ error: "Failed to authenticate user" }),
+        JSON.stringify({ error: "Failed to authenticate admin user" }),
         { 
           status: 401,
           headers: { ...corsHeaders, "Content-Type": "application/json" }
@@ -53,13 +48,37 @@ serve(async (req) => {
       );
     }
     
-    // Use the admin API to delete the user
-    const adminClient = createClient(
-      Deno.env.get("SUPABASE_URL") ?? "",
-      Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? ""
+    // Check if the current user is an admin
+    const { data: isAdmin, error: adminCheckError } = await supabaseAdmin.rpc(
+      'is_admin',
+      { user_id: adminUser.id }
     );
     
-    const { error: deleteError } = await adminClient.auth.admin.deleteUser(user.id);
+    if (adminCheckError || !isAdmin) {
+      return new Response(
+        JSON.stringify({ error: "Unauthorized. Admin privileges required." }),
+        { 
+          status: 403,
+          headers: { ...corsHeaders, "Content-Type": "application/json" }
+        }
+      );
+    }
+
+    // Get the user ID to delete from the request body
+    const { userId } = await req.json();
+    
+    if (!userId) {
+      return new Response(
+        JSON.stringify({ error: "User ID is required" }),
+        { 
+          status: 400,
+          headers: { ...corsHeaders, "Content-Type": "application/json" }
+        }
+      );
+    }
+    
+    // Delete the user using admin privileges
+    const { error: deleteError } = await supabaseAdmin.auth.admin.deleteUser(userId);
     
     if (deleteError) {
       throw deleteError;
