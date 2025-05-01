@@ -8,6 +8,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
+import { Badge } from '@/components/ui/badge';
 import { User } from '@supabase/supabase-js';
 
 const profileSchema = z.object({
@@ -35,6 +36,7 @@ interface ProfileType {
 
 const ProfileForm: React.FC<ProfileFormProps> = ({ user }) => {
   const [isLoading, setIsLoading] = useState(true);
+  const [userRole, setUserRole] = useState<string>('');
   const { updateProfile, fetchProfile, loading: updateLoading } = useProfileManagement();
   
   const form = useForm<ProfileFormValues>({
@@ -57,6 +59,9 @@ const ProfileForm: React.FC<ProfileFormProps> = ({ user }) => {
           lastName: profile?.last_name || '',
         });
         
+        // Sauvegarde du rôle pour l'affichage
+        setUserRole(profile?.role || 'user');
+        
         setIsLoading(false);
       }
     };
@@ -71,6 +76,24 @@ const ProfileForm: React.FC<ProfileFormProps> = ({ user }) => {
         firstName: data.firstName,
         lastName: data.lastName,
       });
+    }
+  };
+
+  // Fonction pour formater le texte du rôle (première lettre en majuscule)
+  const formatRoleText = (role: string) => {
+    return role.charAt(0).toUpperCase() + role.slice(1).toLowerCase();
+  };
+
+  // Fonction qui retourne la couleur du badge en fonction du rôle
+  const getRoleBadgeColor = (role: string) => {
+    const roleLower = role.toLowerCase();
+    switch (roleLower) {
+      case 'admin':
+        return "bg-red-500";
+      case 'moderator':
+        return "bg-blue-500";
+      default:
+        return "bg-gray-500";
     }
   };
 
@@ -138,6 +161,16 @@ const ProfileForm: React.FC<ProfileFormProps> = ({ user }) => {
                 </FormItem>
               )}
             />
+            
+            {/* Affichage du rôle en lecture seule */}
+            <div className="pt-2">
+              <FormLabel>Rôle</FormLabel>
+              <div className="flex items-center h-10 mt-1">
+                <Badge className={getRoleBadgeColor(userRole)}>
+                  {formatRoleText(userRole)}
+                </Badge>
+              </div>
+            </div>
           </CardContent>
           
           <CardFooter>
