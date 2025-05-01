@@ -48,13 +48,20 @@ export const useUsersAdmin = () => {
   const approveUser = useCallback(async (userId: string) => {
     setLoading(true);
     try {
-      // Correction: Au lieu d'utiliser la fonction Edge, mettre directement à jour la table des profils
-      const { error } = await supabase
+      // 1. Mettre à jour le champ is_approved dans la table profiles
+      const { error: profileError } = await supabase
         .from('profiles')
         .update({ is_approved: true })
         .eq('id', userId);
 
-      if (error) throw error;
+      if (profileError) throw profileError;
+
+      // 2. Confirmer l'email de l'utilisateur dans auth.users via la fonction Edge
+      const { error: confirmError } = await supabase.functions.invoke('approve-user', {
+        body: { userId }
+      });
+
+      if (confirmError) throw confirmError;
 
       toast({
         title: 'Succès',
