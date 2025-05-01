@@ -15,11 +15,13 @@ export const useConfirmation = () => {
         throw new Error("Veuillez entrer votre email avant de demander une nouvelle confirmation.");
       }
       
-      // Find the user by email
+      // Find the user by email using the correct parameters
       const { data, error: usersError } = await supabase.auth.admin.listUsers({
         page: 1,
         perPage: 1,
-        query: email
+        filter: {
+          email: email
+        }
       });
       
       if (usersError) {

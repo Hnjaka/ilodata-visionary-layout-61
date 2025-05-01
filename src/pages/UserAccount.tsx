@@ -7,6 +7,8 @@ import { useAuth } from '@/hooks/useAuth';
 import DeleteAccountDialog from '@/components/auth/DeleteAccountDialog';
 import { Button } from '@/components/ui/button';
 import { LogOut } from 'lucide-react';
+import ProfileForm from '@/components/auth/ProfileForm';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
 const UserAccount = () => {
   const { user, loading, signOut } = useAuth();
@@ -29,27 +31,38 @@ const UserAccount = () => {
               <p>Chargement...</p>
             ) : (
               <>
-                <div className="space-y-4 mb-8">
-                  <div className="p-4 border rounded">
-                    <h2 className="text-lg font-medium mb-2">Informations de base</h2>
-                    <p><strong>Email :</strong> {user?.email}</p>
-                  </div>
-                </div>
-                
-                <div className="border-t pt-6">
-                  <h2 className="text-lg font-medium mb-4">Actions du compte</h2>
-                  <div className="flex flex-wrap gap-4">
-                    <Button
-                      variant="outline"
-                      onClick={signOut}
-                    >
-                      <LogOut className="h-4 w-4 mr-2" />
-                      Déconnexion
-                    </Button>
+                <Tabs defaultValue="profile" className="space-y-4">
+                  <TabsList>
+                    <TabsTrigger value="profile">Profil</TabsTrigger>
+                    <TabsTrigger value="account">Compte</TabsTrigger>
+                  </TabsList>
+                  
+                  <TabsContent value="profile" className="space-y-4">
+                    {user && <ProfileForm user={user} />}
+                  </TabsContent>
+                  
+                  <TabsContent value="account" className="space-y-4">
+                    <div className="p-4 border rounded">
+                      <h2 className="text-lg font-medium mb-2">Informations de base</h2>
+                      <p><strong>Email :</strong> {user?.email}</p>
+                    </div>
                     
-                    <DeleteAccountDialog />
-                  </div>
-                </div>
+                    <div className="border-t pt-6">
+                      <h2 className="text-lg font-medium mb-4">Actions du compte</h2>
+                      <div className="flex flex-wrap gap-4">
+                        <Button
+                          variant="outline"
+                          onClick={signOut}
+                        >
+                          <LogOut className="h-4 w-4 mr-2" />
+                          Déconnexion
+                        </Button>
+                        
+                        <DeleteAccountDialog />
+                      </div>
+                    </div>
+                  </TabsContent>
+                </Tabs>
               </>
             )}
           </div>
