@@ -12,10 +12,26 @@ const AboutTestimonials = () => {
               <MessageSquare className="h-6 w-6 text-ilodata-600" />
             </div>
           </div>
-          <h2 className="section-title text-center">Ce que disent nos clients</h2>
+          <h2 className="section-title text-center">Ce que nos clients disent de nous</h2>
+          <p className="section-subtitle">(et bientôt vous aussi ?)</p>
         </div>
 
-        <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+        <div className="max-w-4xl mx-auto prose">
+          <p className="text-lg text-slate-700 mb-6">
+            Nous avons déjà eu la chance de travailler avec des auteurs, des formateurs, des petites entreprises et 
+            même des associations qui cherchaient à gagner en impact.
+          </p>
+          <p className="text-lg text-slate-700 mb-6">
+            Leurs documents ont pris vie. Leurs messages ont gagné en lisibilité. Et leurs retours nous donnent chaque jour
+            envie de continuer.
+          </p>
+          <p className="text-lg text-slate-700 mb-8">
+            Très bientôt, vous retrouverez ici leurs témoignages et quelques exemples concrets de notre travail. 
+            On a hâte de vous les partager !
+          </p>
+        </div>
+
+        <div className="mt-12 grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
           <div className="bg-white p-8 rounded-lg shadow-md relative">
             <div className="text-5xl text-ilodata-200 absolute top-4 left-4">"</div>
             <div className="relative z-10">
@@ -60,26 +76,6 @@ const AboutTestimonials = () => {
                 </div>
               </div>
             </div>
-          </div>
-        </div>
-
-        <div className="mt-16 text-center">
-          <div className="flex justify-center space-x-6">
-            <img 
-              src="https://images.unsplash.com/photo-1579869847557-1f67382cc158?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=764&q=80" 
-              alt="Logo partenaire" 
-              className="h-12 opacity-80 grayscale hover:grayscale-0 hover:opacity-100 transition-all"
-            />
-            <img 
-              src="https://images.unsplash.com/photo-1599305445671-ac291c95aaa9?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1169&q=80" 
-              alt="Logo partenaire" 
-              className="h-12 opacity-80 grayscale hover:grayscale-0 hover:opacity-100 transition-all"
-            />
-            <img 
-              src="https://images.unsplash.com/photo-1541963463532-d68292c34b19?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=688&q=80" 
-              alt="Logo partenaire" 
-              className="h-12 opacity-80 grayscale hover:grayscale-0 hover:opacity-100 transition-all"
-            />
           </div>
         </div>
       </div>

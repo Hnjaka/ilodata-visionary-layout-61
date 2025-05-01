@@ -10,15 +10,14 @@ const AboutHero = () => {
         <div className="grid md:grid-cols-2 gap-8 items-center">
           <div className="animate-fade-right">
             <h1 className="text-4xl md:text-5xl font-bold mb-6 text-white">
-              À propos d'ILODATA : votre partenaire en mise en page de livre
+              À propos d'Ilodata
             </h1>
             <p className="text-xl text-blue-100 mb-8">
-              Depuis 2009, ILODATA accompagne les auteurs indépendants et les éditeurs dans la création de livres professionnels. 
-              Découvrez notre histoire, notre équipe et nos valeurs.
+              Des documents soignés, pensés pour être lus et appréciés
             </p>
             <div className="flex flex-col sm:flex-row gap-4">
-              <Link to="#team" className="button-primary">
-                Découvrir notre équipe
+              <Link to="#mission" className="button-primary">
+                Découvrir notre mission
               </Link>
               <Link to="/contact" className="button-secondary">
                 Demandez un devis

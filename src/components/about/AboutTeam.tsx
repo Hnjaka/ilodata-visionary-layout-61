@@ -12,55 +12,50 @@ const AboutTeam = () => {
               <Users className="h-6 w-6 text-ilodata-600" />
             </div>
           </div>
-          <h2 className="section-title text-center">Une équipe dédiée à votre réussite</h2>
+          <h2 className="section-title">Une petite équipe, proche de vous</h2>
+          <p className="section-subtitle">
+            Passionnée par les beaux documents bien structurés
+          </p>
         </div>
 
-        <div className="grid md:grid-cols-2 gap-12 items-center">
-          <div className="order-2 md:order-1">
-            <p className="text-lg text-slate-700 mb-6">
-              Notre équipe est composée d'une quinzaine d'employés en CDI, tous francophones et passionnés par leur travail. 
-              Nous sommes organisés en journées de 8 heures (8h à 16h30, heure de Madagascar), ce qui nous permet de couvrir 
-              80% des heures de bureau en France (9h à 15h30). Cette proximité horaire facilite une communication directe et 
-              efficace avec nos clients en France et en Europe.
-            </p>
-            <div className="mt-8 p-6 bg-white rounded-lg shadow-md">
-              <h3 className="text-xl font-semibold mb-3 text-ilodata-600">Nos points forts</h3>
-              <ul className="space-y-2">
-                <li className="flex items-start gap-3">
-                  <div className="rounded-full bg-ilodata-100 p-1 mt-1">
-                    <svg className="w-4 h-4 text-ilodata-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                    </svg>
-                  </div>
-                  <span>15 employés francophones en CDI</span>
-                </li>
-                <li className="flex items-start gap-3">
-                  <div className="rounded-full bg-ilodata-100 p-1 mt-1">
-                    <svg className="w-4 h-4 text-ilodata-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                    </svg>
-                  </div>
-                  <span>Disponibilité de 8h à 16h30 (heure de Madagascar)</span>
-                </li>
-                <li className="flex items-start gap-3">
-                  <div className="rounded-full bg-ilodata-100 p-1 mt-1">
-                    <svg className="w-4 h-4 text-ilodata-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                    </svg>
-                  </div>
-                  <span>Couverture de 80% des heures de bureau en France</span>
-                </li>
-              </ul>
+        <div className="grid md:grid-cols-2 gap-10 items-center">
+          <div className="order-2 md:order-1 relative">
+            <div className="absolute -top-4 -right-4 w-24 h-24 bg-blue-100 rounded-lg"></div>
+            <div className="absolute -bottom-4 -left-4 w-32 h-32 bg-ilodata-100 rounded-lg"></div>
+            <div className="glass-card overflow-hidden relative z-10">
+              <img 
+                src="https://images.unsplash.com/photo-1600880292203-757bb62b4baf?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80" 
+                alt="L'équipe Ilodata au travail" 
+                className="w-full h-auto rounded-lg"
+              />
             </div>
           </div>
-          <div className="order-1 md:order-2 relative">
-            <div className="absolute -top-4 -left-4 w-32 h-32 bg-ilodata-100 rounded-lg -z-10"></div>
-            <div className="absolute -bottom-4 -right-4 w-32 h-32 bg-blue-100 rounded-lg -z-10"></div>
-            <img 
-              src="https://images.unsplash.com/photo-1600880292203-757bb62b4baf?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80" 
-              alt="L'équipe d'ILODATA" 
-              className="w-full h-auto object-cover rounded-lg shadow-xl relative z-10"
-            />
+          
+          <div className="order-1 md:order-2 prose max-w-none">
+            <p className="text-lg text-slate-700 mb-6">
+              Derrière Ilodata, c'est une équipe à taille humaine, passionnée par les beaux documents bien structurés.
+              Nous passons nos journées à transformer des fichiers bruts en documents clairs, élégants, cohérents… 
+              et agréables à lire.
+            </p>
+            <p className="text-lg text-slate-700 mb-4">On aime :</p>
+            <ul className="space-y-2 mb-6">
+              <li className="flex items-start">
+                <span className="text-ilodata-600 mr-2">•</span>
+                <span>les belles marges bien alignées,</span>
+              </li>
+              <li className="flex items-start">
+                <span className="text-ilodata-600 mr-2">•</span>
+                <span>les titres qui respirent,</span>
+              </li>
+              <li className="flex items-start">
+                <span className="text-ilodata-600 mr-2">•</span>
+                <span>et les fichiers qu'on a plaisir à ouvrir.</span>
+              </li>
+            </ul>
+            <p className="text-lg text-slate-700">
+              Mais surtout, on aime travailler avec nos clients pour comprendre leurs besoins, leurs idées, 
+              et leur rendre un document qui les rend fiers.
+            </p>
           </div>
         </div>
       </div>
