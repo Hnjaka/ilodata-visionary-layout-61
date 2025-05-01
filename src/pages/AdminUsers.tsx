@@ -2,21 +2,11 @@
 import React, { useEffect, useState } from 'react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
-import { useUsersAdmin } from '@/hooks/auth/useUsersAdmin';
+import { useUsersAdmin, UserData } from '@/hooks/admin/users/useUsersAdmin';
 import UsersHeader from '@/components/admin/users/UsersHeader';
 import UsersTable from '@/components/admin/users/UsersTable';
 import ProtectedRoute from '@/components/admin/ProtectedRoute';
 import LoadingSpinner from '@/components/LoadingSpinner';
-
-interface UserData {
-  id: string;
-  email: string;
-  first_name?: string | null;
-  last_name?: string | null;
-  is_approved: boolean;
-  role: string;
-  created_at: string;
-}
 
 const AdminUsers = () => {
   const [users, setUsers] = useState<UserData[]>([]);

@@ -154,10 +154,13 @@ const UsersTable: React.FC<UsersTableProps> = ({
           user={selectedUser}
           onSave={async (data) => {
             if (selectedUser) {
-              await onUpdateProfile(selectedUser.id, data);
-              setEditDialogOpen(false);
-              // Ne pas appeler onRefresh ici, il sera géré par le parent
+              const success = await onUpdateProfile(selectedUser.id, data);
+              if (success) {
+                setEditDialogOpen(false);
+              }
+              return success;
             }
+            return false;
           }}
         />
       )}
