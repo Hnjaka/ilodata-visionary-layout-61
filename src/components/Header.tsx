@@ -3,7 +3,6 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/hooks/useAuth';
 import { useToast } from '@/hooks/use-toast';
-import { cn } from '@/lib/utils';
 
 // Component imports
 import HeaderLogo from './header/HeaderLogo';
@@ -17,6 +16,9 @@ const Header = () => {
   const { user, isAdmin, signOut } = useAuth();
   const { toast } = useToast();
   const navigate = useNavigate();
+
+  // Calcul explicite du statut d'administrateur
+  const showAdminMenu = Boolean(isAdmin && user);
 
   const handleSignOut = async () => {
     try {
@@ -49,7 +51,7 @@ const Header = () => {
   };
 
   // Debug log to check isAdmin value
-  console.log('Header - User:', user?.email, 'isAdmin:', isAdmin);
+  console.log('Header - User:', user?.email, 'isAdmin:', isAdmin, 'showAdminMenu:', showAdminMenu);
 
   return (
     <header 
@@ -58,7 +60,7 @@ const Header = () => {
       <div className="container mx-auto px-4 md:px-6">
         <div className="flex items-center justify-between">
           <HeaderLogo />
-          <DesktopNavItems isAdmin={!!isAdmin && !!user} />
+          <DesktopNavItems isAdmin={showAdminMenu} />
           <UserAuthButtons 
             user={user} 
             onSignOut={handleSignOut} 
@@ -72,7 +74,7 @@ const Header = () => {
       </div>
 
       <MobileNavItems 
-        isAdmin={!!isAdmin && !!user}
+        isAdmin={showAdminMenu}
         isOpen={isMobileMenuOpen}
         user={user}
         onLinkClick={handleNavLinkClick}

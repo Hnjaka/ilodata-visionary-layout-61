@@ -36,44 +36,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [isAdmin, setIsAdmin] = useState(false);
   const [isApproved, setIsApproved] = useState(false);
 
-  useEffect(() => {
-    // Set up auth state listener FIRST
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      (event, session) => {
-        console.log("Auth state changed:", event, session);
-        setSession(session);
-        setUser(session?.user ?? null);
-        
-        // When auth state changes, we'll check the user's admin status and approval status
-        if (session?.user) {
-          checkUserStatus(session.user.id);
-        } else {
-          setIsAdmin(false);
-          setIsApproved(false);
-        }
-      }
-    );
-
-    // THEN check for existing session
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      console.log("Got existing session:", session);
-      setSession(session);
-      setUser(session?.user ?? null);
-      
-      if (session?.user) {
-        checkUserStatus(session.user.id);
-      }
-      setLoading(false);
-    }).catch((error) => {
-      console.error("Error getting session:", error);
-      setLoading(false);
-    });
-
-    return () => {
-      subscription.unsubscribe();
-    };
-  }, []);
-
+  // Fonction séparée pour vérifier le statut de l'utilisateur
   const checkUserStatus = async (userId: string) => {
     try {
       // Get user profile directly instead of using RPC function
@@ -85,22 +48,73 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       
       if (profileError) {
         console.error("Error fetching user profile:", profileError);
-        return;
+        return { isAdmin: false, isApproved: false };
       }
       
       if (profileData) {
-        // Amélioration: Check role case-insensitive and handle null/undefined cases
+        // Normalize role for case-insensitive comparison
         const userRole = (profileData.role || '').toLowerCase();
-        console.log("User role:", profileData.role, "Is admin:", userRole === 'admin');
+        const isUserAdmin = userRole === 'admin';
+        const isUserApproved = !!profileData.is_approved;
         
-        // Set admin status based on normalized role comparison
-        setIsAdmin(userRole === 'admin');
-        setIsApproved(!!profileData.is_approved);
+        console.log("User role:", profileData.role, "Is admin:", isUserAdmin);
+        
+        return { isAdmin: isUserAdmin, isApproved: isUserApproved };
       }
+      
+      return { isAdmin: false, isApproved: false };
     } catch (error) {
       console.error("Error checking user status:", error);
+      return { isAdmin: false, isApproved: false };
     }
   };
+
+  useEffect(() => {
+    // Configure l'écouteur d'état d'authentification
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(
+      async (event, session) => {
+        console.log("Auth state changed:", event, session);
+        setSession(session);
+        setUser(session?.user ?? null);
+        
+        if (session?.user) {
+          const { isAdmin: userIsAdmin, isApproved: userIsApproved } = await checkUserStatus(session.user.id);
+          setIsAdmin(userIsAdmin);
+          setIsApproved(userIsApproved);
+        } else {
+          setIsAdmin(false);
+          setIsApproved(false);
+        }
+      }
+    );
+
+    // Vérifie la session existante au chargement
+    const initializeAuth = async () => {
+      try {
+        const { data: { session } } = await supabase.auth.getSession();
+        
+        console.log("Got existing session:", session);
+        setSession(session);
+        setUser(session?.user ?? null);
+        
+        if (session?.user) {
+          const { isAdmin: userIsAdmin, isApproved: userIsApproved } = await checkUserStatus(session.user.id);
+          setIsAdmin(userIsAdmin);
+          setIsApproved(userIsApproved);
+        }
+      } catch (error) {
+        console.error("Error getting session:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    initializeAuth();
+
+    return () => {
+      subscription.unsubscribe();
+    };
+  }, []);
 
   const signOut = async () => {
     try {
