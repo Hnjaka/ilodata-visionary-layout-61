@@ -57,7 +57,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         const isUserAdmin = userRole === 'admin';
         const isUserApproved = !!profileData.is_approved;
         
-        console.log("User role:", profileData.role, "Is admin:", isUserAdmin);
+        console.log("User role from database:", profileData.role, "Is admin:", isUserAdmin);
         
         return { isAdmin: isUserAdmin, isApproved: isUserApproved };
       }
