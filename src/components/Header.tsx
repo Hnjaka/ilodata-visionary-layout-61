@@ -22,12 +22,14 @@ const Header = () => {
 
   const handleSignOut = async () => {
     try {
+      console.log("Attempting to sign out from Header component");
       await signOut();
       toast({
         title: "Déconnexion réussie",
         description: "Vous avez été déconnecté avec succès."
       });
     } catch (error) {
+      console.error("Erreur lors de la déconnexion:", error);
       toast({
         title: "Erreur",
         description: "Un problème est survenu lors de la déconnexion.",

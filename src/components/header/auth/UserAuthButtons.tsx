@@ -15,6 +15,11 @@ const UserAuthButtons: React.FC<UserAuthButtonsProps> = ({ user, onSignOut, onLo
     onLogin();
   };
 
+  const handleSignOut = async () => {
+    console.log("Logout button clicked in UserAuthButtons");
+    await onSignOut();
+  };
+
   return (
     <div className="hidden md:flex items-center space-x-4">
       {user ? (
@@ -26,8 +31,9 @@ const UserAuthButtons: React.FC<UserAuthButtonsProps> = ({ user, onSignOut, onLo
             <User className="h-4 w-4 mr-1" /> Mon compte
           </Link>
           <button 
-            onClick={onSignOut}
+            onClick={handleSignOut}
             className="flex items-center text-slate-700 hover:text-ilodata-600 transition-colors"
+            type="button"
           >
             <LogOut className="h-4 w-4 mr-1" /> Déconnexion
           </button>
