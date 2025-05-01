@@ -80,9 +80,8 @@ const Models = () => {
     <div className="min-h-screen flex flex-col">
       <Header />
       <HeroSection />
-      <FeaturesSection />
       
-      {/* Featured Templates Section */}
+      {/* Featured Templates Section - moved above FeaturesSection */}
       <section id="models" className="py-16 md:py-24 bg-gradient-to-b from-white to-blue-50">
         <div className="container mx-auto px-4 md:px-6 fade-in-section is-visible">
           <div className="text-center mb-16">
@@ -127,6 +126,7 @@ const Models = () => {
         </div>
       </section>
       
+      <FeaturesSection />
       <HowToUseSection />
       <TestimonialsSection />
       <CtaSection />
