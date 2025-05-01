@@ -1,5 +1,5 @@
 
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 
@@ -18,7 +18,7 @@ export const useUsersAdmin = () => {
   const [loading, setLoading] = useState(false);
   const { toast } = useToast();
 
-  const fetchUsers = async () => {
+  const fetchUsers = useCallback(async () => {
     setLoading(true);
     try {
       // Fetch all users from profiles table
@@ -43,9 +43,9 @@ export const useUsersAdmin = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [toast]);
 
-  const approveUser = async (userId: string) => {
+  const approveUser = useCallback(async (userId: string) => {
     setLoading(true);
     try {
       const { error } = await supabase.functions.invoke('approve-user', {
@@ -71,9 +71,9 @@ export const useUsersAdmin = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [toast]);
 
-  const deleteUser = async (userId: string) => {
+  const deleteUser = useCallback(async (userId: string) => {
     setLoading(true);
     try {
       // Delete using the edge function
@@ -100,9 +100,9 @@ export const useUsersAdmin = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [toast]);
 
-  const updateUserRole = async (userId: string, role: string) => {
+  const updateUserRole = useCallback(async (userId: string, role: string) => {
     setLoading(true);
     try {
       const { error } = await supabase
@@ -129,9 +129,9 @@ export const useUsersAdmin = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [toast]);
 
-  const updateUserProfile = async (userId: string, data: {
+  const updateUserProfile = useCallback(async (userId: string, data: {
     first_name?: string;
     last_name?: string;
     email?: string;
@@ -162,7 +162,7 @@ export const useUsersAdmin = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [toast]);
 
   return {
     fetchUsers,

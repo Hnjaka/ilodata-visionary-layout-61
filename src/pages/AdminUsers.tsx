@@ -1,5 +1,5 @@
 
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useEffect, useState } from 'react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { useUsersAdmin } from '@/hooks/auth/useUsersAdmin';
@@ -29,14 +29,17 @@ const AdminUsers = () => {
     loading 
   } = useUsersAdmin();
 
-  const loadUsers = useCallback(async () => {
+  // Fonction pour charger les utilisateurs
+  const loadUsers = async () => {
     const data = await fetchUsers();
     setUsers(data);
-  }, [fetchUsers]);
+  };
 
+  // Effet pour charger les utilisateurs au montage du composant
   useEffect(() => {
     loadUsers();
-  }, [loadUsers]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []); // Suppression de loadUsers de la dépendance pour éviter les boucles infinies
 
   const AdminContent = () => (
     <div className="min-h-screen flex flex-col">
@@ -53,10 +56,26 @@ const AdminUsers = () => {
           <div className="bg-white shadow rounded-lg overflow-hidden">
             <UsersTable 
               users={users}
-              onApprove={approveUser}
-              onDelete={deleteUser}
-              onUpdateRole={updateUserRole}
-              onUpdateProfile={updateUserProfile}
+              onApprove={async (userId) => {
+                const success = await approveUser(userId);
+                if (success) await loadUsers();
+                return success;
+              }}
+              onDelete={async (userId) => {
+                const success = await deleteUser(userId);
+                if (success) await loadUsers();
+                return success;
+              }}
+              onUpdateRole={async (userId, role) => {
+                const success = await updateUserRole(userId, role);
+                if (success) await loadUsers();
+                return success;
+              }}
+              onUpdateProfile={async (userId, data) => {
+                const success = await updateUserProfile(userId, data);
+                if (success) await loadUsers();
+                return success;
+              }}
               onRefresh={loadUsers}
               loading={loading}
             />

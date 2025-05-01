@@ -67,10 +67,8 @@ const UsersTable: React.FC<UsersTableProps> = ({
   const [selectedUser, setSelectedUser] = useState<UserData | null>(null);
 
   const handleApproveClick = async (userId: string) => {
-    const success = await onApprove(userId);
-    if (success) {
-      onRefresh();
-    }
+    await onApprove(userId);
+    // Ne pas appeler onRefresh ici, il sera géré par le parent
   };
 
   const handleDeleteClick = (userId: string) => {
@@ -80,10 +78,8 @@ const UsersTable: React.FC<UsersTableProps> = ({
 
   const handleConfirmDelete = async () => {
     if (selectedUserId) {
-      const success = await onDelete(selectedUserId);
-      if (success) {
-        onRefresh();
-      }
+      await onDelete(selectedUserId);
+      // Ne pas appeler onRefresh ici, il sera géré par le parent
       setDeleteDialogOpen(false);
       setSelectedUserId(null);
     }
@@ -95,10 +91,8 @@ const UsersTable: React.FC<UsersTableProps> = ({
   };
 
   const handleRoleUpdate = async (userId: string, newRole: string) => {
-    const success = await onUpdateRole(userId, newRole);
-    if (success) {
-      onRefresh();
-    }
+    await onUpdateRole(userId, newRole);
+    // Ne pas appeler onRefresh ici, il sera géré par le parent
   };
 
   const renderRoleBadge = (role: string) => {
@@ -239,10 +233,10 @@ const UsersTable: React.FC<UsersTableProps> = ({
           onOpenChange={setEditDialogOpen}
           user={selectedUser}
           onSave={async (data) => {
-            const success = await onUpdateProfile(selectedUser.id, data);
-            if (success) {
-              await onRefresh();
+            if (selectedUser) {
+              await onUpdateProfile(selectedUser.id, data);
               setEditDialogOpen(false);
+              // Ne pas appeler onRefresh ici, il sera géré par le parent
             }
           }}
         />
