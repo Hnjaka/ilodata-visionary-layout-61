@@ -3,6 +3,13 @@ import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import { useAdminNotification } from './useAdminNotification';
 
+// Define a type for the user object returned from Supabase admin API
+interface SupabaseAdminUser {
+  id: string;
+  email?: string;
+  // Add other properties as needed
+}
+
 export const useConfirmation = () => {
   const { toast } = useToast();
   const { notifyAdmin } = useAdminNotification();
@@ -28,10 +35,13 @@ export const useConfirmation = () => {
         throw new Error("Aucun utilisateur trouvé.");
       }
       
+      // Properly type users array from userData.users
+      const users: SupabaseAdminUser[] = userData.users;
+      
       // Manually filter the users by email
-      const users = userData.users.filter(user => user.email === email);
-      if (users && users.length > 0) {
-        const userId = users[0].id;
+      const filteredUsers = users.filter(user => user.email === email);
+      if (filteredUsers && filteredUsers.length > 0) {
+        const userId = filteredUsers[0].id;
         const adminNotified = await notifyAdmin(userId, email);
         
         if (!adminNotified) {
