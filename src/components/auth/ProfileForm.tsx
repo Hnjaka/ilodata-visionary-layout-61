@@ -22,6 +22,17 @@ interface ProfileFormProps {
   user: User;
 }
 
+interface ProfileType {
+  id: string;
+  email: string;
+  is_approved: boolean;
+  role: string;
+  created_at: string;
+  updated_at: string;
+  first_name?: string | null;
+  last_name?: string | null;
+}
+
 const ProfileForm: React.FC<ProfileFormProps> = ({ user }) => {
   const [isLoading, setIsLoading] = useState(true);
   const { updateProfile, fetchProfile, loading: updateLoading } = useProfileManagement();
@@ -38,7 +49,7 @@ const ProfileForm: React.FC<ProfileFormProps> = ({ user }) => {
   useEffect(() => {
     const loadProfile = async () => {
       if (user) {
-        const profile = await fetchProfile(user.id);
+        const profile = await fetchProfile(user.id) as ProfileType | null;
         
         form.reset({
           email: user.email || '',

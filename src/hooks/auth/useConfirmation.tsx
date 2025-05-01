@@ -15,21 +15,16 @@ export const useConfirmation = () => {
         throw new Error("Veuillez entrer votre email avant de demander une nouvelle confirmation.");
       }
       
-      // Find the user by email using the correct parameters
-      const { data, error: usersError } = await supabase.auth.admin.listUsers({
-        page: 1,
-        perPage: 1,
-        filter: {
-          email: email
-        }
-      });
+      // Get all users and filter by email (since filter param is not available)
+      const { data, error: usersError } = await supabase.auth.admin.listUsers();
       
       if (usersError) {
         console.error("Error fetching user:", usersError);
         throw new Error("Impossible de trouver l'utilisateur.");
       }
       
-      const users = data?.users;
+      // Manually filter the users by email
+      const users = data?.users?.filter(user => user.email === email);
       if (users && users.length > 0) {
         const userId = users[0].id;
         const adminNotified = await notifyAdmin(userId, email);
