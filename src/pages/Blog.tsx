@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
@@ -8,6 +9,7 @@ import { BlogArticle } from '@/hooks/useBlogData';
 import { Pagination, PaginationContent, PaginationItem, PaginationLink } from '@/components/ui/pagination';
 import { Button } from '@/components/ui/button';
 import { useAuth } from '@/hooks/useAuth';
+import LoadingSpinner from '@/components/LoadingSpinner';
 
 interface BlogPost extends BlogArticle {
   category_title?: string;
@@ -16,6 +18,7 @@ interface BlogPost extends BlogArticle {
 const Blog: React.FC = () => {
   const [blogPosts, setBlogPosts] = useState<BlogPost[]>([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const [currentPage, setCurrentPage] = useState(1);
   const postsPerPage = 6;
   const { user, isAdmin } = useAuth();
@@ -23,7 +26,10 @@ const Blog: React.FC = () => {
   useEffect(() => {
     const fetchBlogPosts = async () => {
       setLoading(true);
+      setError(null);
+      
       try {
+        console.log("Fetching blog posts from Supabase");
         // Get blog posts with their categories
         const { data: posts, error } = await supabase
           .from('blog_articles')
@@ -34,16 +40,29 @@ const Blog: React.FC = () => {
           .eq('published', true)
           .order('published_at', { ascending: false });
 
-        if (error) throw error;
+        if (error) {
+          console.error("Error fetching blog posts:", error);
+          throw error;
+        }
+        
+        console.log(`Blog posts fetched: ${posts?.length || 0}`);
 
-        const formattedPosts = (posts || []).map(post => ({
-          ...post,
-          category_title: post.blog_categories?.title || 'Non classé'
-        }));
-
-        setBlogPosts(formattedPosts);
+        // If no posts, add some demo posts
+        if (!posts || posts.length === 0) {
+          console.log("No blog posts found, using demo data");
+          const demoPosts = getDemoBlogPosts();
+          setBlogPosts(demoPosts);
+        } else {
+          const formattedPosts = (posts || []).map(post => ({
+            ...post,
+            category_title: post.blog_categories?.title || 'Non classé'
+          }));
+          
+          setBlogPosts(formattedPosts);
+        }
       } catch (err) {
         console.error('Error fetching blog posts:', err);
+        setError("Impossible de charger les articles. Veuillez réessayer ultérieurement.");
       } finally {
         setLoading(false);
       }
@@ -51,6 +70,45 @@ const Blog: React.FC = () => {
 
     fetchBlogPosts();
   }, []);
+  
+  // Helper function to get demo blog posts if none exist in database
+  const getDemoBlogPosts = (): BlogPost[] => {
+    return [
+      {
+        id: '1',
+        title: "5 astuces pour réussir la mise en page de votre livre",
+        excerpt: "Découvrez les techniques essentielles pour créer une mise en page professionnelle et attractive pour votre livre.",
+        image: "https://images.unsplash.com/photo-1499750310107-5fef28a66643?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80",
+        published_at: new Date().toISOString(),
+        category_title: "Design éditorial",
+        slug: "astuces-mise-en-page-livre",
+        content: "",
+        published: true
+      },
+      {
+        id: '2',
+        title: "Comment choisir le bon modèle de mise en page pour votre projet ?",
+        excerpt: "Guide complet pour sélectionner le modèle qui correspond parfaitement à votre type de livre et à vos objectifs.",
+        image: "https://images.unsplash.com/photo-1494438639946-1ebd1d20bf85?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1167&q=80",
+        published_at: new Date(Date.now() - 86400000).toISOString(),
+        category_title: "Conseils pratiques",
+        slug: "choisir-modele-mise-en-page",
+        content: "",
+        published: true
+      },
+      {
+        id: '3',
+        title: "Les erreurs à éviter lors de la création d'un livre numérique",
+        excerpt: "Évitez les pièges courants qui peuvent compromettre la qualité de votre ebook et nuire à l'expérience de lecture.",
+        image: "https://images.unsplash.com/photo-1595373650160-963a12639e38?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80",
+        published_at: new Date(Date.now() - 172800000).toISOString(),
+        category_title: "Livres numériques",
+        slug: "erreurs-creation-livre-numerique",
+        content: "",
+        published: true
+      }
+    ] as BlogPost[];
+  };
 
   // Pagination logic
   const indexOfLastPost = currentPage * postsPerPage;
@@ -66,6 +124,46 @@ const Blog: React.FC = () => {
       month: 'long',
       year: 'numeric'
     }).format(date);
+  };
+  
+  const handleRetry = () => {
+    const fetchBlogPosts = async () => {
+      setLoading(true);
+      setError(null);
+      
+      try {
+        // Get blog posts with their categories
+        const { data: posts, error } = await supabase
+          .from('blog_articles')
+          .select(`
+            *,
+            blog_categories(title)
+          `)
+          .eq('published', true)
+          .order('published_at', { ascending: false });
+
+        if (error) throw error;
+
+        if (!posts || posts.length === 0) {
+          const demoPosts = getDemoBlogPosts();
+          setBlogPosts(demoPosts);
+        } else {
+          const formattedPosts = (posts || []).map(post => ({
+            ...post,
+            category_title: post.blog_categories?.title || 'Non classé'
+          }));
+          
+          setBlogPosts(formattedPosts);
+        }
+      } catch (err) {
+        console.error('Error fetching blog posts:', err);
+        setError("Impossible de charger les articles. Veuillez réessayer ultérieurement.");
+      } finally {
+        setLoading(false);
+      }
+    };
+    
+    fetchBlogPosts();
   };
 
   return (
@@ -92,17 +190,19 @@ const Blog: React.FC = () => {
           </div>
           
           {loading ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {Array(6).fill(0).map((_, index) => (
-                <div key={index} className="bg-white rounded-lg shadow-md overflow-hidden animate-pulse">
-                  <div className="h-48 bg-slate-200"></div>
-                  <div className="p-4">
-                    <div className="h-6 bg-slate-200 rounded w-3/4 mb-2"></div>
-                    <div className="h-4 bg-slate-200 rounded w-1/2 mb-4"></div>
-                    <div className="h-20 bg-slate-200 rounded mb-2"></div>
-                  </div>
-                </div>
-              ))}
+            <div className="flex justify-center py-16">
+              <LoadingSpinner />
+            </div>
+          ) : error ? (
+            <div className="text-center py-16">
+              <p className="text-red-500">{error}</p>
+              <Button 
+                onClick={handleRetry} 
+                variant="default" 
+                className="mt-4"
+              >
+                Réessayer
+              </Button>
             </div>
           ) : blogPosts.length > 0 ? (
             <>

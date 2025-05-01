@@ -1,9 +1,11 @@
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { BookOpen, FileText, ArrowRight } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useAuth } from '@/hooks/useAuth';
+import { supabase } from '@/integrations/supabase/client';
+import LoadingSpinner from '@/components/LoadingSpinner';
 
 interface ModelCardProps {
   icon: React.ElementType;
@@ -27,6 +29,16 @@ const ModelCard = ({ icon: Icon, title, delay }: ModelCardProps) => {
 
 const ModelsSection = () => {
   const { user, isAdmin } = useAuth();
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  
+  // Add these logs to better track the user state
+  useEffect(() => {
+    console.log("ModelsSection - User auth state:", { 
+      isLoggedIn: !!user,
+      isAdmin: isAdmin
+    });
+  }, [user, isAdmin]);
   
   return (
     <section className="section-padding bg-gradient-to-b from-blue-50 to-white">
@@ -41,23 +53,33 @@ const ModelsSection = () => {
           </p>
         </div>
         
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-3xl mx-auto mb-12">
-          <ModelCard 
-            icon={BookOpen} 
-            title="📚 Romans et récits" 
-            delay="delay-100"
-          />
-          <ModelCard 
-            icon={FileText} 
-            title="📄 Mémoires et rapports" 
-            delay="delay-200"
-          />
-          <ModelCard 
-            icon={FileText} 
-            title="🖨️ Documents à imprimer ou publier" 
-            delay="delay-300"
-          />
-        </div>
+        {loading ? (
+          <div className="flex justify-center py-8">
+            <LoadingSpinner />
+          </div>
+        ) : error ? (
+          <div className="text-center text-red-500 mb-8">
+            {error}
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-3xl mx-auto mb-12">
+            <ModelCard 
+              icon={BookOpen} 
+              title="📚 Romans et récits" 
+              delay="delay-100"
+            />
+            <ModelCard 
+              icon={FileText} 
+              title="📄 Mémoires et rapports" 
+              delay="delay-200"
+            />
+            <ModelCard 
+              icon={FileText} 
+              title="🖨️ Documents à imprimer ou publier" 
+              delay="delay-300"
+            />
+          </div>
+        )}
         
         <div className="text-center">
           {/* Show templates button for everyone */}

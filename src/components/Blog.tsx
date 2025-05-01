@@ -1,9 +1,10 @@
 
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight, BookOpen } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useAuth } from '@/hooks/useAuth';
+import LoadingSpinner from '@/components/LoadingSpinner';
 
 interface BlogPost {
   id: number;
@@ -79,6 +80,8 @@ const BlogCard = ({ post, delay }: { post: BlogPost; delay: string }) => {
 const Blog = () => {
   const sectionRef = useRef<HTMLDivElement>(null);
   const { user, isAdmin } = useAuth();
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -103,6 +106,14 @@ const Blog = () => {
     };
   }, []);
 
+  // Add these logs to better track the user state
+  useEffect(() => {
+    console.log("Blog component - User auth state:", { 
+      isLoggedIn: !!user,
+      isAdmin: isAdmin
+    });
+  }, [user, isAdmin]);
+
   return (
     <section id="blog" className="section-padding bg-gradient-to-b from-white to-blue-50">
       <div 
@@ -121,15 +132,25 @@ const Blog = () => {
           </p>
         </div>
 
-        <div className="grid md:grid-cols-3 gap-6 md:gap-8">
-          {blogPosts.map((post, index) => (
-            <BlogCard 
-              key={post.id} 
-              post={post} 
-              delay={`delay-${(index + 1) * 100}`}
-            />
-          ))}
-        </div>
+        {loading ? (
+          <div className="flex justify-center py-8">
+            <LoadingSpinner />
+          </div>
+        ) : error ? (
+          <div className="text-center text-red-500 mb-8">
+            {error}
+          </div>
+        ) : (
+          <div className="grid md:grid-cols-3 gap-6 md:gap-8">
+            {blogPosts.map((post, index) => (
+              <BlogCard 
+                key={post.id} 
+                post={post} 
+                delay={`delay-${(index + 1) * 100}`}
+              />
+            ))}
+          </div>
+        )}
 
         <div className="text-center mt-12">
           {/* Show all articles button for everyone */}

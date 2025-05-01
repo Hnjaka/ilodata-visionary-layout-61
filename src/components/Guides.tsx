@@ -1,8 +1,9 @@
 
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Book, Video, FileText, ArrowRight } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import LoadingSpinner from '@/components/LoadingSpinner';
 
 const GuideCard = ({ 
   icon: Icon, 
@@ -42,6 +43,8 @@ const GuideCard = ({
 
 const Guides = () => {
   const sectionRef = useRef<HTMLDivElement>(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -65,6 +68,34 @@ const Guides = () => {
       }
     };
   }, []);
+
+  // Demo guides data for the home page
+  const guidesData = [
+    {
+      icon: Book,
+      title: "Mise en page de livres",
+      description: "Apprenez les fondamentaux de la mise en page professionnelle pour vos livres et documents.",
+      buttonText: "Découvrir les guides",
+      link: "/guides",
+      delay: "delay-100"
+    },
+    {
+      icon: FileText,
+      title: "Utilisation des modèles",
+      description: "Comment adapter et personnaliser nos modèles pour obtenir un résultat professionnel.",
+      buttonText: "Voir les tutoriels",
+      link: "/guides",
+      delay: "delay-200"
+    },
+    {
+      icon: Video,
+      title: "Préparation à l'impression",
+      description: "Conseils pratiques pour préparer votre document à l'impression ou à la publication numérique.",
+      buttonText: "Consulter les ressources",
+      link: "/guides",
+      delay: "delay-300"
+    }
+  ];
 
   return (
     <section id="conseils" className="section-padding bg-gradient-to-b from-white to-blue-50">
@@ -91,12 +122,36 @@ const Guides = () => {
           </ul>
         </div>
 
+        {loading ? (
+          <div className="flex justify-center py-8">
+            <LoadingSpinner />
+          </div>
+        ) : error ? (
+          <div className="text-center text-red-500 mb-8">
+            {error}
+          </div>
+        ) : (
+          <div className="grid md:grid-cols-3 gap-6 md:gap-8 mb-16">
+            {guidesData.map((guide, index) => (
+              <GuideCard
+                key={index}
+                icon={guide.icon}
+                title={guide.title}
+                description={guide.description}
+                buttonText={guide.buttonText}
+                link={guide.link}
+                delay={guide.delay}
+              />
+            ))}
+          </div>
+        )}
+
         <div className="text-center">
           <Link 
             to="/guides" 
             className="button-primary inline-flex items-center"
           >
-            Voir les guides
+            Voir tous les guides
             <ArrowRight size={16} className="ml-1 transition-transform group-hover:translate-x-1" />
           </Link>
         </div>

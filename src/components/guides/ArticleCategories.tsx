@@ -9,17 +9,35 @@ import { CategoryType, ArticleType } from '@/types/guides';
 const ArticleCategories = () => {
   const [categories, setCategories] = useState<CategoryType[]>([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   
   useEffect(() => {
     const fetchCategoriesAndArticles = async () => {
       try {
+        console.log("Fetching guides categories and articles");
+        setLoading(true);
+        
         // Fetch categories
         const { data: categoriesData, error: categoriesError } = await supabase
           .from('guide_categories')
           .select('*')
           .order('position');
           
-        if (categoriesError) throw categoriesError;
+        if (categoriesError) {
+          console.error("Error fetching categories:", categoriesError);
+          throw categoriesError;
+        }
+        
+        console.log("Categories fetched:", categoriesData?.length || 0);
+        
+        // If no categories, add some demo data for development
+        if (!categoriesData || categoriesData.length === 0) {
+          console.log("No categories found, using demo data");
+          const demoCategories = getDemoCategoryData();
+          setCategories(demoCategories);
+          setLoading(false);
+          return;
+        }
         
         // Fetch articles for each category
         const categoriesWithArticles = await Promise.all(
@@ -30,7 +48,12 @@ const ArticleCategories = () => {
               .eq('category_id', category.id)
               .order('position');
               
-            if (articlesError) throw articlesError;
+            if (articlesError) {
+              console.error(`Error fetching articles for category ${category.id}:`, articlesError);
+              throw articlesError;
+            }
+            
+            console.log(`Articles fetched for category ${category.id}:`, articlesData?.length || 0);
             
             // Map the icon string to the actual icon component
             const iconComponent = getIconByName(category.icon);
@@ -59,45 +82,69 @@ const ArticleCategories = () => {
         setCategories(categoriesWithArticles);
       } catch (error) {
         console.error('Error fetching categories and articles:', error);
+        setError("Impossible de charger les articles. Veuillez réessayer ultérieurement.");
       } finally {
         setLoading(false);
       }
     };
     
     fetchCategoriesAndArticles();
-
-    // Set up a subscription for real-time updates
-    const categoriesChannel = supabase
-      .channel('public:guide_categories')
-      .on('postgres_changes', 
-        { event: '*', schema: 'public', table: 'guide_categories' }, 
-        () => {
-          fetchCategoriesAndArticles();
-        }
-      )
-      .subscribe();
-
-    const articlesChannel = supabase
-      .channel('public:guide_articles')
-      .on('postgres_changes', 
-        { event: '*', schema: 'public', table: 'guide_articles' }, 
-        () => {
-          fetchCategoriesAndArticles();
-        }
-      )
-      .subscribe();
-
-    // Cleanup subscriptions
-    return () => {
-      supabase.removeChannel(categoriesChannel);
-      supabase.removeChannel(articlesChannel);
-    };
   }, []);
+  
+  // Helper function to get demo data if no categories exist in database
+  const getDemoCategoryData = (): CategoryType[] => {
+    const { Book, FileText, Shapes } = require('lucide-react');
+    
+    return [
+      {
+        id: '1',
+        title: "Mise en page pour livres",
+        icon: Book,
+        articles: [
+          { id: '1-1', title: "Les fondamentaux de la mise en page", slug: "fondamentaux-mise-en-page", content: "", layout: "standard", position: 1, category_id: '1' },
+          { id: '1-2', title: "Comment choisir la taille de police", slug: "choisir-taille-police", content: "", layout: "standard", position: 2, category_id: '1' }
+        ],
+        position: 1
+      },
+      {
+        id: '2',
+        title: "Modèles et templates",
+        icon: FileText,
+        articles: [
+          { id: '2-1', title: "Comment personnaliser un modèle Word", slug: "personnaliser-modele-word", content: "", layout: "standard", position: 1, category_id: '2' },
+          { id: '2-2', title: "Utiliser nos modèles", slug: "utiliser-modeles", content: "", layout: "standard", position: 2, category_id: '2' }
+        ],
+        position: 2
+      }
+    ];
+  };
   
   if (loading) {
     return (
       <div className="flex items-center justify-center h-64">
         <LoadingSpinner />
+      </div>
+    );
+  }
+  
+  if (error) {
+    return (
+      <div className="text-center py-8">
+        <p className="text-red-500">{error}</p>
+        <button 
+          onClick={() => window.location.reload()}
+          className="mt-4 px-4 py-2 bg-ilodata-600 text-white rounded"
+        >
+          Actualiser
+        </button>
+      </div>
+    );
+  }
+  
+  if (categories.length === 0) {
+    return (
+      <div className="text-center py-8">
+        <p className="text-slate-600">Aucune catégorie d'articles disponible pour le moment.</p>
       </div>
     );
   }

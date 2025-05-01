@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { ArrowDownToLine, Search, Settings } from 'lucide-react';
 import Header from '@/components/Header';
@@ -10,6 +11,7 @@ import TemplateCard from '@/components/templates/TemplateCard';
 import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
 import { useAuth } from '@/hooks/useAuth';
+import LoadingSpinner from '@/components/LoadingSpinner';
 import {
   Select,
   SelectContent,
@@ -26,6 +28,7 @@ const Templates = () => {
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
   const [categoryFilter, setCategoryFilter] = useState<string>('all');
+  const [error, setError] = useState<string | null>(null);
   const { toast } = useToast();
   const { user, isAdmin } = useAuth();
 
@@ -37,6 +40,10 @@ const Templates = () => {
   const fetchTemplates = async () => {
     try {
       setLoading(true);
+      setError(null);
+      
+      console.log("Fetching templates from Supabase");
+      
       const { data, error } = await supabase
         .from('templates')
         .select('*')
@@ -44,30 +51,88 @@ const Templates = () => {
         .order('date_ajout', { ascending: false });
 
       if (error) {
+        console.error("Error fetching templates:", error);
         throw error;
       }
+      
+      console.log(`Templates fetched: ${data?.length || 0}`);
 
-      setTemplates(data || []);
-      setFilteredTemplates(data || []);
+      // If no templates, add some demo templates
+      if (!data || data.length === 0) {
+        console.log("No templates found, using demo data");
+        const demoTemplates = getDemoTemplates();
+        setTemplates(demoTemplates);
+        setFilteredTemplates(demoTemplates);
+      } else {
+        setTemplates(data);
+        setFilteredTemplates(data);
+      }
     } catch (error) {
+      console.error('Error fetching templates:', error);
+      setError("Impossible de charger les modèles. Veuillez réessayer ultérieurement.");
+      
       toast({
         title: "Erreur",
         description: "Impossible de charger les templates",
         variant: "destructive",
       });
-      console.error('Error fetching templates:', error);
     } finally {
       setLoading(false);
     }
+  };
+  
+  // Helper function to get demo templates if none exist in database
+  const getDemoTemplates = (): Template[] => {
+    return [
+      {
+        id: '1',
+        titre: 'Modèle de livre roman',
+        description: 'Parfait pour les romans et récits littéraires',
+        categorie: 'Livres',
+        prix: null,
+        image_apercu: null,
+        fichier_template: null,
+        visible: true,
+        date_ajout: new Date().toISOString(),
+        tags: 'roman, fiction, littérature',
+        is_downloadable: true
+      },
+      {
+        id: '2',
+        titre: 'Modèle CV professionnel',
+        description: 'Un CV moderne et professionnel pour se démarquer',
+        categorie: 'CV',
+        prix: null,
+        image_apercu: null,
+        fichier_template: null,
+        visible: true,
+        date_ajout: new Date().toISOString(),
+        tags: 'cv, emploi, carrière',
+        is_downloadable: true
+      },
+      {
+        id: '3',
+        titre: 'Template de rapport scientifique',
+        description: 'Structure parfaite pour présenter vos recherches',
+        categorie: 'Rapports',
+        prix: null,
+        image_apercu: null,
+        fichier_template: null,
+        visible: true,
+        date_ajout: new Date().toISOString(),
+        tags: 'rapport, académique, recherche',
+        is_downloadable: true
+      }
+    ] as Template[];
   };
 
   useEffect(() => {
     // Filter templates based on search query and category
     const filtered = templates.filter(template => {
       const matchesSearch = 
-        template.titre.toLowerCase().includes(searchQuery.toLowerCase()) || 
-        (template.description && template.description.toLowerCase().includes(searchQuery.toLowerCase())) ||
-        (template.tags && template.tags.toLowerCase().includes(searchQuery.toLowerCase()));
+        (template.titre?.toLowerCase() || '').includes(searchQuery.toLowerCase()) || 
+        ((template.description || '') && (template.description || '').toLowerCase().includes(searchQuery.toLowerCase())) ||
+        ((template.tags || '') && (template.tags || '').toLowerCase().includes(searchQuery.toLowerCase()));
       
       const matchesCategory = categoryFilter === 'all' || template.categorie === categoryFilter;
       
@@ -147,7 +212,20 @@ const Templates = () => {
         <section className="py-12 md:py-16 bg-gray-50">
           <div className="container mx-auto px-4 md:px-6">
             {loading ? (
-              <div className="text-center py-16">Chargement des modèles...</div>
+              <div className="flex items-center justify-center py-16">
+                <LoadingSpinner />
+              </div>
+            ) : error ? (
+              <div className="text-center py-16">
+                <p className="text-red-500">{error}</p>
+                <Button 
+                  onClick={fetchTemplates} 
+                  variant="default" 
+                  className="mt-4"
+                >
+                  Réessayer
+                </Button>
+              </div>
             ) : filteredTemplates.length === 0 ? (
               <div className="text-center py-16">
                 <h3 className="text-xl font-medium text-slate-600">Aucun modèle trouvé</h3>
