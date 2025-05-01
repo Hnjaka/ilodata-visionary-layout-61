@@ -36,15 +36,20 @@ const UserAccount = () => {
   // Handle sign out
   const handleSignOut = async () => {
     try {
-      console.log("Signing out from account page");
+      console.log("Signing out from account page - starting signOut process");
       await signOut();
+      console.log("Signing out from account page - signOut completed successfully");
+      
       toast({
         title: "Déconnexion réussie",
         description: "Vous avez été déconnecté avec succès."
       });
+      
+      // Force navigation to homepage after successful signout
+      console.log("Navigating to homepage after successful signout");
       navigate('/', { replace: true });
     } catch (error) {
-      console.error("Error signing out:", error);
+      console.error("Error signing out from account page:", error);
       toast({
         title: "Erreur de déconnexion",
         description: "Un problème est survenu lors de la déconnexion.",
@@ -97,6 +102,7 @@ const UserAccount = () => {
                         <Button
                           variant="outline"
                           onClick={handleSignOut}
+                          className="flex items-center"
                         >
                           <LogOut className="h-4 w-4 mr-2" />
                           Déconnexion

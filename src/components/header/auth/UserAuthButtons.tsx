@@ -23,13 +23,18 @@ const UserAuthButtons: React.FC<UserAuthButtonsProps> = ({ user, onSignOut, onLo
   const handleSignOut = async () => {
     try {
       console.log("Logout button clicked in UserAuthButtons - starting logout process");
+      
+      // Call the parent component's signOut function
       await onSignOut();
+      
       console.log("Logout successful in UserAuthButtons");
       toast({
         title: "Déconnexion réussie",
         description: "Vous avez été déconnecté avec succès."
       });
+      
       // Force navigation to home page after logout
+      console.log("UserAuthButtons - Navigating to home after logout");
       navigate('/', { replace: true });
     } catch (error) {
       console.error("Erreur lors de la déconnexion dans UserAuthButtons:", error);
