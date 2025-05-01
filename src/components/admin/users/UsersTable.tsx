@@ -91,15 +91,20 @@ const UsersTable: React.FC<UsersTableProps> = ({
   };
 
   const handleRoleUpdate = async (userId: string, newRole: string) => {
+    console.log(`Updating user ${userId} role to: ${newRole}`);
     await onUpdateRole(userId, newRole);
     // Ne pas appeler onRefresh ici, il sera géré par le parent
   };
 
   const renderRoleBadge = (role: string) => {
-    switch (role) {
+    // Normalize role for display
+    const normalizedRole = (role || '').toLowerCase();
+    
+    switch (normalizedRole) {
       case 'admin':
         return <Badge className="bg-red-500">Admin</Badge>;
       case 'moderator':
+      case 'modérateur':
         return <Badge className="bg-blue-500">Modérateur</Badge>;
       default:
         return <Badge className="bg-gray-500">Utilisateur</Badge>;
