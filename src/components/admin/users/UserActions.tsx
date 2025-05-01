@@ -15,7 +15,7 @@ interface UserActionsProps {
   onApprove: (userId: string) => Promise<boolean>;
   onDelete: (userId: string) => void;
   onEdit: () => void;
-  onRoleUpdate: (userId: string, role: string) => Promise<void>;
+  onRoleUpdate: (userId: string, role: string) => Promise<boolean>;
   loading: boolean;
 }
 

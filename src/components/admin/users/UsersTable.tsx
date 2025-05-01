@@ -54,6 +54,7 @@ const UsersTable: React.FC<UsersTableProps> = ({
   const handleApproveClick = async (userId: string) => {
     await onApprove(userId);
     // Ne pas appeler onRefresh ici, il sera géré par le parent
+    return true; // Return boolean to match expected type
   };
 
   const handleDeleteClick = (userId: string) => {
