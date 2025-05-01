@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { ArrowDownToLine, Search, Settings } from 'lucide-react';
 import Header from '@/components/Header';
@@ -83,47 +82,45 @@ const Templates = () => {
   
   // Helper function to get demo templates if none exist in database
   const getDemoTemplates = (): Template[] => {
+    // Create demo templates that match the Template type from Supabase
     return [
       {
         id: '1',
         titre: 'Modèle de livre roman',
         description: 'Parfait pour les romans et récits littéraires',
         categorie: 'Livres',
-        prix: null,
         image_apercu: null,
-        fichier_template: null,
+        image_extras: null,
+        fichier_template: 'demo-roman-template.docx', // Now providing a value instead of null
         visible: true,
         date_ajout: new Date().toISOString(),
-        tags: 'roman, fiction, littérature',
-        is_downloadable: true
+        tags: 'roman, fiction, littérature'
       },
       {
         id: '2',
         titre: 'Modèle CV professionnel',
         description: 'Un CV moderne et professionnel pour se démarquer',
         categorie: 'CV',
-        prix: null,
         image_apercu: null,
-        fichier_template: null,
+        image_extras: null,
+        fichier_template: 'demo-cv-template.docx', // Now providing a value instead of null
         visible: true,
         date_ajout: new Date().toISOString(),
-        tags: 'cv, emploi, carrière',
-        is_downloadable: true
+        tags: 'cv, emploi, carrière'
       },
       {
         id: '3',
         titre: 'Template de rapport scientifique',
         description: 'Structure parfaite pour présenter vos recherches',
         categorie: 'Rapports',
-        prix: null,
         image_apercu: null,
-        fichier_template: null,
+        image_extras: null,
+        fichier_template: 'demo-rapport-template.docx', // Now providing a value instead of null
         visible: true,
         date_ajout: new Date().toISOString(),
-        tags: 'rapport, académique, recherche',
-        is_downloadable: true
+        tags: 'rapport, académique, recherche'
       }
-    ] as Template[];
+    ] as Template[]; // Using type assertion to ensure it matches the Template type
   };
 
   useEffect(() => {

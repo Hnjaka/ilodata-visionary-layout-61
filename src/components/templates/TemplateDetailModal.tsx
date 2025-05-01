@@ -54,6 +54,25 @@ const TemplateDetailModal = ({
     setAllImages(images);
   }, [template]);
 
+  // Function to get file URL - handles both Supabase and demo files
+  const getFileUrl = (filePath: string) => {
+    if (filePath.startsWith('demo-')) {
+      // For demo files, we'll just return a placeholder or relative URL
+      return `/downloads/${filePath}`;
+    }
+    return `https://valzxjecoceltiyzkogw.supabase.co/storage/v1/object/public/template_files/${filePath}`;
+  };
+
+  // Function to get image URL - handles both Supabase and demo images
+  const getImageUrl = (imagePath: string | null) => {
+    if (!imagePath) return null;
+    
+    if (imagePath.startsWith('demo-')) {
+      return `/images/${imagePath}`;
+    }
+    return `https://valzxjecoceltiyzkogw.supabase.co/storage/v1/object/public/template_images/${imagePath}`;
+  };
+
   const selectImage = (index: number) => {
     setCurrentImageIndex(index);
   };
@@ -77,7 +96,7 @@ const TemplateDetailModal = ({
                 <div className="relative">
                   <AspectRatio ratio={4/3}>
                     <img 
-                      src={`https://valzxjecoceltiyzkogw.supabase.co/storage/v1/object/public/template_images/${allImages[currentImageIndex]}`}
+                      src={getImageUrl(allImages[currentImageIndex])}
                       alt={`${template.titre} - aperçu ${currentImageIndex + 1}`}
                       className="w-full h-full object-contain p-4"
                     />
@@ -105,7 +124,7 @@ const TemplateDetailModal = ({
                     )}
                   >
                     <img 
-                      src={`https://valzxjecoceltiyzkogw.supabase.co/storage/v1/object/public/template_images/${image}`}
+                      src={getImageUrl(image)}
                       alt={`Miniature ${index + 1}`}
                       className="w-full h-full object-contain p-2"
                     />
@@ -138,14 +157,16 @@ const TemplateDetailModal = ({
             )}
             
             <div className="mt-auto pt-4">
-              <a 
-                href={`https://valzxjecoceltiyzkogw.supabase.co/storage/v1/object/public/template_files/${template.fichier_template}`}
-                download
-                className="button-primary w-full text-center inline-flex items-center justify-center"
-              >
-                <span>Télécharger</span>
-                <ArrowDownToLine size={16} className="ml-2" />
-              </a>
+              {template.fichier_template && (
+                <a 
+                  href={getFileUrl(template.fichier_template)}
+                  download
+                  className="button-primary w-full text-center inline-flex items-center justify-center"
+                >
+                  <span>Télécharger</span>
+                  <ArrowDownToLine size={16} className="ml-2" />
+                </a>
+              )}
             </div>
           </div>
         </div>

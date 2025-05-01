@@ -35,6 +35,25 @@ const TemplateCard = ({ template }: TemplateCardProps) => {
     }
   }
 
+  // Function to get file URL - handles both Supabase and demo files
+  const getFileUrl = (filePath: string) => {
+    if (filePath.startsWith('demo-')) {
+      // For demo files, we'll just return a placeholder or relative URL
+      return `/downloads/${filePath}`;
+    }
+    return `https://valzxjecoceltiyzkogw.supabase.co/storage/v1/object/public/template_files/${filePath}`;
+  };
+
+  // Function to get image URL - handles both Supabase and demo images
+  const getImageUrl = (imagePath: string | null) => {
+    if (!imagePath) return null;
+    
+    if (imagePath.startsWith('demo-')) {
+      return `/images/${imagePath}`;
+    }
+    return `https://valzxjecoceltiyzkogw.supabase.co/storage/v1/object/public/template_images/${imagePath}`;
+  };
+
   const nextImage = (e: React.MouseEvent) => {
     e.stopPropagation();
     setCurrentImageIndex((prev) => (prev + 1) % allImages.length);
@@ -60,7 +79,7 @@ const TemplateCard = ({ template }: TemplateCardProps) => {
           {allImages.length > 0 ? (
             <>
               <img 
-                src={`https://valzxjecoceltiyzkogw.supabase.co/storage/v1/object/public/template_images/${allImages[currentImageIndex]}`}
+                src={getImageUrl(allImages[currentImageIndex])}
                 alt={template.titre}
                 className="w-full h-full object-contain p-2"
               />
@@ -129,14 +148,16 @@ const TemplateCard = ({ template }: TemplateCardProps) => {
           </div>
           
           {/* Download Button */}
-          <a 
-            href={`https://valzxjecoceltiyzkogw.supabase.co/storage/v1/object/public/template_files/${template.fichier_template}`}
-            download
-            className="button-primary w-full text-center inline-flex items-center justify-center"
-          >
-            <span>Télécharger</span>
-            <ArrowDownToLine size={16} className="ml-2" />
-          </a>
+          {template.fichier_template && (
+            <a 
+              href={getFileUrl(template.fichier_template)}
+              download
+              className="button-primary w-full text-center inline-flex items-center justify-center"
+            >
+              <span>Télécharger</span>
+              <ArrowDownToLine size={16} className="ml-2" />
+            </a>
+          )}
         </div>
       </div>
 
