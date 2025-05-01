@@ -3,6 +3,7 @@ import React from 'react';
 import { LogIn, LogOut, User } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useToast } from '@/hooks/use-toast';
+import { Button } from '@/components/ui/button';
 
 interface UserAuthButtonsProps {
   user: any;
@@ -48,29 +49,32 @@ const UserAuthButtons: React.FC<UserAuthButtonsProps> = ({ user, onSignOut, onLo
     <div className="hidden md:flex items-center space-x-4">
       {user ? (
         <div className="flex items-center space-x-4">
-          <button
+          <Button
             onClick={handleAccountClick}
+            variant="ghost"
             className="flex items-center text-slate-700 hover:text-ilodata-600 transition-colors"
             type="button"
           >
             <User className="h-4 w-4 mr-1" /> Mon compte
-          </button>
-          <button 
+          </Button>
+          <Button 
             onClick={handleSignOut}
+            variant="ghost"
             className="flex items-center text-slate-700 hover:text-ilodata-600 transition-colors"
             type="button"
           >
             <LogOut className="h-4 w-4 mr-1" /> Déconnexion
-          </button>
+          </Button>
         </div>
       ) : (
-        <button 
+        <Button 
           type="button"
           onClick={handleLogin}
+          variant="ghost"
           className="flex items-center text-slate-700 hover:text-ilodata-600 transition-colors"
         >
           <LogIn className="h-4 w-4 mr-1" /> Connexion
-        </button>
+        </Button>
       )}
       <Link to="/contact" className="button-quote">
         Demandez un devis
