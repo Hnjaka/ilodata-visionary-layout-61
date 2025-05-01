@@ -1,204 +1,62 @@
 
-import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { supabase } from '@/integrations/supabase/client';
-import { useToast } from '@/hooks/use-toast';
+import { useAuthState } from './auth/useAuthState';
+import { useAuthentication } from './auth/useAuthentication';
+import { usePasswordReset } from './auth/usePasswordReset';
+import { useConfirmation } from './auth/useConfirmation';
 
 export const useAuthForm = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [loading, setLoading] = useState(false);
-  const [isSignUp, setIsSignUp] = useState(false);
-  const [showForgotPassword, setShowForgotPassword] = useState(false);
-  const [showConfirmationResend, setShowConfirmationResend] = useState(false);
-  const [errorMessage, setErrorMessage] = useState<string | null>(null);
-  
   const navigate = useNavigate();
-  const { toast } = useToast();
+  
+  // Compose from smaller hooks
+  const {
+    email,
+    setEmail,
+    password,
+    setPassword,
+    loading,
+    setLoading,
+    isSignUp,
+    setIsSignUp,
+    showForgotPassword,
+    setShowForgotPassword,
+    showConfirmationResend,
+    setShowConfirmationResend,
+    errorMessage,
+    setErrorMessage,
+    toggleSignUp,
+    toggleForgotPassword,
+    setError
+  } = useAuthState();
+  
+  const { handleAuth } = useAuthentication();
+  const { handleResetPassword } = usePasswordReset();
+  const { handleResendConfirmation } = useConfirmation();
 
-  const notifyAdmin = async (userId: string, userEmail: string) => {
-    try {
-      console.log("Notifying admin about new user registration:", { userId, userEmail });
-      
-      const { data, error } = await supabase.functions.invoke('send-admin-approval-email', {
-        body: { userId, userEmail }
-      });
-
-      if (error) {
-        console.error("Error notifying admin:", error);
-        return false;
-      }
-
-      console.log("Admin notification response:", data);
-      return true;
-    } catch (error) {
-      console.error("Error calling admin notification function:", error);
-      return false;
-    }
-  }
-
-  const handleResetPassword = async (resetEmail: string) => {
-    setLoading(true);
-    setErrorMessage(null);
-    
-    try {
-      console.log("Tentative de récupération de mot de passe pour:", resetEmail);
-      const { error } = await supabase.auth.resetPasswordForEmail(resetEmail, {
-        redirectTo: `${window.location.origin}/auth`,
-      });
-      
-      if (error) throw error;
-      
-      toast({
-        title: "Email envoyé",
-        description: "Vérifiez votre boîte de réception pour réinitialiser votre mot de passe.",
-      });
-      
-      setShowForgotPassword(false);
-      setEmail(resetEmail); // Pré-remplir l'email pour la connexion
-    } catch (error: any) {
-      console.error("Erreur lors de la récupération de mot de passe:", error);
-      setErrorMessage(error.message || "Une erreur s'est produite lors de l'envoi de l'email.");
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handleResendConfirmation = async () => {
-    setLoading(true);
-    setErrorMessage(null);
-    
-    try {
-      if (email) {
-        // Use the correct parameter format for admin.listUsers
-        const { data, error: usersError } = await supabase.auth.admin.listUsers({
-          page: 1,
-          perPage: 1,
-          query: email
-        });
-        
-        if (usersError) {
-          console.error("Error fetching user:", usersError);
-          throw new Error("Impossible de trouver l'utilisateur.");
-        }
-        
-        const users = data?.users;
-        if (users && users.length > 0) {
-          const userId = users[0].id;
-          const adminNotified = await notifyAdmin(userId, email);
-          
-          if (!adminNotified) {
-            throw new Error("Impossible de notifier l'administrateur. Veuillez réessayer plus tard.");
-          }
-        } else {
-          throw new Error("Utilisateur non trouvé.");
-        }
-      } else {
-        throw new Error("Veuillez entrer votre email avant de demander une nouvelle confirmation.");
-      }
-      
-      toast({
-        title: "Demande envoyée",
-        description: "Un administrateur a été notifié de votre inscription et examinera votre demande prochainement.",
-      });
-    } catch (error: any) {
-      console.error("Erreur lors de la demande de confirmation:", error);
-      setErrorMessage(error.message || "Une erreur s'est produite lors de l'envoi de la demande.");
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handleAuth = async (e: React.FormEvent) => {
+  // Wrap handlers to provide necessary state
+  const handleAuthSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setLoading(true);
-    setErrorMessage(null);
-    
-    try {
-      if (isSignUp) {
-        // Sign up
-        console.log("Tentative d'inscription avec:", { email });
-        const { data, error } = await supabase.auth.signUp({
-          email,
-          password,
-        });
-        
-        console.log("Résultat de l'inscription:", { data, error });
-        
-        if (error) throw error;
-        
-        // Notify admin about the new user
-        if (data.user) {
-          const adminNotified = await notifyAdmin(data.user.id, email);
-          if (!adminNotified) {
-            console.warn("Could not notify admin, but user was created");
-          }
-        }
-        
-        toast({
-          title: "Inscription réussie",
-          description: "Votre demande a été enregistrée. Un administrateur examinera votre compte et vous recevrez une confirmation une fois approuvé.",
-        });
-        
-        setIsSignUp(false);
-        setShowConfirmationResend(true);
-      } else {
-        // Sign in
-        console.log("Tentative de connexion avec:", { email });
-        const { data, error } = await supabase.auth.signInWithPassword({
-          email,
-          password,
-        });
-        
-        console.log("Résultat de la connexion:", { data, error });
-        
-        if (error) throw error;
-        
-        toast({
-          title: "Connexion réussie",
-          description: "Vous êtes maintenant connecté.",
-        });
-        
-        navigate('/');
-      }
-    } catch (error: any) {
-      console.error("Erreur d'authentification:", error);
-      let message = "Une erreur s'est produite.";
-      
-      if (error.message) {
-        // Handle specific error messages
-        if (error.message.includes("Email not confirmed")) {
-          message = "Votre compte n'a pas encore été approuvé par un administrateur. Veuillez patienter.";
-          setShowConfirmationResend(true);
-        } else if (error.message.includes("Invalid login credentials")) {
-          message = "Email ou mot de passe incorrect.";
-        } else if (error.message.includes("Email logins are disabled")) {
-          message = "Les connexions par email sont désactivées. Veuillez contacter l'administrateur.";
-        } else {
-          message = error.message;
-        }
-      }
-      
-      setErrorMessage(message);
-    } finally {
-      setLoading(false);
-    }
+    return handleAuth(
+      isSignUp, 
+      email, 
+      password, 
+      setLoading, 
+      setError,
+      setIsSignUp,
+      setShowConfirmationResend
+    );
   };
 
-  const toggleSignUp = () => {
-    setIsSignUp(!isSignUp);
-    setErrorMessage(null);
-    setShowForgotPassword(false);
-    setShowConfirmationResend(false);
+  const handlePasswordReset = async (resetEmail: string) => {
+    return handleResetPassword(resetEmail, () => setShowForgotPassword(false));
   };
 
-  const toggleForgotPassword = () => {
-    setShowForgotPassword(!showForgotPassword);
-    setErrorMessage(null);
-    setShowConfirmationResend(false);
+  const handleConfirmationResend = async () => {
+    return handleResendConfirmation(email, setLoading, setError);
   };
 
   return {
+    // State
     email,
     setEmail,
     password,
@@ -208,9 +66,11 @@ export const useAuthForm = () => {
     showForgotPassword,
     showConfirmationResend,
     errorMessage,
-    handleAuth,
-    handleResetPassword,
-    handleResendConfirmation,
+    
+    // Actions
+    handleAuth: handleAuthSubmit,
+    handleResetPassword: handlePasswordReset,
+    handleResendConfirmation: handleConfirmationResend,
     toggleSignUp,
     toggleForgotPassword
   };
