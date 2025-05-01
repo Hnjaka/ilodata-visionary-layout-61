@@ -11,6 +11,8 @@ import {
 } from '@/components/ui/dialog';
 import { cn } from '@/lib/utils';
 import { AspectRatio } from "@/components/ui/aspect-ratio";
+import { getFileUrl, getImageUrl } from '@/utils/templateUrlUtils';
+import { useTemplateImages } from '@/hooks/templates/useTemplateImages';
 
 type Template = Tables<"templates">;
 
@@ -26,52 +28,15 @@ const TemplateDetailModal = ({
   onClose 
 }: TemplateDetailModalProps) => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
-  const [allImages, setAllImages] = useState<string[]>([]);
+  const allImages = template ? useTemplateImages(template) : [];
   
   useEffect(() => {
-    if (!template) return;
-    
-    setCurrentImageIndex(0);
-    
-    const images: string[] = [];
-    
-    if (template.image_apercu) {
-      images.push(template.image_apercu);
+    if (template) {
+      // Reset to first image when template changes
+      setCurrentImageIndex(0);
+      console.log('Template images loaded:', allImages);
     }
-    
-    if (template.image_extras) {
-      try {
-        const extraImages = JSON.parse(template.image_extras);
-        if (Array.isArray(extraImages)) {
-          images.push(...extraImages);
-        }
-      } catch (error) {
-        console.error('Error parsing image_extras:', error);
-      }
-    }
-    
-    console.log('Template images loaded:', images);
-    setAllImages(images);
-  }, [template]);
-
-  // Function to get file URL - handles both Supabase and demo files
-  const getFileUrl = (filePath: string) => {
-    if (filePath.startsWith('demo-')) {
-      // For demo files, we'll just return a placeholder or relative URL
-      return `/downloads/${filePath}`;
-    }
-    return `https://valzxjecoceltiyzkogw.supabase.co/storage/v1/object/public/template_files/${filePath}`;
-  };
-
-  // Function to get image URL - handles both Supabase and demo images
-  const getImageUrl = (imagePath: string | null) => {
-    if (!imagePath) return null;
-    
-    if (imagePath.startsWith('demo-')) {
-      return `/images/${imagePath}`;
-    }
-    return `https://valzxjecoceltiyzkogw.supabase.co/storage/v1/object/public/template_images/${imagePath}`;
-  };
+  }, [template, allImages]);
 
   const selectImage = (index: number) => {
     setCurrentImageIndex(index);
