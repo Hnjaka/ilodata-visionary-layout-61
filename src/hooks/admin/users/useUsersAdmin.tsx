@@ -1,5 +1,5 @@
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useUsersFetch } from './useUsersFetch';
 import { useUserApproval } from './useUserApproval';
 import { useUserDeletion } from './useUserDeletion';
@@ -16,33 +16,65 @@ export const useUsersAdmin = () => {
   const { updateUserRole, loading: roleLoading, setLoading: setRoleLoading } = useUserRoleUpdate();
   const { updateUserProfile, loading: profileLoading, setLoading: setProfileLoading } = useUserProfileUpdate();
 
-  // Set combined loading state based on any operation being in progress
-  const updateCombinedLoading = () => {
+  // Update combined loading state whenever any individual loading state changes
+  useEffect(() => {
     const isLoading = fetchLoading || approveLoading || deleteLoading || roleLoading || profileLoading;
     setCombinedLoading(isLoading);
+  }, [fetchLoading, approveLoading, deleteLoading, roleLoading, profileLoading]);
+
+  // Wrap the original functions to also update their loading state
+  const wrappedFetchUsers = async () => {
+    setFetchLoading(true);
+    try {
+      const result = await fetchUsers();
+      return result;
+    } finally {
+      setFetchLoading(false);
+    }
   };
 
-  // Override individual setLoading functions to also update combined loading
-  const wrapSetLoading = (originalSetLoading: React.Dispatch<React.SetStateAction<boolean>>) => {
-    return (value: boolean) => {
-      originalSetLoading(value);
-      setTimeout(updateCombinedLoading, 0);
-    };
+  const wrappedApproveUser = async (userId: string) => {
+    setApproveLoading(true);
+    try {
+      return await approveUser(userId);
+    } finally {
+      setApproveLoading(false);
+    }
   };
 
-  // Apply wrapped setLoading functions
-  setFetchLoading = wrapSetLoading(setFetchLoading);
-  setApproveLoading = wrapSetLoading(setApproveLoading);
-  setDeleteLoading = wrapSetLoading(setDeleteLoading);
-  setRoleLoading = wrapSetLoading(setRoleLoading);
-  setProfileLoading = wrapSetLoading(setProfileLoading);
+  const wrappedDeleteUser = async (userId: string) => {
+    setDeleteLoading(true);
+    try {
+      return await deleteUser(userId);
+    } finally {
+      setDeleteLoading(false);
+    }
+  };
+
+  const wrappedUpdateUserRole = async (userId: string, role: string) => {
+    setRoleLoading(true);
+    try {
+      return await updateUserRole(userId, role);
+    } finally {
+      setRoleLoading(false);
+    }
+  };
+
+  const wrappedUpdateUserProfile = async (userId: string, data: { first_name?: string; last_name?: string; email?: string }) => {
+    setProfileLoading(true);
+    try {
+      return await updateUserProfile(userId, data);
+    } finally {
+      setProfileLoading(false);
+    }
+  };
 
   return {
-    fetchUsers,
-    approveUser,
-    deleteUser,
-    updateUserRole,
-    updateUserProfile,
+    fetchUsers: wrappedFetchUsers,
+    approveUser: wrappedApproveUser,
+    deleteUser: wrappedDeleteUser,
+    updateUserRole: wrappedUpdateUserRole,
+    updateUserProfile: wrappedUpdateUserProfile,
     loading: combinedLoading
   };
 };

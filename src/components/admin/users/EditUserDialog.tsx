@@ -36,7 +36,7 @@ interface EditUserDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   user: UserData;
-  onSave: (data: { first_name?: string; last_name?: string; email?: string }) => Promise<void>;
+  onSave: (data: { first_name?: string; last_name?: string; email?: string }) => Promise<boolean>;
 }
 
 const formSchema = z.object({

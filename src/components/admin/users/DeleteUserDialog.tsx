@@ -14,7 +14,7 @@ import {
 interface DeleteUserDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  onConfirm: () => Promise<void>;
+  onConfirm: () => Promise<boolean>;
 }
 
 const DeleteUserDialog: React.FC<DeleteUserDialogProps> = ({ 

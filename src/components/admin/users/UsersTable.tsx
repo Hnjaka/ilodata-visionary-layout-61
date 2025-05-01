@@ -68,6 +68,7 @@ const UsersTable: React.FC<UsersTableProps> = ({
       setDeleteDialogOpen(false);
       setSelectedUserId(null);
     }
+    return true; // Add return value to match the expected type
   };
 
   const handleEditClick = (user: UserData) => {
@@ -77,8 +78,7 @@ const UsersTable: React.FC<UsersTableProps> = ({
 
   const handleRoleUpdate = async (userId: string, newRole: string) => {
     console.log(`Updating user ${userId} role to: ${newRole}`);
-    await onUpdateRole(userId, newRole);
-    // Ne pas appeler onRefresh ici, il sera géré par le parent
+    return await onUpdateRole(userId, newRole);
   };
 
   const formatDate = (dateStr: string | null | undefined) => {
