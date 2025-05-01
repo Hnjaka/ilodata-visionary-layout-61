@@ -2,6 +2,7 @@
 import React from 'react';
 import { LogIn, LogOut, User } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
+import { useToast } from '@/hooks/use-toast';
 
 interface UserAuthButtonsProps {
   user: any;
@@ -11,6 +12,7 @@ interface UserAuthButtonsProps {
 
 const UserAuthButtons: React.FC<UserAuthButtonsProps> = ({ user, onSignOut, onLogin }) => {
   const navigate = useNavigate();
+  const { toast } = useToast();
   
   const handleLogin = () => {
     console.log("Login button clicked in UserAuthButtons");
@@ -18,8 +20,23 @@ const UserAuthButtons: React.FC<UserAuthButtonsProps> = ({ user, onSignOut, onLo
   };
 
   const handleSignOut = async () => {
-    console.log("Logout button clicked in UserAuthButtons");
-    await onSignOut();
+    try {
+      console.log("Logout button clicked in UserAuthButtons");
+      await onSignOut();
+      toast({
+        title: "Déconnexion réussie",
+        description: "Vous avez été déconnecté avec succès."
+      });
+      // Forcer la navigation vers la page d'accueil après déconnexion
+      navigate('/', { replace: true });
+    } catch (error) {
+      console.error("Erreur lors de la déconnexion dans UserAuthButtons:", error);
+      toast({
+        title: "Erreur de déconnexion",
+        description: "Un problème est survenu lors de la déconnexion.",
+        variant: "destructive"
+      });
+    }
   };
   
   const handleAccountClick = () => {

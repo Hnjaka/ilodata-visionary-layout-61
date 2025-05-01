@@ -118,7 +118,16 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
   const signOut = async () => {
     try {
-      await supabase.auth.signOut();
+      console.log("Attempting to sign out in useAuth hook");
+      const { error } = await supabase.auth.signOut();
+      
+      if (error) {
+        console.error("Error during signOut:", error);
+        throw error;
+      }
+      
+      console.log("Sign out successful in useAuth hook");
+      // Mettre à jour l'état immédiatement après la déconnexion réussie
       setUser(null);
       setSession(null);
       setIsAdmin(false);
