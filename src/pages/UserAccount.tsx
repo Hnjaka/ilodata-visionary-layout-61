@@ -1,6 +1,6 @@
 
-import React from 'react';
-import { Navigate } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { Navigate, useNavigate } from 'react-router-dom';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { useAuth } from '@/hooks/useAuth';
@@ -12,9 +12,33 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
 const UserAccount = () => {
   const { user, loading, signOut } = useAuth();
+  const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(true);
+  
+  // Add debug logs
+  useEffect(() => {
+    console.log("UserAccount rendered, user:", user, "loading:", loading);
+    
+    // Set loading state based on auth loading
+    if (!loading) {
+      setIsLoading(false);
+    }
+  }, [user, loading]);
+
+  // Handle sign out
+  const handleSignOut = async () => {
+    try {
+      console.log("Signing out from account page");
+      await signOut();
+      navigate('/');
+    } catch (error) {
+      console.error("Error signing out:", error);
+    }
+  };
   
   // Redirect if not logged in
   if (!loading && !user) {
+    console.log("User not logged in, redirecting to auth");
     return <Navigate to="/auth" />;
   }
   
@@ -27,8 +51,8 @@ const UserAccount = () => {
           <div className="bg-white rounded-lg shadow-lg p-8">
             <h1 className="text-2xl font-bold mb-6">Mon compte</h1>
             
-            {loading ? (
-              <p>Chargement...</p>
+            {isLoading ? (
+              <p className="text-center py-4">Chargement...</p>
             ) : (
               <>
                 <Tabs defaultValue="profile" className="space-y-4">
@@ -52,7 +76,7 @@ const UserAccount = () => {
                       <div className="flex flex-wrap gap-4">
                         <Button
                           variant="outline"
-                          onClick={signOut}
+                          onClick={handleSignOut}
                         >
                           <LogOut className="h-4 w-4 mr-2" />
                           Déconnexion
