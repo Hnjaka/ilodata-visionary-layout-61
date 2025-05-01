@@ -1,7 +1,7 @@
 
 import React from 'react';
-import { Link } from 'react-router-dom';
-import { LogIn, LogOut } from 'lucide-react';
+import { Link, useNavigate } from 'react-router-dom';
+import { LogIn, LogOut, User } from 'lucide-react';
 
 interface MobileNavItemsProps {
   isAdmin: boolean;
@@ -22,12 +22,31 @@ const MobileNavItems: React.FC<MobileNavItemsProps> = ({
 }) => {
   if (!isOpen) return null;
   
+  const navigate = useNavigate();
+  
   // Debug log to check isAdmin value in MobileNavItems
   console.log('MobileNavItems - isAdmin:', isAdmin, 'User:', user?.email);
   
   const handleLogin = () => {
     console.log("Mobile login button clicked");
     onLoginClick();
+    onLinkClick(); // Fermer le menu après clic
+  };
+  
+  const handleSignOut = async () => {
+    try {
+      console.log("Mobile logout button clicked");
+      await onSignOut();
+      onLinkClick(); // Fermer le menu après clic
+    } catch (error) {
+      console.error("Error during sign out:", error);
+    }
+  };
+  
+  const handleAccountClick = () => {
+    console.log("Mobile account button clicked");
+    navigate('/account');
+    onLinkClick(); // Fermer le menu après clic
   };
   
   return (
@@ -86,12 +105,20 @@ const MobileNavItems: React.FC<MobileNavItemsProps> = ({
           
           {/* Auth button for mobile */}
           {user ? (
-            <button 
-              onClick={onSignOut}
-              className="text-slate-800 font-medium hover:text-ilodata-600 transition-colors py-2 flex items-center"
-            >
-              <LogOut className="h-4 w-4 mr-2" /> Déconnexion
-            </button>
+            <>
+              <button 
+                onClick={handleAccountClick}
+                className="text-slate-800 font-medium hover:text-ilodata-600 transition-colors py-2 flex items-center"
+              >
+                <User className="h-4 w-4 mr-2" /> Mon compte
+              </button>
+              <button 
+                onClick={handleSignOut}
+                className="text-slate-800 font-medium hover:text-ilodata-600 transition-colors py-2 flex items-center"
+              >
+                <LogOut className="h-4 w-4 mr-2" /> Déconnexion
+              </button>
+            </>
           ) : (
             <button 
               type="button"

@@ -9,10 +9,12 @@ import { Button } from '@/components/ui/button';
 import { LogOut } from 'lucide-react';
 import ProfileForm from '@/components/auth/ProfileForm';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { useToast } from '@/hooks/use-toast';
 
 const UserAccount = () => {
   const { user, loading, signOut } = useAuth();
   const navigate = useNavigate();
+  const { toast } = useToast();
   const [isLoading, setIsLoading] = useState(true);
   
   // Add debug logs
@@ -30,9 +32,18 @@ const UserAccount = () => {
     try {
       console.log("Signing out from account page");
       await signOut();
-      navigate('/');
+      toast({
+        title: "Déconnexion réussie",
+        description: "Vous avez été déconnecté avec succès."
+      });
+      navigate('/', { replace: true });
     } catch (error) {
       console.error("Error signing out:", error);
+      toast({
+        title: "Erreur de déconnexion",
+        description: "Un problème est survenu lors de la déconnexion.",
+        variant: "destructive"
+      });
     }
   };
   
