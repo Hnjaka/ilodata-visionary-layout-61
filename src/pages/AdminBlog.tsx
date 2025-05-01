@@ -2,12 +2,17 @@
 import React, { useEffect, useCallback } from 'react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
-import BlogHeader from '@/components/admin/blog/BlogHeader';
 import BlogContent from '@/components/admin/blog/BlogContent';
 import { useBlogData } from '@/hooks/useBlogData';
 import ProtectedRoute from '@/components/admin/ProtectedRoute';
+import { Button } from '@/components/ui/button';
+import { useNavigate } from 'react-router-dom';
+import { Plus, Settings } from 'lucide-react';
+import { useAuth } from '@/hooks/useAuth';
 
 const AdminBlog = () => {
+  const navigate = useNavigate();
+  const { isAdmin } = useAuth();
   // Use the blog data hook for retrieving data
   const { categories, setCategories, loading, refreshData } = useBlogData();
 
@@ -28,7 +33,38 @@ const AdminBlog = () => {
       <Header />
       
       <main className="flex-grow container mx-auto px-4 py-12">
-        <BlogHeader categories={categories} onRefresh={handleRefresh} />
+        <div className="flex flex-col mb-8">
+          <div className="flex justify-between items-center">
+            <h1 className="text-3xl font-bold text-slate-800">Blog</h1>
+            <div className="flex space-x-2">
+              {isAdmin && (
+                <>
+                  <Button
+                    variant="outline"
+                    onClick={handleRefresh}
+                    className="flex items-center gap-2"
+                  >
+                    Rafraîchir les données
+                  </Button>
+                  <Button 
+                    variant="outline" 
+                    onClick={() => navigate('/admin/blog/settings')}
+                    className="flex items-center"
+                  >
+                    <Settings className="h-4 w-4 mr-2" />
+                    Paramètres
+                  </Button>
+                  <Button onClick={() => navigate('/admin/blog/new')}>
+                    <Plus className="h-4 w-4 mr-2" />
+                    {Array.isArray(categories) && categories.length > 0 ? "Nouvel Article" : "Nouvelle Catégorie"}
+                  </Button>
+                </>
+              )}
+            </div>
+          </div>
+          <p className="text-slate-500 mt-2">Gérez ici les catégories et articles du blog.</p>
+        </div>
+        
         <BlogContent 
           categories={categories} 
           setCategories={setCategories} 

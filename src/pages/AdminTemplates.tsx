@@ -12,7 +12,7 @@ import {
   TableHeader, 
   TableRow 
 } from '@/components/ui/table';
-import { Pencil, Trash2, Plus, Eye, EyeOff } from 'lucide-react';
+import { Pencil, Trash2, Plus, Eye, EyeOff, Settings } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import { useAuth } from '@/hooks/useAuth';
@@ -26,6 +26,7 @@ const AdminTemplates = () => {
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
   const { toast } = useToast();
+  const { isAdmin } = useAuth();
 
   useEffect(() => {
     document.title = "Administration des Templates | ilodata.com";
@@ -93,9 +94,26 @@ const AdminTemplates = () => {
         <div className="container mx-auto px-4">
           <div className="flex justify-between items-center mb-8">
             <h1 className="text-3xl font-bold text-slate-800">Administration des Templates</h1>
-            <Button onClick={() => navigate('/admin/templates/new')} className="flex items-center">
-              <Plus className="mr-2 h-4 w-4" /> Nouveau template
-            </Button>
+            <div className="flex gap-2">
+              {isAdmin && (
+                <>
+                  <Button 
+                    variant="outline" 
+                    onClick={() => navigate('/admin/templates/settings')}
+                    className="flex items-center"
+                  >
+                    <Settings className="h-4 w-4 mr-2" />
+                    Paramètres
+                  </Button>
+                  <Button 
+                    onClick={() => navigate('/admin/templates/new')} 
+                    className="flex items-center"
+                  >
+                    <Plus className="h-4 w-4 mr-2" /> Nouveau template
+                  </Button>
+                </>
+              )}
+            </div>
           </div>
           
           {loading ? (
