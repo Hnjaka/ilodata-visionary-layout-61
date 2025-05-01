@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
@@ -28,6 +27,7 @@ import Confidentialite from "./pages/Confidentialite";
 import MentionsLegales from "./pages/MentionsLegales";
 import FAQ from "./pages/FAQ";
 import Auth from "./pages/Auth";
+import UserAccount from "./pages/UserAccount";
 
 const queryClient = new QueryClient();
 
@@ -50,6 +50,7 @@ const App = () => {
                 <Route path="/blog/:slug" element={<BlogArticleDisplay />} />
                 <Route path="/templates" element={<Templates />} />
                 <Route path="/auth" element={<Auth />} />
+                <Route path="/account" element={<UserAccount />} />
                 <Route path="/admin/templates" element={
                   <ProtectedRoute>
                     <AdminTemplates />

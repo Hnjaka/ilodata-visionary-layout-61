@@ -36,7 +36,7 @@ export const useAuthForm = () => {
   // Wrap handlers to provide necessary state
   const handleAuthSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    return handleAuth(
+    const result = await handleAuth(
       isSignUp, 
       email, 
       password, 
@@ -45,14 +45,17 @@ export const useAuthForm = () => {
       setIsSignUp,
       setShowConfirmationResend
     );
+    return;
   };
 
   const handlePasswordReset = async (resetEmail: string) => {
-    return handleResetPassword(resetEmail, () => setShowForgotPassword(false));
+    await handleResetPassword(resetEmail, () => setShowForgotPassword(false));
+    return;
   };
 
   const handleConfirmationResend = async () => {
-    return handleResendConfirmation(email, setLoading, setError);
+    await handleResendConfirmation(email, setLoading, setError);
+    return;
   };
 
   return {

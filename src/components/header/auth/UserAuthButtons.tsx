@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { LogIn, LogOut } from 'lucide-react';
+import { LogIn, LogOut, User } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 interface UserAuthButtonsProps {
@@ -18,12 +18,20 @@ const UserAuthButtons: React.FC<UserAuthButtonsProps> = ({ user, onSignOut, onLo
   return (
     <div className="hidden md:flex items-center space-x-4">
       {user ? (
-        <button 
-          onClick={onSignOut}
-          className="flex items-center text-slate-700 hover:text-ilodata-600 transition-colors"
-        >
-          <LogOut className="h-4 w-4 mr-1" /> Déconnexion
-        </button>
+        <div className="flex items-center space-x-4">
+          <Link 
+            to="/account"
+            className="flex items-center text-slate-700 hover:text-ilodata-600 transition-colors"
+          >
+            <User className="h-4 w-4 mr-1" /> Mon compte
+          </Link>
+          <button 
+            onClick={onSignOut}
+            className="flex items-center text-slate-700 hover:text-ilodata-600 transition-colors"
+          >
+            <LogOut className="h-4 w-4 mr-1" /> Déconnexion
+          </button>
+        </div>
       ) : (
         <button 
           type="button"

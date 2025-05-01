@@ -19,7 +19,7 @@ export const useConfirmation = () => {
       const { data, error: usersError } = await supabase.auth.admin.listUsers({
         page: 1,
         perPage: 1,
-        filter: email
+        query: email
       });
       
       if (usersError) {
