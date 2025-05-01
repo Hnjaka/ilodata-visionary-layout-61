@@ -10,6 +10,7 @@ export const useAuthForm = () => {
   const [loading, setLoading] = useState(false);
   const [isSignUp, setIsSignUp] = useState(false);
   const [showForgotPassword, setShowForgotPassword] = useState(false);
+  const [showConfirmationResend, setShowConfirmationResend] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   
   const navigate = useNavigate();
@@ -61,6 +62,23 @@ export const useAuthForm = () => {
     }
   };
 
+  const handleResendConfirmation = async () => {
+    setLoading(true);
+    setErrorMessage(null);
+    
+    try {
+      toast({
+        title: "Information",
+        description: "Un administrateur a été notifié de votre inscription et examinera votre demande prochainement.",
+      });
+    } catch (error: any) {
+      console.error("Erreur lors de la demande de confirmation:", error);
+      setErrorMessage(error.message || "Une erreur s'est produite lors de l'envoi de la demande.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const handleAuth = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
@@ -93,6 +111,7 @@ export const useAuthForm = () => {
         });
         
         setIsSignUp(false);
+        setShowConfirmationResend(true);
       } else {
         // Sign in
         console.log("Tentative de connexion avec:", { email });
@@ -120,6 +139,7 @@ export const useAuthForm = () => {
         // Handle specific error messages
         if (error.message.includes("Email not confirmed")) {
           message = "Votre compte n'a pas encore été approuvé par un administrateur. Veuillez patienter.";
+          setShowConfirmationResend(true);
         } else if (error.message.includes("Invalid login credentials")) {
           message = "Email ou mot de passe incorrect.";
         } else if (error.message.includes("Email logins are disabled")) {
@@ -139,11 +159,13 @@ export const useAuthForm = () => {
     setIsSignUp(!isSignUp);
     setErrorMessage(null);
     setShowForgotPassword(false);
+    setShowConfirmationResend(false);
   };
 
   const toggleForgotPassword = () => {
     setShowForgotPassword(!showForgotPassword);
     setErrorMessage(null);
+    setShowConfirmationResend(false);
   };
 
   return {
@@ -154,9 +176,11 @@ export const useAuthForm = () => {
     loading,
     isSignUp,
     showForgotPassword,
+    showConfirmationResend,
     errorMessage,
     handleAuth,
     handleResetPassword,
+    handleResendConfirmation,
     toggleSignUp,
     toggleForgotPassword
   };
