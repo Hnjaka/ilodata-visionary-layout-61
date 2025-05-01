@@ -10,6 +10,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { User } from '@supabase/supabase-js';
+import { LoadingSpinner } from '@/components/LoadingSpinner';
 
 const profileSchema = z.object({
   email: z.string().email("Veuillez entrer une adresse email valide"),
@@ -36,6 +37,7 @@ interface ProfileType {
 
 const ProfileForm: React.FC<ProfileFormProps> = ({ user }) => {
   const [isLoading, setIsLoading] = useState(true);
+  const [profileLoadError, setProfileLoadError] = useState<string | null>(null);
   const [userRole, setUserRole] = useState<string>('');
   const { updateProfile, fetchProfile, loading: updateLoading } = useProfileManagement();
   
@@ -51,18 +53,26 @@ const ProfileForm: React.FC<ProfileFormProps> = ({ user }) => {
   useEffect(() => {
     const loadProfile = async () => {
       if (user) {
-        const profile = await fetchProfile(user.id) as ProfileType | null;
-        
-        form.reset({
-          email: user.email || '',
-          firstName: profile?.first_name || '',
-          lastName: profile?.last_name || '',
-        });
-        
-        // Sauvegarde du rôle pour l'affichage
-        setUserRole(profile?.role || 'user');
-        
-        setIsLoading(false);
+        try {
+          console.log("Fetching profile for user ID:", user.id);
+          const profile = await fetchProfile(user.id) as ProfileType | null;
+          console.log("Profile data received:", profile);
+          
+          form.reset({
+            email: user.email || '',
+            firstName: profile?.first_name || '',
+            lastName: profile?.last_name || '',
+          });
+          
+          // Save role for display
+          setUserRole(profile?.role || 'user');
+          setProfileLoadError(null);
+        } catch (error) {
+          console.error("Error loading profile:", error);
+          setProfileLoadError("Impossible de charger votre profil. Veuillez réessayer plus tard.");
+        } finally {
+          setIsLoading(false);
+        }
       }
     };
     
@@ -71,20 +81,25 @@ const ProfileForm: React.FC<ProfileFormProps> = ({ user }) => {
   
   const onSubmit = async (data: ProfileFormValues) => {
     if (user) {
-      await updateProfile(user.id, {
-        email: data.email,
-        firstName: data.firstName,
-        lastName: data.lastName,
-      });
+      try {
+        console.log("Updating profile with data:", data);
+        await updateProfile(user.id, {
+          email: data.email,
+          firstName: data.firstName,
+          lastName: data.lastName,
+        });
+      } catch (error) {
+        console.error("Error updating profile:", error);
+      }
     }
   };
 
-  // Fonction pour formater le texte du rôle (première lettre en majuscule)
+  // Format role text (capitalize first letter)
   const formatRoleText = (role: string) => {
     return role.charAt(0).toUpperCase() + role.slice(1).toLowerCase();
   };
 
-  // Fonction qui retourne la couleur du badge en fonction du rôle
+  // Return badge color based on role
   const getRoleBadgeColor = (role: string) => {
     const roleLower = role.toLowerCase();
     switch (roleLower) {
@@ -101,8 +116,27 @@ const ProfileForm: React.FC<ProfileFormProps> = ({ user }) => {
     return (
       <Card>
         <CardContent className="pt-6">
-          <div className="flex justify-center">
-            <p>Chargement du profil...</p>
+          <div className="flex justify-center py-8">
+            <LoadingSpinner />
+          </div>
+        </CardContent>
+      </Card>
+    );
+  }
+
+  if (profileLoadError) {
+    return (
+      <Card>
+        <CardContent className="pt-6">
+          <div className="text-center py-4 text-red-500">
+            <p>{profileLoadError}</p>
+            <Button 
+              variant="outline" 
+              className="mt-4" 
+              onClick={() => window.location.reload()}
+            >
+              Réessayer
+            </Button>
           </div>
         </CardContent>
       </Card>
@@ -141,7 +175,7 @@ const ProfileForm: React.FC<ProfileFormProps> = ({ user }) => {
                 <FormItem>
                   <FormLabel>Prénom</FormLabel>
                   <FormControl>
-                    <Input placeholder="Votre prénom" {...field} />
+                    <Input placeholder="Votre prénom" {...field} value={field.value || ''} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -155,14 +189,14 @@ const ProfileForm: React.FC<ProfileFormProps> = ({ user }) => {
                 <FormItem>
                   <FormLabel>Nom</FormLabel>
                   <FormControl>
-                    <Input placeholder="Votre nom" {...field} />
+                    <Input placeholder="Votre nom" {...field} value={field.value || ''} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
             
-            {/* Affichage du rôle en lecture seule */}
+            {/* Display role (read-only) */}
             <div className="pt-2">
               <FormLabel>Rôle</FormLabel>
               <div className="flex items-center h-10 mt-1">

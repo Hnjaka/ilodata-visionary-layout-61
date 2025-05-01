@@ -10,22 +10,28 @@ import { LogOut } from 'lucide-react';
 import ProfileForm from '@/components/auth/ProfileForm';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useToast } from '@/hooks/use-toast';
+import LoadingSpinner from '@/components/LoadingSpinner';
 
 const UserAccount = () => {
-  const { user, loading, signOut } = useAuth();
+  const { user, loading: authLoading, signOut } = useAuth();
   const navigate = useNavigate();
   const { toast } = useToast();
-  const [isLoading, setIsLoading] = useState(true);
+  const [pageLoading, setPageLoading] = useState(true);
   
-  // Add debug logs
+  // Debug logs
   useEffect(() => {
-    console.log("UserAccount rendered, user:", user, "loading:", loading);
+    console.log("UserAccount rendered, user:", user, "loading:", authLoading);
     
     // Set loading state based on auth loading
-    if (!loading) {
-      setIsLoading(false);
+    if (!authLoading) {
+      // Add a small delay to ensure the UI updates correctly
+      const timer = setTimeout(() => {
+        setPageLoading(false);
+      }, 300);
+      
+      return () => clearTimeout(timer);
     }
-  }, [user, loading]);
+  }, [user, authLoading]);
 
   // Handle sign out
   const handleSignOut = async () => {
@@ -48,7 +54,7 @@ const UserAccount = () => {
   };
   
   // Redirect if not logged in
-  if (!loading && !user) {
+  if (!authLoading && !user) {
     console.log("User not logged in, redirecting to auth");
     return <Navigate to="/auth" />;
   }
@@ -62,8 +68,11 @@ const UserAccount = () => {
           <div className="bg-white rounded-lg shadow-lg p-8">
             <h1 className="text-2xl font-bold mb-6">Mon compte</h1>
             
-            {isLoading ? (
-              <p className="text-center py-4">Chargement...</p>
+            {(authLoading || pageLoading) ? (
+              <div className="text-center py-8">
+                <LoadingSpinner />
+                <p className="mt-4 text-gray-500">Chargement de votre compte...</p>
+              </div>
             ) : (
               <>
                 <Tabs defaultValue="profile" className="space-y-4">

@@ -17,6 +17,8 @@ export const useProfileManagement = () => {
     setLoading(true);
     
     try {
+      console.log("Updating profile for user:", userId, "with data:", profileData);
+      
       // First check if the profile exists
       const { data: existingProfile, error: fetchError } = await supabase
         .from('profiles')
@@ -24,7 +26,12 @@ export const useProfileManagement = () => {
         .eq('id', userId)
         .maybeSingle();
         
-      if (fetchError) throw fetchError;
+      if (fetchError) {
+        console.error("Error fetching profile:", fetchError);
+        throw fetchError;
+      }
+
+      console.log("Existing profile:", existingProfile);
 
       // If profile exists, update it, otherwise create it
       if (existingProfile) {
@@ -37,7 +44,10 @@ export const useProfileManagement = () => {
           })
           .eq('id', userId);
           
-        if (error) throw error;
+        if (error) {
+          console.error("Error updating profile:", error);
+          throw error;
+        }
       } else {
         const { error } = await supabase
           .from('profiles')
@@ -48,7 +58,10 @@ export const useProfileManagement = () => {
             last_name: profileData.lastName
           });
           
-        if (error) throw error;
+        if (error) {
+          console.error("Error creating profile:", error);
+          throw error;
+        }
       }
       
       toast({
@@ -74,18 +87,24 @@ export const useProfileManagement = () => {
 
   const fetchProfile = async (userId: string) => {
     try {
+      console.log("Fetching profile for user:", userId);
+      
       const { data, error } = await supabase
         .from('profiles')
         .select('*')
         .eq('id', userId)
         .maybeSingle();
         
-      if (error) throw error;
+      if (error) {
+        console.error("Error fetching profile:", error);
+        throw error;
+      }
       
+      console.log("Profile data retrieved:", data);
       return data;
     } catch (error) {
       console.error("Erreur lors de la récupération du profil:", error);
-      return null;
+      throw error;
     }
   };
 
