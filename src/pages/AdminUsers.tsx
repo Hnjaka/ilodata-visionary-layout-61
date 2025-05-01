@@ -41,6 +41,21 @@ const AdminUsers = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []); // Suppression de loadUsers de la dépendance pour éviter les boucles infinies
 
+  const handleApproveUser = async (userId: string) => {
+    const success = await approveUser(userId);
+    if (success) {
+      // Mettre à jour l'état local pour refléter le changement immédiatement
+      setUsers(prevUsers => 
+        prevUsers.map(user => 
+          user.id === userId 
+            ? { ...user, is_approved: true } 
+            : user
+        )
+      );
+    }
+    return success;
+  };
+
   const AdminContent = () => (
     <div className="min-h-screen flex flex-col">
       <Header />
@@ -56,24 +71,41 @@ const AdminUsers = () => {
           <div className="bg-white shadow rounded-lg overflow-hidden">
             <UsersTable 
               users={users}
-              onApprove={async (userId) => {
-                const success = await approveUser(userId);
-                if (success) await loadUsers();
-                return success;
-              }}
+              onApprove={handleApproveUser}
               onDelete={async (userId) => {
                 const success = await deleteUser(userId);
-                if (success) await loadUsers();
+                if (success) {
+                  // Mettre à jour l'état local pour refléter le changement immédiatement
+                  setUsers(prevUsers => prevUsers.filter(user => user.id !== userId));
+                }
                 return success;
               }}
               onUpdateRole={async (userId, role) => {
                 const success = await updateUserRole(userId, role);
-                if (success) await loadUsers();
+                if (success) {
+                  // Mettre à jour l'état local pour refléter le changement immédiatement
+                  setUsers(prevUsers => 
+                    prevUsers.map(user => 
+                      user.id === userId 
+                        ? { ...user, role } 
+                        : user
+                    )
+                  );
+                }
                 return success;
               }}
               onUpdateProfile={async (userId, data) => {
                 const success = await updateUserProfile(userId, data);
-                if (success) await loadUsers();
+                if (success) {
+                  // Mettre à jour l'état local pour refléter le changement immédiatement
+                  setUsers(prevUsers => 
+                    prevUsers.map(user => 
+                      user.id === userId 
+                        ? { ...user, ...data } 
+                        : user
+                    )
+                  );
+                }
                 return success;
               }}
               onRefresh={loadUsers}
