@@ -20,12 +20,6 @@ const AboutCta = () => {
             >
               👉 Demander un devis gratuit
             </Link>
-            <Link 
-              to="/modeles" 
-              className="px-6 py-3 rounded-full bg-transparent border-2 border-white text-white font-medium hover:bg-white/10 transition-colors"
-            >
-              Découvrir nos modèles
-            </Link>
           </div>
         </div>
       </div>

@@ -13,9 +13,6 @@ const AboutValues = () => {
             </div>
           </div>
           <h2 className="section-title">Qualité, clarté, simplicité</h2>
-          <p className="section-subtitle">
-            Des services adaptés aux clients francophones du monde entier
-          </p>
         </div>
 
         <div className="grid md:grid-cols-2 gap-10 items-center">

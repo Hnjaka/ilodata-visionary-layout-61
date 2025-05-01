@@ -13,9 +13,6 @@ const AboutTeam = () => {
             </div>
           </div>
           <h2 className="section-title">Une petite équipe, proche de vous</h2>
-          <p className="section-subtitle">
-            Passionnée par les beaux documents bien structurés
-          </p>
         </div>
 
         <div className="grid md:grid-cols-2 gap-10 items-center">

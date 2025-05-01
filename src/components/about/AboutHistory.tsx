@@ -13,9 +13,6 @@ const AboutHistory = () => {
             </div>
           </div>
           <h2 className="section-title">Notre mission</h2>
-          <p className="section-subtitle">
-            Vous aider à présenter vos documents avec clarté, style et professionnalisme
-          </p>
         </div>
 
         <div className="grid md:grid-cols-2 gap-10 items-center">

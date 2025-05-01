@@ -5,9 +5,7 @@ import Footer from '@/components/Footer';
 import AboutHero from '@/components/about/AboutHero';
 import AboutHistory from '@/components/about/AboutHistory';
 import AboutTeam from '@/components/about/AboutTeam';
-import AboutApproach from '@/components/about/AboutApproach';
 import AboutValues from '@/components/about/AboutValues';
-import AboutWhyChoose from '@/components/about/AboutWhyChoose';
 import AboutTestimonials from '@/components/about/AboutTestimonials';
 import AboutCta from '@/components/about/AboutCta';
 
@@ -32,9 +30,7 @@ const About = () => {
       <AboutHero />
       <AboutHistory />
       <AboutTeam />
-      <AboutApproach />
       <AboutValues />
-      <AboutWhyChoose />
       <AboutTestimonials />
       <AboutCta />
       <Footer />
