@@ -43,7 +43,10 @@ export const useUsersFetch = () => {
       
       // Merge profiles with auth data when possible
       const mergedUsers = data.map(profile => {
-        const authUser = authUsers?.users?.find(u => u.id === profile.id);
+        // Explicitly type authUsers.users as AuthUser[] or empty array if undefined
+        const authUsersList = (authUsers?.users as AuthUser[]) || [];
+        const authUser = authUsersList.find(u => u.id === profile.id);
+        
         return {
           ...profile,
           last_sign_in_at: authUser?.last_sign_in_at || null
