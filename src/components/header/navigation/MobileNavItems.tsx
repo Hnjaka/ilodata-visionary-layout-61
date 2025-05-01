@@ -106,7 +106,7 @@ const MobileNavItems: React.FC<MobileNavItemsProps> = ({
           {isAdmin && (
             <>
               <div className="py-2 font-medium text-slate-800">
-                Admin:
+                Gestion:
               </div>
               <Link 
                 to="/admin/templates" 
