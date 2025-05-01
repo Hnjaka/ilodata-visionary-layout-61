@@ -12,8 +12,9 @@ const AdminGuides = () => {
   const { categories, setCategories, loading, refreshData } = useGuidesData();
 
   // Memoize the refresh function to avoid triggering re-renders
-  const handleRefresh = useCallback(() => {
-    refreshData();
+  // Make sure it returns a Promise
+  const handleRefresh = useCallback(async () => {
+    return await refreshData();
   }, [refreshData]);
 
   // Load data on initial render only
