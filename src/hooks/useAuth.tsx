@@ -89,8 +89,8 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       }
       
       if (profileData) {
-        // Normalize role for case-insensitive comparison and debug
-        const userRole = profileData.role?.toLowerCase() || '';
+        // Amélioration: Check role case-insensitive and handle null/undefined cases
+        const userRole = (profileData.role || '').toLowerCase();
         console.log("User role:", profileData.role, "Is admin:", userRole === 'admin');
         
         // Set admin status based on normalized role comparison
