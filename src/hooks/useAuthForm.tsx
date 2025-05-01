@@ -1,3 +1,4 @@
+
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
@@ -69,11 +70,11 @@ export const useAuthForm = () => {
     
     try {
       if (email) {
-        // Get user ID from email
-        const { data: { users }, error: usersError } = await supabase.auth.admin.listUsers({
-          filters: {
-            email: email
-          }
+        // Use the correct parameter format for admin.listUsers
+        const { data, error: usersError } = await supabase.auth.admin.listUsers({
+          page: 1,
+          perPage: 1,
+          query: email
         });
         
         if (usersError) {
@@ -81,6 +82,7 @@ export const useAuthForm = () => {
           throw new Error("Impossible de trouver l'utilisateur.");
         }
         
+        const users = data?.users;
         if (users && users.length > 0) {
           const userId = users[0].id;
           const adminNotified = await notifyAdmin(userId, email);
