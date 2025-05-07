@@ -3,6 +3,7 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { LogIn, LogOut, User, Settings } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
+import { Separator } from '@/components/ui/separator';
 
 interface MobileAuthButtonsProps {
   user: any;
@@ -119,12 +120,14 @@ const MobileAuthButtons: React.FC<MobileAuthButtonsProps> = ({
         </>
       )}
       
-      <button 
-        onClick={handleSignOut}
-        className="text-red-600 hover:text-red-800 font-medium transition-colors py-2 mt-2 flex items-center"
-      >
-        <LogOut className="h-4 w-4 mr-2" /> Déconnexion
-      </button>
+      <div className="mt-4 pt-4 border-t border-gray-200">
+        <button 
+          onClick={handleSignOut}
+          className="text-red-600 hover:text-red-800 font-medium transition-colors py-2 flex items-center"
+        >
+          <LogOut className="h-4 w-4 mr-2" /> Déconnexion
+        </button>
+      </div>
     </>
   );
 };

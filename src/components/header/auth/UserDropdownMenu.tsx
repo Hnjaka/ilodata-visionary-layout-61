@@ -12,6 +12,7 @@ import {
 import { Button } from '@/components/ui/button';
 import { User, LogOut, Settings } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
+import { Separator } from '@/components/ui/separator';
 
 interface UserDropdownMenuProps {
   user: any;
