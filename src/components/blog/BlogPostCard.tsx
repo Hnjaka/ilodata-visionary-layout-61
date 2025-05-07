@@ -32,7 +32,7 @@ const BlogPostCard: React.FC<BlogPostCardProps> = ({ post }) => {
         <h3 className="text-xl font-semibold mb-3 text-slate-800">{post.title}</h3>
         <p className="text-slate-600 mb-4">{post.excerpt || 'Cliquez pour en savoir plus sur cet article.'}</p>
         <Link 
-          to={`/blog/${post.slug}`} 
+          to={`/articles/${post.slug}`} 
           className="group inline-flex items-center text-ilodata-600 font-medium hover:text-ilodata-700 transition-colors"
         >
           Lire la suite

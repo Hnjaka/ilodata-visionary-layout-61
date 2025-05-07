@@ -132,8 +132,8 @@ const BlogSection = () => {
         )}
 
         <div className="text-center mt-12">
-          {/* Show all articles button for everyone */}
-          <Link to="/blog" className="button-secondary inline-flex items-center mr-2">
+          {/* Updated link to point to /articles instead of /blog */}
+          <Link to="/articles" className="button-secondary inline-flex items-center mr-2">
             Voir tous les articles
             <ArrowRight size={16} className="ml-1 transition-transform group-hover:translate-x-1" />
           </Link>

@@ -9,6 +9,18 @@
   to = "/new-page"
   status = 301              # Redirection permanente (SEO-friendly)
 
+# Redirection de /blog vers /articles
+[[redirects]]
+  from = "/blog"
+  to = "/articles"
+  status = 301              # Redirection permanente (SEO-friendly)
+
+# Redirection de /blog/* vers /articles
+[[redirects]]
+  from = "/blog/*"
+  to = "/articles"
+  status = 301              # Redirection permanente (SEO-friendly)
+
 # Réécriture d'URL pour des chemins dynamiques (ex: /blog/123 → /articles/123)
 [[redirects]]
   from = "/blog/*"

@@ -4,7 +4,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { AuthProvider } from "@/hooks/useAuth";
 import ProtectedRoute from "@/components/admin/ProtectedRoute";
 import Index from "./pages/Index";
@@ -22,8 +22,7 @@ import AdminUsers from "./pages/AdminUsers";
 import AddTemplate from "./pages/AddTemplate";
 import EditTemplate from "./pages/EditTemplate";
 import ArticleDisplay from "./pages/articles/ArticleDisplay";
-import Blog from "./pages/Blog";
-import Articles from "./pages/Articles"; // Importation de la nouvelle page Articles
+import Articles from "./pages/Articles";
 import BlogArticleDisplay from "./pages/BlogArticleDisplay";
 import CGU from "./pages/CGU";
 import Confidentialite from "./pages/Confidentialite";
@@ -49,9 +48,9 @@ const App = () => {
                 <Route path="/guides" element={<GuidesConseils />} />
                 <Route path="/guides/:slug" element={<ArticleDisplay />} />
                 <Route path="/about" element={<About />} />
-                <Route path="/blog" element={<Blog />} />
-                <Route path="/articles" element={<Articles />} /> {/* Nouvelle route pour la page Articles */}
-                <Route path="/blog/:slug" element={<BlogArticleDisplay />} />
+                <Route path="/blog" element={<Navigate to="/articles" replace />} />
+                <Route path="/articles" element={<Articles />} />
+                <Route path="/blog/:slug" element={<Navigate to="/articles" replace />} />
                 <Route path="/templates" element={<Templates />} />
                 <Route path="/auth" element={<Auth />} />
                 <Route path="/account" element={<UserAccount />} />
