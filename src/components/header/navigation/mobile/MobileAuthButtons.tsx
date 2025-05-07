@@ -28,8 +28,7 @@ const MobileAuthButtons: React.FC<MobileAuthButtonsProps> = ({
     onLinkClick(); // Fermer le menu après clic
   };
   
-  const handleSignOut = async (e: React.MouseEvent) => {
-    e.preventDefault(); // Prevent default to avoid navigation issues
+  const handleSignOut = async () => {
     try {
       console.log("Mobile logout button clicked");
       await onSignOut();
