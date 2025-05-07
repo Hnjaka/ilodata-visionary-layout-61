@@ -1,70 +1,28 @@
 
-import React, { useEffect } from 'react';
+import React from 'react';
 import Header from '@/components/Header';
 import Hero from '@/components/Hero';
+import Services from '@/components/Services';
 import ModelsSection from '@/components/ModelsSection';
 import Guides from '@/components/Guides';
-import Services from '@/components/Services';
+import BlogSection from '@/components/BlogSection'; // Mise à jour ici
 import Testimonials from '@/components/Testimonials';
 import Contact from '@/components/Contact';
+import About from '@/components/About';
 import Footer from '@/components/Footer';
-import Blog from '@/components/Blog';
 
 const Index = () => {
-  useEffect(() => {
-    document.title = "ilodata.com | Mise en page de livre pour auteurs indépendants et éditeurs";
-    
-    // Update meta description
-    let metaDescription = document.querySelector('meta[name="description"]');
-    if (!metaDescription) {
-      metaDescription = document.createElement('meta');
-      metaDescription.setAttribute('name', 'description');
-      document.head.appendChild(metaDescription);
-    }
-    metaDescription.setAttribute('content', 'ilodata.com : Des solutions professionnelles pour la mise en page de vos livres. Modèles, formations et services personnalisés pour auteurs et éditeurs.');
-    
-    // Add keywords meta tag
-    let metaKeywords = document.querySelector('meta[name="keywords"]');
-    if (!metaKeywords) {
-      metaKeywords = document.createElement('meta');
-      metaKeywords.setAttribute('name', 'keywords');
-      document.head.appendChild(metaKeywords);
-    }
-    metaKeywords.setAttribute('content', 'ilodata.com, mise en page livre, formation mise en page livre, modèles de livre');
-  }, []);
-
-  useEffect(() => {
-    const fadeInSections = document.querySelectorAll('.fade-in-section');
-    
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('is-visible');
-        }
-      });
-    }, { threshold: 0.1 });
-    
-    fadeInSections.forEach(section => {
-      observer.observe(section);
-    });
-    
-    return () => {
-      fadeInSections.forEach(section => {
-        observer.unobserve(section);
-      });
-    };
-  }, []);
-
   return (
-    <div className="min-h-screen flex flex-col overflow-x-hidden">
+    <div className="flex flex-col min-h-screen">
       <Header />
       <Hero />
+      <Services />
       <ModelsSection />
       <Guides />
-      <Services />
-      <Blog /> {/* Ensure the Blog component is rendered on the homepage */}
+      <BlogSection /> {/* Mise à jour ici */}
       <Testimonials />
       <Contact />
+      <About />
       <Footer />
     </div>
   );

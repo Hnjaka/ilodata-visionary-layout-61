@@ -54,7 +54,7 @@ const blogPosts: BlogPost[] = [
   }
 ];
 
-const Blog = () => {
+const BlogSection = () => {
   const sectionRef = useRef<HTMLDivElement>(null);
   const { user, isAdmin } = useAuth();
   const [loading, setLoading] = useState(false);
@@ -86,7 +86,7 @@ const Blog = () => {
 
   // Add these logs to better track the user state
   useEffect(() => {
-    console.log("Blog component - User auth state:", { 
+    console.log("BlogSection component - User auth state:", { 
       isLoggedIn: !!user,
       isAdmin: isAdmin
     });
@@ -151,4 +151,4 @@ const Blog = () => {
   );
 };
 
-export default Blog;
+export default BlogSection;
