@@ -27,6 +27,13 @@
   to = "/sitemap.xml"
   status = 200
 
+# Ajout d'une redirection spécifique pour la page blog
+[[redirects]]
+  from = "/blog"
+  to = "/index.html"
+  status = 200
+  force = false
+
 # Gestion des erreurs 404
 [[redirects]]
   from = "/*"
