@@ -1,0 +1,29 @@
+[build]
+  command = "npm run build"  # Si vous utilisez un outil comme Lovable
+  publish = "dist"          # Dossier contenant les fichiers à déployer (adaptez si différent)
+
+# Redirections principales
+[[redirects]]
+  from = "/old-page"
+  to = "/new-page"
+  status = 301              # Redirection permanente (SEO-friendly)
+
+# Réécriture d'URL pour des chemins dynamiques (ex: /blog/123 → /articles/123)
+[[redirects]]
+  from = "/blog/*"
+  to = "/articles/:splat"
+  status = 200              # Réécriture sans changement d'URL
+
+# Gestion des erreurs 404
+[[redirects]]
+  from = "/*"
+  to = "/404.html"
+  status = 404              # Page personnalisée pour les URLs inexistantes
+
+# Sécurité et en-têtes (optionnel)
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "DENY"
+    X-XSS-Protection = "1; mode=block"
+    Content-Security-Policy = "default-src 'self'"
