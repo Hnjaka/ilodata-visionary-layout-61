@@ -24,6 +24,7 @@ const BlogArticleDisplay = () => {
     const fetchArticleBySlug = async () => {
       try {
         setLoading(true);
+        console.log("Fetching blog article with slug:", slug);
         
         // Fetch the article by slug
         const { data: articleData, error: articleError } = await supabase
@@ -35,12 +36,19 @@ const BlogArticleDisplay = () => {
           .eq('slug', slug)
           .maybeSingle();
           
-        if (articleError || !articleData) {
+        if (articleError) {
           console.error('Error fetching article:', articleError);
           setNotFound(true);
           return;
         }
         
+        if (!articleData) {
+          console.log('No article found with slug:', slug);
+          setNotFound(true);
+          return;
+        }
+        
+        console.log('Article found:', articleData);
         setArticle(articleData);
       } catch (error) {
         console.error('Error in fetchArticleBySlug:', error);
@@ -50,7 +58,12 @@ const BlogArticleDisplay = () => {
       }
     };
     
-    fetchArticleBySlug();
+    if (slug) {
+      fetchArticleBySlug();
+    } else {
+      setNotFound(true);
+      setLoading(false);
+    }
   }, [slug]);
 
   // Generate TOC items from article content
@@ -89,8 +102,8 @@ const BlogArticleDisplay = () => {
   // Define breadcrumbs for navigation
   const breadcrumbs = [
     { label: "Accueil", url: "/" },
-    { label: "Blog", url: "/blog" },
-    { label: article?.blog_categories?.title || "Article", url: "/blog" },
+    { label: "Articles", url: "/articles" },
+    { label: article?.blog_categories?.title || "Article", url: "/articles" },
   ];
 
   // Process the content to add IDs to headings for the TOC

@@ -18,14 +18,14 @@
 # Redirection de /blog/* vers /articles
 [[redirects]]
   from = "/blog/*"
-  to = "/articles"
+  to = "/articles/*"
   status = 301              # Redirection permanente (SEO-friendly)
 
 # Réécriture d'URL pour des chemins dynamiques (ex: /blog/123 → /articles/123)
 [[redirects]]
-  from = "/blog/*"
-  to = "/blog/:splat"
-  status = 200              # Réécriture sans changement d'URL
+  from = "/blog/:slug"
+  to = "/articles/:slug"
+  status = 301              # Réécriture avec changement d'URL
 
 # Cette redirection permet au fichier robots.txt d'être trouvé à la racine
 [[redirects]]
@@ -51,6 +51,12 @@
   to = "/index.html"
   status = 200
   force = true              # Force la redirection
+
+[[redirects]]
+  from = "/articles/*"
+  to = "/index.html"
+  status = 200
+  force = true              # Pour que les routes dynamiques React fonctionnent
 
 # Gestion des erreurs 404
 [[redirects]]
