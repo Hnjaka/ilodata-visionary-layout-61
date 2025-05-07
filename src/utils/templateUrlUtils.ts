@@ -1,4 +1,3 @@
-
 /**
  * Utility functions for handling template URLs
  */
@@ -9,16 +8,17 @@
 export const getFileUrl = (filePath: string) => {
   if (!filePath) return '';
   
+  // Handles demo files or files that already have complete URLs
   if (filePath.startsWith('demo-')) {
-    // Pour les fichiers de démonstration, nous renvoyons une URL relative
     return `/downloads/${filePath}`;
   }
   
-  // S'assurer que l'URL est correctement formée avec https://
+  // If the path already has a complete URL, return it directly
   if (filePath.startsWith('http')) {
     return filePath;
   }
   
+  // Otherwise, construct the Supabase storage URL
   return `https://valzxjecoceltiyzkogw.supabase.co/storage/v1/object/public/template_files/${filePath}`;
 };
 
@@ -28,14 +28,16 @@ export const getFileUrl = (filePath: string) => {
 export const getImageUrl = (imagePath: string | null) => {
   if (!imagePath) return null;
   
+  // Handle demo images or local paths
   if (imagePath.startsWith('demo-') || imagePath.startsWith('/')) {
     return imagePath;
   }
   
-  // S'assurer que l'URL est correctement formée avec https://
+  // If the path already has a complete URL, return it directly
   if (imagePath.startsWith('http')) {
     return imagePath;
   }
   
+  // Otherwise, construct the Supabase storage URL
   return `https://valzxjecoceltiyzkogw.supabase.co/storage/v1/object/public/template_images/${imagePath}`;
 };

@@ -37,7 +37,10 @@ const UserAccount = () => {
   const handleSignOut = async () => {
     try {
       console.log("Signing out from account page - starting signOut process");
+      
+      // Call the signOut function
       await signOut();
+      
       console.log("Signing out from account page - signOut completed successfully");
       
       toast({

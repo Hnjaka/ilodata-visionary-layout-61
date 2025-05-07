@@ -33,10 +33,12 @@ const MobileAuthButtons: React.FC<MobileAuthButtonsProps> = ({
     try {
       console.log("Mobile logout button clicked");
       await onSignOut();
+      
       toast({
         title: "Déconnexion réussie",
         description: "Vous avez été déconnecté avec succès."
       });
+      
       navigate('/', { replace: true });
       onLinkClick(); // Fermer le menu après clic
     } catch (error) {

@@ -31,6 +31,8 @@ const UserDropdownMenu: React.FC<UserDropdownMenuProps> = ({
     e.preventDefault(); // Prevent default to avoid navigation issues
     try {
       console.log("Logout clicked in UserDropdownMenu");
+      
+      // Call the signOut function provided as prop
       await onSignOut();
       
       toast({
@@ -38,6 +40,7 @@ const UserDropdownMenu: React.FC<UserDropdownMenuProps> = ({
         description: "Vous avez été déconnecté avec succès."
       });
       
+      // Force navigation to homepage after successful signout
       navigate('/', { replace: true });
     } catch (error) {
       console.error("Erreur lors de la déconnexion:", error);

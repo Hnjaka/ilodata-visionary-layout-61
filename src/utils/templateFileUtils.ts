@@ -1,4 +1,3 @@
-
 import { supabase } from '@/integrations/supabase/client';
 
 export const uploadFile = async (file: File, bucket: string): Promise<string | null> => {
@@ -32,10 +31,16 @@ export const uploadFile = async (file: File, bucket: string): Promise<string | n
 export const getPublicFileUrl = (bucket: string, fileName: string | null): string | null => {
   if (!fileName) return null;
   
-  // S'assurer que l'URL est correctement formée avec https://
+  // Handle files that already have complete URLs
   if (fileName.startsWith('http')) {
     return fileName;
   }
   
+  // Handle demo files
+  if (fileName.startsWith('demo-')) {
+    return `/downloads/${fileName}`;
+  }
+  
+  // Otherwise, construct the Supabase storage URL
   return `https://valzxjecoceltiyzkogw.supabase.co/storage/v1/object/public/${bucket}/${fileName}`;
 };
