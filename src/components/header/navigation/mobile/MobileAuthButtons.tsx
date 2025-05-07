@@ -99,22 +99,10 @@ const MobileAuthButtons: React.FC<MobileAuthButtonsProps> = ({
             Guides
           </button>
           <button 
-            onClick={() => { navigate('/admin/articles'); onLinkClick(); }}
-            className="text-slate-700 hover:text-ilodata-600 py-1 pl-4 transition-colors"
-          >
-            Articles
-          </button>
-          <button 
             onClick={() => { navigate('/admin/blog'); onLinkClick(); }}
             className="text-slate-700 hover:text-ilodata-600 py-1 pl-4 transition-colors"
           >
             Blog
-          </button>
-          <button 
-            onClick={() => { navigate('/admin/users'); onLinkClick(); }}
-            className="text-slate-700 hover:text-ilodata-600 py-1 pl-4 transition-colors"
-          >
-            Utilisateurs
           </button>
         </>
       )}

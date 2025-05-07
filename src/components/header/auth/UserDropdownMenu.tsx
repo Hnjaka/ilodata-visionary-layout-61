@@ -82,14 +82,8 @@ const UserDropdownMenu: React.FC<UserDropdownMenuProps> = ({
             <DropdownMenuItem onClick={() => navigate('/admin/guides')}>
               Guides
             </DropdownMenuItem>
-            <DropdownMenuItem onClick={() => navigate('/admin/articles')}>
-              Articles
-            </DropdownMenuItem>
             <DropdownMenuItem onClick={() => navigate('/admin/blog')}>
               Blog
-            </DropdownMenuItem>
-            <DropdownMenuItem onClick={() => navigate('/admin/users')}>
-              Utilisateurs
             </DropdownMenuItem>
           </>
         )}

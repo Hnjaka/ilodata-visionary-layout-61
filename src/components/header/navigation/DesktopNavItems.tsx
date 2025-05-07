@@ -44,16 +44,8 @@ const DesktopNavItems: React.FC<DesktopNavItemsProps> = ({ isAdmin = false }) =>
               Guides
             </DropdownMenuItem>
             
-            <DropdownMenuItem onClick={() => navigate('/admin/articles')}>
-              Articles
-            </DropdownMenuItem>
-            
             <DropdownMenuItem onClick={() => navigate('/admin/blog')}>
               Blog
-            </DropdownMenuItem>
-            
-            <DropdownMenuItem onClick={() => navigate('/admin/users')}>
-              Utilisateurs
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
