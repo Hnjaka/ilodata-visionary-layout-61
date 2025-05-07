@@ -13,6 +13,7 @@ interface BlogPost {
   image: string;
   date: string;
   category: string;
+  slug: string; // Ajout du slug pour les liens corrects
 }
 
 const blogPosts: BlogPost[] = [
@@ -22,7 +23,8 @@ const blogPosts: BlogPost[] = [
     excerpt: "Découvrez les techniques essentielles pour créer une mise en page professionnelle et attractive pour votre livre.",
     image: "https://images.unsplash.com/photo-1499750310107-5fef28a66643?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80",
     date: "15 avril 2023",
-    category: "Design éditorial"
+    category: "Design éditorial",
+    slug: "astuces-mise-en-page-livre"
   },
   {
     id: 2,
@@ -30,7 +32,8 @@ const blogPosts: BlogPost[] = [
     excerpt: "Guide complet pour sélectionner le modèle qui correspond parfaitement à votre type de livre et à vos objectifs.",
     image: "https://images.unsplash.com/photo-1494438639946-1ebd1d20bf85?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1167&q=80",
     date: "3 mai 2023",
-    category: "Conseils pratiques"
+    category: "Conseils pratiques",
+    slug: "choisir-modele-mise-en-page"
   },
   {
     id: 3,
@@ -38,7 +41,8 @@ const blogPosts: BlogPost[] = [
     excerpt: "Évitez les pièges courants qui peuvent compromettre la qualité de votre ebook et nuire à l'expérience de lecture.",
     image: "https://images.unsplash.com/photo-1595373650160-963a12639e38?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80",
     date: "21 juin 2023",
-    category: "Livres numériques"
+    category: "Livres numériques",
+    slug: "erreurs-creation-livre-numerique"
   }
 ];
 
@@ -66,7 +70,7 @@ const BlogCard = ({ post, delay }: { post: BlogPost; delay: string }) => {
         <h3 className="text-xl font-semibold mb-3 text-slate-800">{post.title}</h3>
         <p className="text-slate-600 mb-4">{post.excerpt}</p>
         <Link 
-          to={`/blog/${post.id}`} 
+          to={`/blog/${post.slug}`} 
           className="group inline-flex items-center text-ilodata-600 font-medium hover:text-ilodata-700 transition-colors"
         >
           Lire la suite

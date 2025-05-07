@@ -23,6 +23,20 @@ const Blog: React.FC = () => {
   const postsPerPage = 6;
   const { user, isAdmin } = useAuth();
 
+  // Ajout des balises méta pour le SEO
+  useEffect(() => {
+    document.title = "Blog - Conseils et actualités sur la mise en page | ilodata.com";
+    
+    // Mise à jour ou création de la balise meta description
+    let metaDescription = document.querySelector('meta[name="description"]');
+    if (!metaDescription) {
+      metaDescription = document.createElement('meta');
+      metaDescription.setAttribute('name', 'description');
+      document.head.appendChild(metaDescription);
+    }
+    metaDescription.setAttribute('content', 'Articles, conseils et inspiration pour vos projets éditoriaux. Découvrez nos astuces et bonnes pratiques pour la mise en page de livres.');
+  }, []);
+
   useEffect(() => {
     const fetchBlogPosts = async () => {
       setLoading(true);

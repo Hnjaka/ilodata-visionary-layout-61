@@ -12,7 +12,7 @@
 # Réécriture d'URL pour des chemins dynamiques (ex: /blog/123 → /articles/123)
 [[redirects]]
   from = "/blog/*"
-  to = "/articles/:splat"
+  to = "/blog/:splat"
   status = 200              # Réécriture sans changement d'URL
 
 # Cette redirection permet au fichier robots.txt d'être trouvé à la racine
