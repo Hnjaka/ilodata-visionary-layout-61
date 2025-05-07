@@ -31,5 +31,11 @@ export const uploadFile = async (file: File, bucket: string): Promise<string | n
 
 export const getPublicFileUrl = (bucket: string, fileName: string | null): string | null => {
   if (!fileName) return null;
+  
+  // S'assurer que l'URL est correctement formée avec https://
+  if (fileName.startsWith('http')) {
+    return fileName;
+  }
+  
   return `https://valzxjecoceltiyzkogw.supabase.co/storage/v1/object/public/${bucket}/${fileName}`;
 };

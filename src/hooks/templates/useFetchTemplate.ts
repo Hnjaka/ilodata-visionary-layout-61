@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
 import { getPublicFileUrl } from '@/utils/templateFileUtils';
+import { getImageUrl } from '@/utils/templateUrlUtils';
 import { FormValues } from '@/components/templates/TemplateFormFields';
 import { Tables } from '@/integrations/supabase/types';
 
@@ -68,7 +69,10 @@ export const useFetchTemplate = ({ id, isEditing }: UseFetchTemplateProps): Fetc
           const mainImagePath = data.image_apercu;
           const mainImagePaths = [mainImagePath];
           setExistingImagePaths(mainImagePaths);
-          setImagePreviews([getPublicFileUrl('template_images', mainImagePath)]);
+          
+          // Utiliser getImageUrl pour obtenir l'URL correcte
+          const mainImageUrl = getImageUrl(mainImagePath);
+          setImagePreviews(mainImageUrl ? [mainImageUrl] : []);
 
           // If there are additional images in the image_extras field (JSON array of paths)
           if (data.image_extras) {
@@ -78,10 +82,9 @@ export const useFetchTemplate = ({ id, isEditing }: UseFetchTemplateProps): Fetc
                 const updatedImagePaths = [...mainImagePaths, ...extraImagePaths];
                 setExistingImagePaths(updatedImagePaths);
                 
-                const extraImagePreviews = extraImagePaths.map(path => 
-                  getPublicFileUrl('template_images', path)
-                );
-                setImagePreviews(prev => [...prev, ...extraImagePreviews]);
+                // Utiliser getImageUrl pour chaque image supplémentaire
+                const extraImagePreviews = extraImagePaths.map(path => getImageUrl(path)).filter(Boolean);
+                setImagePreviews(prev => [...prev, ...extraImagePreviews as string[]]);
               }
             } catch (parseError) {
               console.error('Error parsing image_extras:', parseError);

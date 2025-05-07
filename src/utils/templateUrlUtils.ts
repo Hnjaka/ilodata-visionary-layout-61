@@ -10,9 +10,15 @@ export const getFileUrl = (filePath: string) => {
   if (!filePath) return '';
   
   if (filePath.startsWith('demo-')) {
-    // For demo files, we'll just return a placeholder or relative URL
+    // Pour les fichiers de démonstration, nous renvoyons une URL relative
     return `/downloads/${filePath}`;
   }
+  
+  // S'assurer que l'URL est correctement formée avec https://
+  if (filePath.startsWith('http')) {
+    return filePath;
+  }
+  
   return `https://valzxjecoceltiyzkogw.supabase.co/storage/v1/object/public/template_files/${filePath}`;
 };
 
@@ -22,8 +28,14 @@ export const getFileUrl = (filePath: string) => {
 export const getImageUrl = (imagePath: string | null) => {
   if (!imagePath) return null;
   
-  if (imagePath.startsWith('demo-') || imagePath.startsWith('/') || imagePath.startsWith('http')) {
+  if (imagePath.startsWith('demo-') || imagePath.startsWith('/')) {
     return imagePath;
   }
+  
+  // S'assurer que l'URL est correctement formée avec https://
+  if (imagePath.startsWith('http')) {
+    return imagePath;
+  }
+  
   return `https://valzxjecoceltiyzkogw.supabase.co/storage/v1/object/public/template_images/${imagePath}`;
 };
