@@ -2,7 +2,11 @@
 import React from 'react';
 import DesktopNavLinks from './desktop/DesktopNavLinks';
 
-const DesktopNavItems: React.FC = () => {
+interface DesktopNavItemsProps {
+  isAdmin?: boolean;
+}
+
+const DesktopNavItems: React.FC<DesktopNavItemsProps> = ({ isAdmin = false }) => {
   return (
     <nav className="hidden md:flex items-center space-x-8">
       <DesktopNavLinks />

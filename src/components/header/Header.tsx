@@ -9,6 +9,7 @@ import HeaderLogo from './HeaderLogo';
 import DesktopNavItems from './navigation/DesktopNavItems';
 import MobileNavItems from './navigation/MobileNavItems';
 import UserAuthButtons from './auth/UserAuthButtons';
+import UserDropdownMenu from './auth/UserDropdownMenu';
 import MobileMenuToggle from './MobileMenuToggle';
 
 const Header = () => {
@@ -62,11 +63,27 @@ const Header = () => {
         <div className="flex items-center justify-between">
           <HeaderLogo />
           <DesktopNavItems isAdmin={showAdminMenu} />
-          <UserAuthButtons 
-            user={user} 
-            onSignOut={handleSignOut} 
-            onLogin={handleLoginClick} 
-          />
+          
+          <div className="hidden md:flex items-center space-x-4">
+            {user ? (
+              <UserDropdownMenu 
+                user={user} 
+                isAdmin={showAdminMenu} 
+                onSignOut={handleSignOut} 
+              />
+            ) : (
+              <UserAuthButtons 
+                user={null}
+                onSignOut={handleSignOut} 
+                onLogin={handleLoginClick} 
+              />
+            )}
+            
+            <a href="/contact" className="button-quote">
+              Demandez un devis
+            </a>
+          </div>
+          
           <MobileMenuToggle 
             isOpen={isMobileMenuOpen}
             onToggle={toggleMobileMenu}
