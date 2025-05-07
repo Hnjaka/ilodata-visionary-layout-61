@@ -18,18 +18,17 @@ export const useUsersAdmin = () => {
 
   // Update combined loading state whenever any individual loading state changes
   useEffect(() => {
-    const isLoading = fetchLoading || approveLoading || deleteLoading || roleLoading || profileLoading;
+    const isLoading = approveLoading || deleteLoading || roleLoading || profileLoading;
     setCombinedLoading(isLoading);
   }, [fetchLoading, approveLoading, deleteLoading, roleLoading, profileLoading]);
 
   // Wrap the original functions to also update their loading state
   const wrappedFetchUsers = async () => {
-    setFetchLoading(true);
     try {
       const result = await fetchUsers();
       return result;
     } finally {
-      setFetchLoading(false);
+      // We intentionally don't set fetchLoading here to avoid UI flicker during refreshes
     }
   };
 

@@ -1,4 +1,5 @@
-import React, { useEffect } from 'react';
+
+import React, { useEffect, useState } from 'react';
 import { Navigate } from 'react-router-dom';
 import { useAuth } from '@/hooks/useAuth';
 import LoadingSpinner from '@/components/LoadingSpinner';
@@ -10,6 +11,7 @@ interface ProtectedRouteProps {
 
 const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children, requireAdmin = false }) => {
   const { user, loading, isAdmin, isApproved } = useAuth();
+  const [authChecked, setAuthChecked] = useState(false);
   
   // Debug information
   useEffect(() => {
@@ -20,10 +22,16 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children, requireAdmin 
       isApproved,
       requireAdmin
     });
-  }, [user, loading, isAdmin, isApproved, requireAdmin]);
+    
+    // Mark auth as checked after the initial load
+    if (!loading && !authChecked) {
+      setAuthChecked(true);
+    }
+  }, [user, loading, isAdmin, isApproved, requireAdmin, authChecked]);
   
   // Show loading spinner while authentication state is being determined
-  if (loading) {
+  // But only on the initial load to prevent flickering
+  if (loading && !authChecked) {
     return (
       <div className="flex justify-center items-center min-h-screen">
         <LoadingSpinner />

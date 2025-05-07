@@ -11,6 +11,7 @@ import { useToast } from '@/hooks/use-toast';
 
 const AdminUsers = () => {
   const [users, setUsers] = useState<UserData[]>([]);
+  const [initialLoading, setInitialLoading] = useState(true);
   const { 
     fetchUsers, 
     approveUser, 
@@ -33,6 +34,8 @@ const AdminUsers = () => {
         description: "Impossible de charger la liste des utilisateurs",
         variant: "destructive",
       });
+    } finally {
+      setInitialLoading(false);
     }
   }, [fetchUsers, toast]);
 
@@ -158,7 +161,7 @@ const AdminUsers = () => {
       <main className="flex-grow container mx-auto px-4 py-12">
         <UsersHeader onRefresh={loadUsers} loading={loading} />
         
-        {loading && !users.length ? (
+        {initialLoading ? (
           <div className="flex justify-center py-12">
             <LoadingSpinner />
           </div>
