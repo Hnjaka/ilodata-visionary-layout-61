@@ -117,8 +117,9 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   }, []);
 
   const signOut = async () => {
+    console.log("Attempting to sign out in useAuth hook");
     try {
-      console.log("Attempting to sign out in useAuth hook");
+      // Important: Using destructuring to handle the promise properly
       const { error } = await supabase.auth.signOut();
       
       if (error) {
@@ -126,8 +127,14 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         throw error;
       }
       
+      // Manually update local state to ensure UI updates immediately
+      setUser(null);
+      setSession(null);
+      setIsAdmin(false);
+      setIsApproved(false);
+      
       console.log("Sign out successful in useAuth hook");
-      // State will be updated by onAuthStateChange
+      return Promise.resolve();
     } catch (error) {
       console.error("Error signing out:", error);
       throw error;

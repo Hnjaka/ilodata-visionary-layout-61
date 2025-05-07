@@ -24,9 +24,19 @@ const Header = () => {
   const handleSignOut = async () => {
     try {
       console.log("Attempting to sign out from Header component");
+      
+      // Assurez-vous que la promesse est bien attendue
       await signOut();
       
-      console.log("Sign out successful from Header component");
+      toast({
+        title: "Déconnexion réussie",
+        description: "Vous avez été déconnecté avec succès."
+      });
+      
+      // Force navigation to homepage after successful signout
+      console.log("Sign out successful from Header component, navigating to homepage");
+      navigate('/', { replace: true });
+      return Promise.resolve();
     } catch (error) {
       console.error("Erreur lors de la déconnexion:", error);
       toast({
@@ -34,6 +44,7 @@ const Header = () => {
         description: "Un problème est survenu lors de la déconnexion.",
         variant: "destructive"
       });
+      return Promise.reject(error);
     }
   };
 

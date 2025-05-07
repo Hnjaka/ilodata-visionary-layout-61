@@ -35,13 +35,8 @@ const UserDropdownMenu: React.FC<UserDropdownMenuProps> = ({
       // Call the signOut function provided as prop
       await onSignOut();
       
-      toast({
-        title: "Déconnexion réussie",
-        description: "Vous avez été déconnecté avec succès."
-      });
+      // Navigation is now handled in the Header component's onSignOut function
       
-      // Force navigation to homepage after successful signout
-      navigate('/', { replace: true });
     } catch (error) {
       console.error("Erreur lors de la déconnexion:", error);
       toast({

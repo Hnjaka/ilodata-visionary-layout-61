@@ -32,15 +32,14 @@ const MobileAuthButtons: React.FC<MobileAuthButtonsProps> = ({
   const handleSignOut = async () => {
     try {
       console.log("Mobile logout button clicked");
+      
+      // Call the parent's signOut function
       await onSignOut();
       
-      toast({
-        title: "Déconnexion réussie",
-        description: "Vous avez été déconnecté avec succès."
-      });
+      // Close the mobile menu
+      onLinkClick();
       
-      navigate('/', { replace: true });
-      onLinkClick(); // Fermer le menu après clic
+      // Navigation is now handled in the Header component's onSignOut function
     } catch (error) {
       console.error("Error during sign out:", error);
       toast({
