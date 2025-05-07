@@ -33,8 +33,7 @@ const UserAuthButtons: React.FC<UserAuthButtonsProps> = ({ user, onSignOut, onLo
         description: "Vous avez été déconnecté avec succès."
       });
       
-      // Force navigation to home page after logout
-      console.log("UserAuthButtons - Navigating to home after logout");
+      // Navigate to home page after logout
       navigate('/', { replace: true });
     } catch (error) {
       console.error("Erreur lors de la déconnexion dans UserAuthButtons:", error);
