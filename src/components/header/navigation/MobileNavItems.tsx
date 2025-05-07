@@ -1,9 +1,11 @@
 
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import MobileNavLinks from './mobile/MobileNavLinks';
 import MobileAuthButtons from './mobile/MobileAuthButtons';
 import MobileAdminLinks from './mobile/MobileAdminLinks';
 import MobileQuoteButton from './mobile/MobileQuoteButton';
+import { useToast } from '@/hooks/use-toast';
 
 interface MobileNavItemsProps {
   isAdmin: boolean;
@@ -37,13 +39,11 @@ const MobileNavItems: React.FC<MobileNavItemsProps> = ({
           {/* Authentication Buttons */}
           <MobileAuthButtons 
             user={user} 
+            isAdmin={isAdmin}
             onLinkClick={onLinkClick} 
             onLoginClick={onLoginClick} 
             onSignOut={onSignOut} 
           />
-          
-          {/* Admin Links */}
-          <MobileAdminLinks isAdmin={isAdmin} onLinkClick={onLinkClick} />
           
           {/* Quote Button */}
           <MobileQuoteButton onLinkClick={onLinkClick} />

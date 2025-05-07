@@ -6,9 +6,10 @@ import { useToast } from '@/hooks/use-toast';
 
 // Component imports
 import HeaderLogo from './header/HeaderLogo';
-import DesktopNavItems from './header/navigation/DesktopNavItems';
+import DesktopNavLinks from './header/navigation/desktop/DesktopNavLinks';
 import MobileNavItems from './header/navigation/MobileNavItems';
 import UserAuthButtons from './header/auth/UserAuthButtons';
+import UserDropdownMenu from './header/auth/UserDropdownMenu';
 import MobileMenuToggle from './header/MobileMenuToggle';
 
 const Header = () => {
@@ -25,7 +26,6 @@ const Header = () => {
       console.log("Attempting to sign out from Header component");
       await signOut();
       
-      // La notification est maintenant gérée dans le composant UserAuthButtons
       console.log("Sign out successful from Header component");
     } catch (error) {
       console.error("Erreur lors de la déconnexion:", error);
@@ -61,12 +61,28 @@ const Header = () => {
       <div className="container mx-auto px-4 md:px-6">
         <div className="flex items-center justify-between">
           <HeaderLogo />
-          <DesktopNavItems isAdmin={showAdminMenu} />
-          <UserAuthButtons 
-            user={user} 
-            onSignOut={handleSignOut} 
-            onLogin={handleLoginClick} 
-          />
+          <DesktopNavLinks />
+          
+          <div className="hidden md:flex items-center space-x-4">
+            {user ? (
+              <UserDropdownMenu 
+                user={user} 
+                isAdmin={showAdminMenu} 
+                onSignOut={handleSignOut} 
+              />
+            ) : (
+              <UserAuthButtons 
+                user={null}
+                onSignOut={handleSignOut} 
+                onLogin={handleLoginClick} 
+              />
+            )}
+            
+            <a href="/contact" className="button-quote">
+              Demandez un devis
+            </a>
+          </div>
+          
           <MobileMenuToggle 
             isOpen={isMobileMenuOpen}
             onToggle={toggleMobileMenu}
