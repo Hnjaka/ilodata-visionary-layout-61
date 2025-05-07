@@ -27,7 +27,8 @@ const UserDropdownMenu: React.FC<UserDropdownMenuProps> = ({
   const navigate = useNavigate();
   const { toast } = useToast();
   
-  const handleSignOut = async () => {
+  const handleSignOut = async (e: React.MouseEvent) => {
+    e.preventDefault(); // Prevent default to avoid navigation issues
     try {
       console.log("Logout clicked in UserDropdownMenu");
       await onSignOut();
