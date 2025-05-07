@@ -119,7 +119,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const signOut = async () => {
     console.log("Attempting to sign out in useAuth hook");
     try {
-      // Important: Using destructuring to handle the promise properly
+      // Important: Using destructuring to ensure we handle the promise properly
       const { error } = await supabase.auth.signOut();
       
       if (error) {
