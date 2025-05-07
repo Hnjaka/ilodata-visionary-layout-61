@@ -176,6 +176,13 @@ const MobileNavItems: React.FC<MobileNavItemsProps> = ({
                 Blog
               </Link>
               <Link 
+                to="/admin/articles" 
+                className="text-slate-700 hover:text-ilodata-600 py-1 pl-4 transition-colors"
+                onClick={onLinkClick}
+              >
+                Articles
+              </Link>
+              <Link 
                 to="/admin/users" 
                 className="text-slate-700 hover:text-ilodata-600 py-1 pl-4 transition-colors"
                 onClick={onLinkClick}
