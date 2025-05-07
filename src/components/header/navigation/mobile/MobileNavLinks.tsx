@@ -45,13 +45,6 @@ const MobileNavLinks: React.FC<MobileNavLinksProps> = ({ onLinkClick }) => {
         Articles
       </Link>
       <Link 
-        to="/blog" 
-        className="text-slate-800 font-medium hover:text-ilodata-600 transition-colors py-2 transform hover:scale-105 duration-200"
-        onClick={onLinkClick}
-      >
-        Blog
-      </Link>
-      <Link 
         to="/about" 
         className="text-slate-800 font-medium hover:text-ilodata-600 transition-colors py-2 transform hover:scale-105 duration-200"
         onClick={onLinkClick}

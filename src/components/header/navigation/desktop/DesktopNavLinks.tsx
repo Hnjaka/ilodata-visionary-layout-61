@@ -23,9 +23,6 @@ const DesktopNavLinks: React.FC = () => {
       <Link to="/articles" className="text-slate-800 font-medium hover:text-ilodata-600 transition-colors transform hover:scale-110 duration-200">
         Articles
       </Link>
-      <Link to="/blog" className="text-slate-800 font-medium hover:text-ilodata-600 transition-colors transform hover:scale-110 duration-200">
-        Blog
-      </Link>
       <Link to="/about" className="text-slate-800 font-medium hover:text-ilodata-600 transition-colors transform hover:scale-110 duration-200">
         À propos
       </Link>
