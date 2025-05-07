@@ -27,10 +27,15 @@
   to = "/sitemap.xml"
   status = 200
 
-# Redirection spécifique pour la page blog - modification de l'ordre et priorité
-# Cette règle doit être placée AVANT la règle générique "/*"
+# Redirection spécifique pour la page blog et articles
 [[redirects]]
   from = "/blog"
+  to = "/index.html"
+  status = 200
+  force = true              # Force la redirection
+
+[[redirects]]
+  from = "/articles"
   to = "/index.html"
   status = 200
   force = true              # Force la redirection

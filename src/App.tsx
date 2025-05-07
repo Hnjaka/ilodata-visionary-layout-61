@@ -23,6 +23,7 @@ import AddTemplate from "./pages/AddTemplate";
 import EditTemplate from "./pages/EditTemplate";
 import ArticleDisplay from "./pages/articles/ArticleDisplay";
 import Blog from "./pages/Blog";
+import Articles from "./pages/Articles"; // Importation de la nouvelle page Articles
 import BlogArticleDisplay from "./pages/BlogArticleDisplay";
 import CGU from "./pages/CGU";
 import Confidentialite from "./pages/Confidentialite";
@@ -49,6 +50,7 @@ const App = () => {
                 <Route path="/guides/:slug" element={<ArticleDisplay />} />
                 <Route path="/about" element={<About />} />
                 <Route path="/blog" element={<Blog />} />
+                <Route path="/articles" element={<Articles />} /> {/* Nouvelle route pour la page Articles */}
                 <Route path="/blog/:slug" element={<BlogArticleDisplay />} />
                 <Route path="/templates" element={<Templates />} />
                 <Route path="/auth" element={<Auth />} />

@@ -94,6 +94,20 @@ const MobileNavItems: React.FC<MobileNavItemsProps> = ({
             Modèles
           </Link>
           <Link 
+            to="/articles" 
+            className="text-slate-800 font-medium hover:text-ilodata-600 transition-colors py-2 transform hover:scale-105 duration-200"
+            onClick={onLinkClick}
+          >
+            Articles
+          </Link>
+          <Link 
+            to="/blog" 
+            className="text-slate-800 font-medium hover:text-ilodata-600 transition-colors py-2 transform hover:scale-105 duration-200"
+            onClick={onLinkClick}
+          >
+            Blog
+          </Link>
+          <Link 
             to="/about" 
             className="text-slate-800 font-medium hover:text-ilodata-600 transition-colors py-2 transform hover:scale-105 duration-200"
             onClick={onLinkClick}
@@ -106,13 +120,6 @@ const MobileNavItems: React.FC<MobileNavItemsProps> = ({
             onClick={onLinkClick}
           >
             Contact
-          </Link>
-          <Link 
-            to="/blog" 
-            className="text-slate-800 font-medium hover:text-ilodata-600 transition-colors py-2 transform hover:scale-105 duration-200"
-            onClick={onLinkClick}
-          >
-            Blog
           </Link>
           
           {/* Auth button for mobile */}
