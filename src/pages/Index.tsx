@@ -8,6 +8,7 @@ import Services from '@/components/Services';
 import Testimonials from '@/components/Testimonials';
 import Contact from '@/components/Contact';
 import Footer from '@/components/Footer';
+import Blog from '@/components/Blog';
 
 const Index = () => {
   useEffect(() => {
@@ -61,6 +62,7 @@ const Index = () => {
       <ModelsSection />
       <Guides />
       <Services />
+      <Blog /> {/* Ensure the Blog component is rendered on the homepage */}
       <Testimonials />
       <Contact />
       <Footer />

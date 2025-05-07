@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
@@ -35,6 +34,17 @@ const Blog: React.FC = () => {
       document.head.appendChild(metaDescription);
     }
     metaDescription.setAttribute('content', 'Articles, conseils et inspiration pour vos projets éditoriaux. Découvrez nos astuces et bonnes pratiques pour la mise en page de livres.');
+    
+    // Add canonical URL for SEO
+    let canonicalLink = document.querySelector('link[rel="canonical"]');
+    if (!canonicalLink) {
+      canonicalLink = document.createElement('link');
+      canonicalLink.setAttribute('rel', 'canonical');
+      document.head.appendChild(canonicalLink);
+    }
+    canonicalLink.setAttribute('href', 'https://ilodata.com/blog');
+    
+    console.log("Blog page mounted - Setup meta tags completed");
   }, []);
 
   useEffect(() => {
