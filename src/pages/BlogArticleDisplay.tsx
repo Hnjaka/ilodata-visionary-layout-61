@@ -87,6 +87,18 @@ const BlogArticleDisplay = () => {
     return tocItems;
   };
 
+  // Fonction pour obtenir une image de remplacement si aucune image n'est disponible
+  const getDefaultImage = () => {
+    const unsplashImages = [
+      'https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?ixlib=rb-4.0.3&auto=format&fit=crop&w=1170&q=80',
+      'https://images.unsplash.com/photo-1487058792275-0ad4aaf24ca7?ixlib=rb-4.0.3&auto=format&fit=crop&w=1170&q=80',
+      'https://images.unsplash.com/photo-1519389950473-47ba0277781c?ixlib=rb-4.0.3&auto=format&fit=crop&w=1170&q=80',
+      'https://images.unsplash.com/photo-1498050108023-c5249f4df085?ixlib=rb-4.0.3&auto=format&fit=crop&w=1170&q=80'
+    ];
+    
+    return unsplashImages[Math.floor(Math.random() * unsplashImages.length)];
+  };
+
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-screen">
@@ -144,15 +156,13 @@ const BlogArticleDisplay = () => {
         </div>
       )}
       
-      {article?.image && (
-        <div className="mb-8">
-          <img 
-            src={article.image} 
-            alt={article.title} 
-            className="w-full h-auto rounded-lg shadow-md"
-          />
-        </div>
-      )}
+      <div className="mb-8">
+        <img 
+          src={article?.image || getDefaultImage()} 
+          alt={article?.title || 'Image de l\'article'} 
+          className="w-full h-auto rounded-lg shadow-md"
+        />
+      </div>
       
       {/* Render article content with processed headings */}
       <div className="prose prose-slate max-w-none" dangerouslySetInnerHTML={{ __html: processContent() }} />

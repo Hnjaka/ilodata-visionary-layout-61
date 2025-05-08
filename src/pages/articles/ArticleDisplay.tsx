@@ -7,11 +7,22 @@ import LoadingSpinner from '@/components/LoadingSpinner';
 import ArticleFooter from '@/components/article/ArticleFooter';
 
 const ArticleDisplay = () => {
-  const { slug } = useParams<{ slug: string }>();
+  const { slug } = useParams();
   const [article, setArticle] = useState<any | null>(null);
   const [category, setCategory] = useState<any | null>(null);
   const [loading, setLoading] = useState(true);
   const [notFound, setNotFound] = useState(false);
+
+  // Fonction pour obtenir une image de remplacement si nécessaire
+  const getDefaultImage = () => {
+    const unsplashImages = [
+      'https://images.unsplash.com/photo-1499750310107-5fef28a66643?ixlib=rb-4.0.3&auto=format&fit=crop&w=1170&q=80',
+      'https://images.unsplash.com/photo-1461749280684-dccba630e2f6?ixlib=rb-4.0.3&auto=format&fit=crop&w=1170&q=80',
+      'https://images.unsplash.com/photo-1531297484001-80022131f5a1?ixlib=rb-4.0.3&auto=format&fit=crop&w=1170&q=80'
+    ];
+    
+    return unsplashImages[Math.floor(Math.random() * unsplashImages.length)];
+  };
 
   useEffect(() => {
     const fetchArticleBySlug = async () => {
@@ -42,6 +53,11 @@ const ArticleDisplay = () => {
           console.error('Error fetching category:', categoryError);
         } else {
           setCategory(categoryData);
+        }
+        
+        // Si l'article n'a pas d'image, ajoutez-en une d'Unsplash
+        if (!articleData.image) {
+          articleData.image = getDefaultImage();
         }
         
         setArticle(articleData);
@@ -124,6 +140,16 @@ const ArticleDisplay = () => {
       breadcrumbs={breadcrumbs}
       tocItems={generateTocItems()}
     >
+      {article.image && (
+        <div className="mb-6">
+          <img 
+            src={article.image} 
+            alt={article.title} 
+            className="w-full h-auto rounded-lg shadow-md"
+          />
+        </div>
+      )}
+      
       {/* Render article content with processed headings and links */}
       <div className="prose prose-slate max-w-none" dangerouslySetInnerHTML={{ __html: processContent() }} />
       

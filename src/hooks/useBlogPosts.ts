@@ -14,6 +14,16 @@ export const useBlogPosts = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const postsPerPage = 6;
 
+  // Collection d'images Unsplash pour les posts de démonstration
+  const unsplashImages = [
+    "https://images.unsplash.com/photo-1499750310107-5fef28a66643?ixlib=rb-4.0.3&auto=format&fit=crop&w=1170&q=80",
+    "https://images.unsplash.com/photo-1494438639946-1ebd1d20bf85?ixlib=rb-4.0.3&auto=format&fit=crop&w=1167&q=80",
+    "https://images.unsplash.com/photo-1595373650160-963a12639e38?ixlib=rb-4.0.3&auto=format&fit=crop&w=1170&q=80",
+    "https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?ixlib=rb-4.0.3&auto=format&fit=crop&w=1170&q=80",
+    "https://images.unsplash.com/photo-1487058792275-0ad4aaf24ca7?ixlib=rb-4.0.3&auto=format&fit=crop&w=1170&q=80",
+    "https://images.unsplash.com/photo-1531297484001-80022131f5a1?ixlib=rb-4.0.3&auto=format&fit=crop&w=1170&q=80"
+  ];
+
   // Helper function to get demo blog posts if none exist in database
   const getDemoBlogPosts = (): BlogPost[] => {
     return [
@@ -21,34 +31,40 @@ export const useBlogPosts = () => {
         id: '1',
         title: "5 astuces pour réussir la mise en page de votre livre",
         excerpt: "Découvrez les techniques essentielles pour créer une mise en page professionnelle et attractive pour votre livre.",
-        image: "https://images.unsplash.com/photo-1499750310107-5fef28a66643?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80",
+        image: unsplashImages[0],
         published_at: new Date().toISOString(),
         category_title: "Design éditorial",
         slug: "astuces-mise-en-page-livre",
         content: "",
-        published: true
+        published: true,
+        position: 0,
+        category_id: "1"
       },
       {
         id: '2',
         title: "Comment choisir le bon modèle de mise en page pour votre projet ?",
         excerpt: "Guide complet pour sélectionner le modèle qui correspond parfaitement à votre type de livre et à vos objectifs.",
-        image: "https://images.unsplash.com/photo-1494438639946-1ebd1d20bf85?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1167&q=80",
+        image: unsplashImages[1],
         published_at: new Date(Date.now() - 86400000).toISOString(),
         category_title: "Conseils pratiques",
         slug: "choisir-modele-mise-en-page",
         content: "",
-        published: true
+        published: true,
+        position: 1,
+        category_id: "2"
       },
       {
         id: '3',
         title: "Les erreurs à éviter lors de la création d'un livre numérique",
         excerpt: "Évitez les pièges courants qui peuvent compromettre la qualité de votre ebook et nuire à l'expérience de lecture.",
-        image: "https://images.unsplash.com/photo-1595373650160-963a12639e38?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80",
+        image: unsplashImages[2],
         published_at: new Date(Date.now() - 172800000).toISOString(),
         category_title: "Livres numériques",
         slug: "erreurs-creation-livre-numerique",
         content: "",
-        published: true
+        published: true,
+        position: 2,
+        category_id: "3"
       }
     ] as BlogPost[];
   };
@@ -82,9 +98,11 @@ export const useBlogPosts = () => {
         const demoPosts = getDemoBlogPosts();
         setBlogPosts(demoPosts);
       } else {
-        const formattedPosts = (posts || []).map(post => ({
+        const formattedPosts = (posts || []).map((post, index) => ({
           ...post,
-          category_title: post.blog_categories?.title || 'Non classé'
+          category_title: post.blog_categories?.title || 'Non classé',
+          // Si le post n'a pas d'image, utilisez une image d'Unsplash
+          image: post.image || unsplashImages[index % unsplashImages.length]
         }));
         
         setBlogPosts(formattedPosts);
