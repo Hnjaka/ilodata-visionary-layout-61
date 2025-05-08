@@ -7,6 +7,7 @@ import LoadingSpinner from '@/components/LoadingSpinner';
 import ArticleFooter from '@/components/article/ArticleFooter';
 import { BlogArticle } from '@/hooks/useBlogData';
 import CtaSection from '@/components/guides/CtaSection';
+import { getImageWithFallback } from '@/utils/imageUtils';
 
 interface BlogArticleWithCategory extends BlogArticle {
   blog_categories?: {
@@ -87,16 +88,21 @@ const BlogArticleDisplay = () => {
     return tocItems;
   };
 
-  // Fonction pour obtenir une image de remplacement si aucune image n'est disponible
-  const getDefaultImage = () => {
-    const unsplashImages = [
-      'https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?ixlib=rb-4.0.3&auto=format&fit=crop&w=1170&q=80',
-      'https://images.unsplash.com/photo-1487058792275-0ad4aaf24ca7?ixlib=rb-4.0.3&auto=format&fit=crop&w=1170&q=80',
-      'https://images.unsplash.com/photo-1519389950473-47ba0277781c?ixlib=rb-4.0.3&auto=format&fit=crop&w=1170&q=80',
-      'https://images.unsplash.com/photo-1498050108023-c5249f4df085?ixlib=rb-4.0.3&auto=format&fit=crop&w=1170&q=80'
-    ];
+  // Get category from article to determine the type of fallback image
+  const getImageCategory = () => {
+    if (!article || !article.blog_categories?.title) return 'general';
     
-    return unsplashImages[Math.floor(Math.random() * unsplashImages.length)];
+    const categoryLower = article.blog_categories.title.toLowerCase();
+    if (categoryLower.includes('livre') || categoryLower.includes('roman')) {
+      return 'books';
+    } else if (categoryLower.includes('tech') || categoryLower.includes('numérique')) {
+      return 'tech';
+    } else if (categoryLower.includes('design') || categoryLower.includes('éditorial')) {
+      return 'design';
+    } else if (categoryLower.includes('écriture') || categoryLower.includes('rédaction')) {
+      return 'writing';
+    }
+    return 'general';
   };
 
   if (loading) {
@@ -158,7 +164,7 @@ const BlogArticleDisplay = () => {
       
       <div className="mb-8">
         <img 
-          src={article?.image || getDefaultImage()} 
+          src={getImageWithFallback(article?.image, getImageCategory() as keyof typeof import('@/utils/imageUtils').unsplashImages)} 
           alt={article?.title || 'Image de l\'article'} 
           className="w-full h-auto rounded-lg shadow-md"
         />

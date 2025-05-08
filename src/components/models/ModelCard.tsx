@@ -10,6 +10,7 @@ import {
   DialogDescription,
 } from '@/components/ui/dialog';
 import { AspectRatio } from "@/components/ui/aspect-ratio";
+import { getImageWithFallback } from '@/utils/imageUtils';
 
 interface ModelCardProps {
   title: string;
@@ -35,7 +36,13 @@ const ModelCard = ({
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   
-  const images = imageSrc ? [imageSrc, ...imageExtras] : [];
+  // Get image with fallback
+  const mainImage = getImageWithFallback(imageSrc, 'books');
+  
+  // Process extra images with fallbacks
+  const processedExtras = imageExtras.map(img => getImageWithFallback(img, 'books'));
+  
+  const images = [mainImage, ...processedExtras];
 
   const formatPrice = (price: number | null): string => {
     if (price === null) return '';
@@ -53,17 +60,11 @@ const ModelCard = ({
           className="aspect-square bg-gray-200 cursor-pointer relative" 
           onClick={() => setIsModalOpen(true)}
         >
-          {imageSrc ? (
-            <img 
-              src={imageSrc} 
-              alt={title} 
-              className="w-full h-full object-contain p-2"
-            />
-          ) : (
-            <div className="w-full h-full flex items-center justify-center">
-              <span className="text-gray-400">Pas d'aperçu</span>
-            </div>
-          )}
+          <img 
+            src={mainImage} 
+            alt={title} 
+            className="w-full h-full object-contain p-2"
+          />
           <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 hover:opacity-100 transition-opacity flex items-end justify-center">
             <span className="text-white pb-4 font-medium text-sm">Voir les détails</span>
           </div>
@@ -97,19 +98,13 @@ const ModelCard = ({
           <div className="grid md:grid-cols-2 gap-8 mt-4">
             <div className="flex flex-col gap-6">
               <div className="relative overflow-hidden rounded-lg bg-white border border-slate-200">
-                {images.length > 0 ? (
-                  <AspectRatio ratio={4/3}>
-                    <img 
-                      src={images[currentImageIndex]} 
-                      alt={`${title} - aperçu ${currentImageIndex + 1}`} 
-                      className="w-full h-full object-contain p-4"
-                    />
-                  </AspectRatio>
-                ) : (
-                  <div className="aspect-video flex items-center justify-center">
-                    <span className="text-slate-400">Pas d'aperçu disponible</span>
-                  </div>
-                )}
+                <AspectRatio ratio={4/3}>
+                  <img 
+                    src={images[currentImageIndex]} 
+                    alt={`${title} - aperçu ${currentImageIndex + 1}`} 
+                    className="w-full h-full object-contain p-4"
+                  />
+                </AspectRatio>
               </div>
               
               {images.length > 1 && (

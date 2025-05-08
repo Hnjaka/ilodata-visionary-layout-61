@@ -2,8 +2,24 @@
 import React from 'react';
 import { FileText } from 'lucide-react';
 import ModelCard from './ModelCard';
+import { getUnsplashFallback } from '@/utils/imageUtils';
 
 const ModelsShowcase = () => {
+  // Ensure we have reliable image URLs by using our utility
+  const modelImages = {
+    roman: getUnsplashFallback('books'),
+    essai: getUnsplashFallback('writing'),
+    illustre: getUnsplashFallback('design'),
+    pratique: getUnsplashFallback('tech'),
+  };
+
+  // Get extra images for each model
+  const getExtras = (category: keyof typeof modelImages, exclude: string) => {
+    return Object.values(modelImages)
+      .filter(img => img !== exclude)
+      .slice(0, 2);
+  };
+
   return (
     <section id="models" className="py-16 md:py-24 bg-gradient-to-b from-white to-blue-50">
       <div className="container mx-auto px-4 md:px-6 fade-in-section is-visible">
@@ -23,54 +39,45 @@ const ModelsShowcase = () => {
           <ModelCard 
             title="Modèle Roman"
             description="Idéal pour les romans et les nouvelles. Ce modèle inclut des styles prédéfinis pour les titres, les paragraphes et les dialogues."
-            imageSrc="https://images.unsplash.com/photo-1543002588-bfa74002ed7e?q=80&w=2730&auto=format&fit=crop"
+            imageSrc={modelImages.roman}
             downloadLink="/downloads/modele-roman.docx"
             isFree={true}
             price={null}
             delay="delay-100"
-            imageExtras={[
-              "https://images.unsplash.com/photo-1476081718509-d5d0b661a376?q=80&w=2533&auto=format&fit=crop",
-              "https://images.unsplash.com/photo-1544947950-fa07a98d237f?q=80&w=2787&auto=format&fit=crop"
-            ]}
+            imageExtras={getExtras('roman', modelImages.roman)}
           />
           
           <ModelCard 
             title="Modèle Essai"
             description="Parfait pour les essais, les mémoires et les ouvrages académiques. Ce modèle propose une structure claire avec des notes de bas de page."
-            imageSrc="https://images.unsplash.com/photo-1476081718509-d5d0b661a376?q=80&w=2533&auto=format&fit=crop"
+            imageSrc={modelImages.essai}
             downloadLink="/downloads/modele-essai-academique.docx"
             isFree={true}
             price={null}
             delay="delay-200"
-            imageExtras={[
-              "https://images.unsplash.com/photo-1543002588-bfa74002ed7e?q=80&w=2730&auto=format&fit=crop"
-            ]}
+            imageExtras={getExtras('essai', modelImages.essai)}
           />
           
           <ModelCard 
             title="Modèle Livre Illustré"
             description="Conçu pour les livres contenant des images, des graphiques ou des illustrations. Ce modèle gère parfaitement l'insertion d'éléments visuels."
-            imageSrc="https://images.unsplash.com/photo-1544947950-fa07a98d237f?q=80&w=2787&auto=format&fit=crop"
+            imageSrc={modelImages.illustre}
             downloadLink="/downloads/modele-livre-illustre.docx"
             price={9.99}
             isFree={false}
             delay="delay-300"
-            imageExtras={[
-              "https://images.unsplash.com/photo-1553729459-efe14ef6055d?q=80&w=2070&auto=format&fit=crop"
-            ]}
+            imageExtras={getExtras('illustre', modelImages.illustre)}
           />
           
           <ModelCard 
             title="Modèle Guide Pratique"
             description="Adapté aux guides, manuels et livres pratiques. Ce modèle inclut des styles pour les listes, les tableaux et les encadrés."
-            imageSrc="https://images.unsplash.com/photo-1553729459-efe14ef6055d?q=80&w=2070&auto=format&fit=crop"
+            imageSrc={modelImages.pratique}
             downloadLink="/downloads/modele-livre-technique.docx"
             price={7.99}
             isFree={false}
             delay="delay-400"
-            imageExtras={[
-              "https://images.unsplash.com/photo-1544947950-fa07a98d237f?q=80&w=2787&auto=format&fit=crop"
-            ]}
+            imageExtras={getExtras('pratique', modelImages.pratique)}
           />
         </div>
       </div>

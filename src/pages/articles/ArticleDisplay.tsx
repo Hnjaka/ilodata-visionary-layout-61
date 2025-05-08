@@ -5,6 +5,7 @@ import { supabase } from '@/integrations/supabase/client';
 import ArticleLayout from '@/components/article/ArticleLayout';
 import LoadingSpinner from '@/components/LoadingSpinner';
 import ArticleFooter from '@/components/article/ArticleFooter';
+import { getImageWithFallback } from '@/utils/imageUtils';
 
 const ArticleDisplay = () => {
   const { slug } = useParams();
@@ -13,15 +14,21 @@ const ArticleDisplay = () => {
   const [loading, setLoading] = useState(true);
   const [notFound, setNotFound] = useState(false);
 
-  // Fonction pour obtenir une image de remplacement si nécessaire
-  const getDefaultImage = () => {
-    const unsplashImages = [
-      'https://images.unsplash.com/photo-1499750310107-5fef28a66643?ixlib=rb-4.0.3&auto=format&fit=crop&w=1170&q=80',
-      'https://images.unsplash.com/photo-1461749280684-dccba630e2f6?ixlib=rb-4.0.3&auto=format&fit=crop&w=1170&q=80',
-      'https://images.unsplash.com/photo-1531297484001-80022131f5a1?ixlib=rb-4.0.3&auto=format&fit=crop&w=1170&q=80'
-    ];
+  // Determine the appropriate image category based on the article category
+  const getImageCategory = () => {
+    if (!category) return 'general';
     
-    return unsplashImages[Math.floor(Math.random() * unsplashImages.length)];
+    const categoryLower = category.title.toLowerCase();
+    if (categoryLower.includes('livre') || categoryLower.includes('roman')) {
+      return 'books';
+    } else if (categoryLower.includes('tech') || categoryLower.includes('numérique')) {
+      return 'tech';
+    } else if (categoryLower.includes('design') || categoryLower.includes('éditorial')) {
+      return 'design';
+    } else if (categoryLower.includes('écriture') || categoryLower.includes('rédaction')) {
+      return 'writing';
+    }
+    return 'general';
   };
 
   useEffect(() => {
@@ -53,11 +60,6 @@ const ArticleDisplay = () => {
           console.error('Error fetching category:', categoryError);
         } else {
           setCategory(categoryData);
-        }
-        
-        // Si l'article n'a pas d'image, ajoutez-en une d'Unsplash
-        if (!articleData.image) {
-          articleData.image = getDefaultImage();
         }
         
         setArticle(articleData);
@@ -140,15 +142,13 @@ const ArticleDisplay = () => {
       breadcrumbs={breadcrumbs}
       tocItems={generateTocItems()}
     >
-      {article.image && (
-        <div className="mb-6">
-          <img 
-            src={article.image} 
-            alt={article.title} 
-            className="w-full h-auto rounded-lg shadow-md"
-          />
-        </div>
-      )}
+      <div className="mb-6">
+        <img 
+          src={getImageWithFallback(article.image, getImageCategory() as keyof typeof import('@/utils/imageUtils').unsplashImages)} 
+          alt={article.title} 
+          className="w-full h-auto rounded-lg shadow-md"
+        />
+      </div>
       
       {/* Render article content with processed headings and links */}
       <div className="prose prose-slate max-w-none" dangerouslySetInnerHTML={{ __html: processContent() }} />
