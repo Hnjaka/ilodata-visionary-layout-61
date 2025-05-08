@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import {
   Table,
@@ -118,7 +119,7 @@ const BlogArticleList: React.FC<BlogArticleListProps> = ({
               </>
             ) : filteredArticles && filteredArticles.length > 0 ? (
               filteredArticles.map((article) => {
-                const category = categories.find(cat => cat.id === article.categoryId);
+                const category = categories.find(cat => cat.id === article.category_id);
                 return (
                   <TableRow key={article.id}>
                     <TableCell className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
@@ -126,7 +127,7 @@ const BlogArticleList: React.FC<BlogArticleListProps> = ({
                     </TableCell>
                     <TableCell className="px-6 py-4">
                       <Badge variant="outline" className="text-xs">
-                        {article.category_title}
+                        {category?.title || "Non catégorisé"}
                       </Badge>
                     </TableCell>
                     <TableCell className="px-6 py-4">
@@ -154,7 +155,7 @@ const BlogArticleList: React.FC<BlogArticleListProps> = ({
                           <DropdownMenuSeparator />
                           <DropdownMenuItem
                             onClick={() => {
-                              const categoryIndex = categories.findIndex(cat => cat.id === article.categoryId);
+                              const categoryIndex = categories.findIndex(cat => cat.id === article.category_id);
                               setEditArticle(article);
                               setEditArticleCategoryIndex(categoryIndex);
                               setEditArticleIndex(articles.findIndex(a => a.id === article.id));

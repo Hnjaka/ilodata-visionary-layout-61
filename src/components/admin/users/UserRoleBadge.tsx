@@ -1,23 +1,32 @@
 
 import React from 'react';
 import { Badge } from '@/components/ui/badge';
+import { cn } from '@/lib/utils';
 
 interface UserRoleBadgeProps {
-  role: string;
+  role: 'admin' | 'editor' | 'user' | string;
 }
 
 const UserRoleBadge: React.FC<UserRoleBadgeProps> = ({ role }) => {
-  // Normalize role for display
-  const normalizedRole = (role || '').toLowerCase();
-  
-  switch (normalizedRole) {
+  switch(role) {
     case 'admin':
-      return <Badge className="bg-red-500">Admin</Badge>;
-    case 'moderator':
-    case 'modérateur':
-      return <Badge className="bg-blue-500">Modérateur</Badge>;
+      return (
+        <Badge className="bg-purple-100 text-purple-800 hover:bg-purple-200">
+          Admin
+        </Badge>
+      );
+    case 'editor':
+      return (
+        <Badge className="bg-blue-100 text-blue-800 hover:bg-blue-200">
+          Éditeur
+        </Badge>
+      );
     default:
-      return <Badge className="bg-gray-500">Utilisateur</Badge>;
+      return (
+        <Badge className="bg-slate-100 text-slate-800 hover:bg-slate-200">
+          Utilisateur
+        </Badge>
+      );
   }
 };
 

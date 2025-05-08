@@ -54,6 +54,20 @@ const BlogContent: React.FC<BlogContentProps> = ({ categories, setCategories, lo
     setEditCategoryIndex(null);
   };
 
+  // Dummy function for article deletion (to be implemented)
+  const handleDeleteArticle = (articleId: string) => {
+    console.log("Delete article:", articleId);
+    // Implementation would go here
+  };
+
+  // Extract all articles from categories for the article list
+  const allArticles = categories.flatMap(category => 
+    category.articles ? category.articles.map(article => ({
+      ...article,
+      category_id: category.id
+    })) : []
+  );
+
   if (loading) {
     return (
       <div className="flex items-center justify-center h-64">
@@ -97,9 +111,12 @@ const BlogContent: React.FC<BlogContentProps> = ({ categories, setCategories, lo
         <h2 className="text-xl font-semibold mb-4 text-slate-800">Articles</h2>
         <BlogArticleList 
           categories={categories} 
-          setCategories={setCategories}
-          searchTerm={searchTerm}
-          onEditArticle={handleEditArticle}
+          articles={allArticles}
+          loading={loading}
+          setEditArticle={setEditArticle}
+          setEditArticleCategoryIndex={setEditArticleCategoryIndex}
+          setEditArticleIndex={setEditArticleIndex}
+          handleDeleteArticle={handleDeleteArticle}
         />
         <BlogArticleForm 
           categories={categories} 
