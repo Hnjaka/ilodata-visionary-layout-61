@@ -130,8 +130,19 @@ export const useCategory = ({
     }
   };
 
+  // Add the missing handleCancel function
+  const handleCancel = () => {
+    setEditCategory(null);
+    setEditCategoryIndex(null);
+    form.reset({
+      title: "",
+      icon: "Book"
+    });
+  };
+
   return {
     form,
-    onSubmit
+    onSubmit,
+    handleCancel
   };
 };

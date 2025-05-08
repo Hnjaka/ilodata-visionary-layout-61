@@ -1,10 +1,9 @@
-
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { BlogCategory, BlogArticle } from '@/hooks/useBlogData';
 import { ArticleFormSchema, BlogArticleFormValues } from './formSchema';
-import { toast } from '@/components/ui/use-toast';
+import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
 import { updateSitemap } from '@/utils/updateSitemap';
 
@@ -30,6 +29,7 @@ export const useArticleFormLogic = ({
   setEditArticleIndex
 }: UseArticleFormLogicProps) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const { toast } = useToast();
 
   // Initialize form with edit values or defaults
   const form = useForm<BlogArticleFormValues>({

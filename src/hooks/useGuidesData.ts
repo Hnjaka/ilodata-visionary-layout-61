@@ -1,6 +1,5 @@
-
 import { useState, useEffect } from 'react';
-import { toast } from '@/components/ui/use-toast';
+import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
 import { getIconByName } from '@/data/guidesData';
 import { CategoryType, ArticleType } from '@/types/guides';
@@ -9,6 +8,7 @@ import { updateSitemap } from '@/utils/updateSitemap';
 export const useGuidesData = () => {
   const [categories, setCategories] = useState<CategoryType[]>([]);
   const [loading, setLoading] = useState(true);
+  const { toast } = useToast();
 
   // Fetch categories and articles from Supabase
   useEffect(() => {
