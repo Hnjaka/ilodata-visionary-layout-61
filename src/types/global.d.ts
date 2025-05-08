@@ -14,16 +14,28 @@ declare module 'react' {
   export type ChangeEvent<T = Element> = React.ChangeEvent<T>;
   export type MouseEvent<T = Element> = React.MouseEvent<T>;
   export type TouchEvent<T = Element> = React.TouchEvent<T>;
+  export type KeyboardEvent<T = Element> = React.KeyboardEvent<T>;
+  export type ButtonHTMLAttributes<T> = React.ButtonHTMLAttributes<T>;
   
   export type Dispatch<A> = React.Dispatch<A>;
   export type SetStateAction<S> = React.SetStateAction<S>;
   
   export const forwardRef: typeof React.forwardRef;
   export const StrictMode: typeof React.StrictMode;
+  export const Fragment: typeof React.Fragment;
+  export const createContext: typeof React.createContext;
+  export const useContext: typeof React.useContext;
+  export const useCallback: typeof React.useCallback;
+  export const useMemo: typeof React.useMemo;
+  export const useId: typeof React.useId;
   
   export const useState: typeof React.useState;
   export const useEffect: typeof React.useEffect;
   export const useRef: typeof React.useRef;
+  
+  export type ComponentProps<T> = React.ComponentProps<T>;
+  export type ComponentType<T> = React.ComponentType<T>;
+  export type CSSProperties = React.CSSProperties;
 }
 
 declare module 'react-router-dom' {
@@ -42,6 +54,7 @@ declare module 'lucide-react' {
   
   // Déclarer tous les icônes utilisés
   export const ArrowRight: any;
+  export const ArrowLeft: any;
   export const BookOpen: any;
   export const Download: any;
   export const Facebook: any;
@@ -63,11 +76,16 @@ declare module 'lucide-react' {
   export const Star: any;
   export const Quote: any;
   export const Users: any;
+  export const User: any;
+  export const UserCircle: any;
+  export const UserCheck: any;
   export const MessageCircle: any;
   export const MessageSquare: any;
   export const Award: any;
   export const Trash: any;
+  export const Trash2: any;
   export const Edit: any;
+  export const Pencil: any;
   export const Search: any;
   export const PlusCircle: any;
   export const Save: any;
@@ -86,6 +104,23 @@ declare module 'lucide-react' {
   export const RefreshCw: any;
   export const ChevronDown: any;
   export const Upload: any;
+  export const Mail: any;
+  export const Lock: any;
+  export const Send: any;
+  export const Phone: any;
+  export const MapPin: any;
+  export const HelpCircle: any;
+  export const Menu: any;
+  export const LogIn: any;
+  export const LogOut: any;
+  export const Check: any;
+  export const ArrowDownToLine: any;
+  export const PackageCheck: any;
+  export const X: any;
+  export const Shield: any;
+  export const MoreHorizontal: any;
+  export const Circle: any;
+  export const Dot: any;
 }
 
 declare module '@tanstack/react-query' {
@@ -112,6 +147,7 @@ declare module '@/components/ui/button' {
     variant?: "default" | "destructive" | "outline" | "secondary" | "ghost" | "link";
     size?: "default" | "sm" | "lg" | "icon";
     children?: React.ReactNode;
+    className?: string;
   }
   
   export const Button: React.ForwardRefExoticComponent<ButtonProps & React.RefAttributes<HTMLButtonElement>>;
