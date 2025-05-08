@@ -10,7 +10,7 @@ import {
   TableHeader, 
   TableRow 
 } from '@/components/ui/table';
-import { useToast } from '@/hooks/use-toast';
+import { toast } from '@/components/ui/use-toast';
 import { BlogCategory } from '@/hooks/useBlogData';
 import { supabase } from '@/integrations/supabase/client';
 
@@ -27,8 +27,6 @@ const BlogCategoryList: React.FC<BlogCategoryListProps> = ({
   searchTerm,
   onEditCategory
 }) => {
-  const { toast } = useToast();
-  
   // Handle deleting a category
   const handleDeleteCategory = async (categoryIndex: number) => {
     const category = categories[categoryIndex];
@@ -45,7 +43,7 @@ const BlogCategoryList: React.FC<BlogCategoryListProps> = ({
     // Check if category has articles
     if (category.articles && category.articles.length > 0) {
       toast({
-        title: "Erreur",
+        title: "Action impossible",
         description: "Supprimez d'abord tous les articles de cette catégorie",
         variant: "destructive"
       });
@@ -68,8 +66,8 @@ const BlogCategoryList: React.FC<BlogCategoryListProps> = ({
         setCategories(updatedCategories);
         
         toast({
-          title: "Succès",
-          description: "La catégorie a été supprimée"
+          title: "Supprimée",
+          description: "La catégorie a été supprimée",
         });
       } catch (error) {
         console.error('Error deleting category:', error);

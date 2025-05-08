@@ -2,7 +2,7 @@
 import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useToast } from '@/hooks/use-toast';
+import { toast } from '@/components/ui/use-toast';
 import { supabase } from '@/integrations/supabase/client';
 import { BlogCategory } from '@/hooks/useBlogData';
 import { blogCategoryFormSchema, BlogCategoryFormValues } from '@/components/admin/blog-form/CategoryFormSchema';
@@ -24,7 +24,6 @@ export const useCategoryForm = ({
   setEditCategory,
   setEditCategoryIndex
 }: UseCategoryFormProps) => {
-  const { toast } = useToast();
   const form = useForm<BlogCategoryFormValues>({
     resolver: zodResolver(blogCategoryFormSchema),
     defaultValues: {
@@ -37,7 +36,7 @@ export const useCategoryForm = ({
   useEffect(() => {
     if (editCategory) {
       form.setValue("title", editCategory.title);
-      form.setValue("icon", editCategory.icon ? typeof editCategory.icon === 'string' ? editCategory.icon : 'Book' : 'Book');
+      form.setValue("icon", typeof editCategory.icon === 'string' ? editCategory.icon : 'Book');
     }
   }, [editCategory, form]);
 
@@ -93,9 +92,8 @@ export const useCategoryForm = ({
           const newCategory: BlogCategory = {
             id: data[0].id,
             title: data[0].title,
-            slug: "", // Add required slug property
-            position: data[0].position,
             icon: values.icon,
+            position: data[0].position,
             articles: []
           };
           

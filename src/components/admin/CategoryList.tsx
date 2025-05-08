@@ -10,7 +10,7 @@ import {
   TableHeader, 
   TableRow 
 } from '@/components/ui/table';
-import { useToast } from '@/hooks/use-toast';
+import { toast } from '@/components/ui/use-toast';
 import { CategoryType } from '@/types/guides';
 
 interface CategoryListProps {
@@ -26,8 +26,6 @@ const CategoryList: React.FC<CategoryListProps> = ({
   searchTerm,
   onEditCategory 
 }) => {
-  const { toast } = useToast();
-  
   // Handle deleting a category
   const handleDeleteCategory = (index: number) => {
     if (window.confirm('Êtes-vous sûr de vouloir supprimer cette rubrique et tous ses articles ?')) {
@@ -36,8 +34,8 @@ const CategoryList: React.FC<CategoryListProps> = ({
       setCategories(updatedCategories);
       
       toast({
-        title: "Succès",
-        description: "La rubrique a été supprimée"
+        title: "Supprimé",
+        description: "La rubrique a été supprimée",
       });
     }
   };

@@ -2,7 +2,7 @@
 import { useState, useEffect } from 'react';
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useToast } from '@/hooks/use-toast';
+import { toast } from '@/components/ui/use-toast';
 import { supabase } from '@/integrations/supabase/client';
 import { CategoryType } from '@/types/guides';
 import { getIconByName, getIconName } from '@/data/guidesData';
@@ -25,8 +25,6 @@ export const useCategory = ({
   setEditCategory,
   setEditCategoryIndex
 }: UseCategoryProps) => {
-  const { toast } = useToast();
-  
   // Initialize react-hook-form
   const form = useForm<CategoryFormValues>({
     resolver: zodResolver(categoryFormSchema),
@@ -77,7 +75,7 @@ export const useCategory = ({
         
         toast({
           title: "Succès",
-          description: "Rubrique modifiée"
+          description: "Rubrique modifiée",
         });
         
         // Reset edit mode
@@ -90,47 +88,46 @@ export const useCategory = ({
           .from('guide_categories')
           .insert({
             title: values.title,
-            icon: values.icon
+            icon: values.icon,
+            position: categories.length // Add at the end
           })
           .select()
           .single();
           
         if (error) throw error;
         
-        // Add to local state
-        setCategories([
-          ...categories,
-          {
-            id: newCategory.id,
-            title: values.title,
-            icon: getIconByName(values.icon),
-            articles: []
-          }
-        ]);
+        // Now add to state with ID from Supabase
+        const updatedCategories = [...categories, {
+          id: newCategory.id,
+          title: values.title,
+          icon: getIconByName(values.icon),
+          articles: [],
+          position: categories.length
+        }];
+        
+        setCategories(updatedCategories);
         
         toast({
-          title: "Succès", 
-          description: "Nouvelle rubrique ajoutée"
+          title: "Succès",
+          description: "Nouvelle rubrique ajoutée",
         });
       }
       
-      // Reset the form
       form.reset({
         title: "",
         icon: "Book"
       });
-      
-    } catch (error: any) {
+    } catch (error) {
       console.error('Error saving category:', error);
       toast({
         title: "Erreur",
-        description: error.message || "Erreur lors de l'enregistrement de la rubrique",
+        description: "Erreur lors de l'enregistrement de la rubrique",
         variant: "destructive"
       });
     }
   };
 
-  // Add the missing handleCancel function
+  // Cancel editing
   const handleCancel = () => {
     setEditCategory(null);
     setEditCategoryIndex(null);

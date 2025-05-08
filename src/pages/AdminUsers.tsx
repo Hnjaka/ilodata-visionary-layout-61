@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState, useCallback } from 'react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
@@ -184,7 +185,7 @@ const AdminUsers = () => {
   );
 
   return (
-    <ProtectedRoute adminOnly={true}>
+    <ProtectedRoute requireAdmin>
       <AdminContent />
     </ProtectedRoute>
   );

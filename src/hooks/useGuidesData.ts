@@ -1,14 +1,13 @@
+
 import { useState, useEffect } from 'react';
-import { useToast } from '@/hooks/use-toast';
+import { toast } from '@/components/ui/use-toast';
 import { supabase } from '@/integrations/supabase/client';
 import { getIconByName } from '@/data/guidesData';
 import { CategoryType, ArticleType } from '@/types/guides';
-import { updateSitemap } from '@/utils/updateSitemap';
 
 export const useGuidesData = () => {
   const [categories, setCategories] = useState<CategoryType[]>([]);
   const [loading, setLoading] = useState(true);
-  const { toast } = useToast();
 
   // Fetch categories and articles from Supabase
   useEffect(() => {
@@ -148,14 +147,6 @@ export const useGuidesData = () => {
       );
       
       setCategories(categoriesWithArticles);
-      
-      // Tentative de mise à jour du sitemap
-      try {
-        await updateSitemap();
-      } catch (sitemapError) {
-        console.error("Erreur lors de la mise à jour du sitemap:", sitemapError);
-        // Ne pas bloquer la fonction principale si la mise à jour du sitemap échoue
-      }
     } catch (error) {
       console.error('Error refreshing categories and articles:', error);
       toast({

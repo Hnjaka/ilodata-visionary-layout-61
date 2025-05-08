@@ -1,3 +1,5 @@
+
+import { toast } from '@/components/ui/use-toast';
 import { supabase } from '@/integrations/supabase/client';
 
 /**
@@ -11,12 +13,15 @@ export const handleNewArticleCreation = async (
     slug: string, 
     content: string, 
     layout?: "standard" | "wide" | "sidebar" 
-  },
-  showToast?: (message: string, type: "success" | "error") => void // Nouveau paramètre pour gérer les toasts
+  }
 ) => {
   // Ensure the category exists
   if (!updatedCategories[categoryIndex]) {
-    if (showToast) showToast("Catégorie invalide", "error");
+    toast({
+      title: "Erreur",
+      description: "Catégorie invalide",
+      variant: "destructive"
+    });
     return;
   }
   
@@ -48,5 +53,8 @@ export const handleNewArticleCreation = async (
     id: newArticle.id
   });
   
-  if (showToast) showToast("Nouvel article ajouté", "success");
+  toast({
+    title: "Succès",
+    description: "Nouvel article ajouté",
+  });
 };

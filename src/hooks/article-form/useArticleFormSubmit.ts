@@ -1,5 +1,5 @@
 
-import { useToast } from '@/hooks/use-toast';
+import { toast } from '@/components/ui/use-toast';
 import { ArticleFormValues } from '@/components/admin/article-form/formSchema';
 import { UseArticleFormProps } from './types';
 import { supabase } from '@/integrations/supabase/client';
@@ -8,7 +8,6 @@ import { handleNewArticleCreation } from './utils/articleCreation';
 import { validateCategoryIndex } from './utils/validation';
 
 export const useArticleFormSubmit = (props: UseArticleFormProps) => {
-  const { toast } = useToast();
   const { 
     categories, 
     setCategories, 
@@ -20,33 +19,12 @@ export const useArticleFormSubmit = (props: UseArticleFormProps) => {
     setEditArticleIndex
   } = props;
 
-  // Fonction pour gérer les toasts dans les utils
-  const showToast = (message: string, type: "success" | "error") => {
-    if (type === "success") {
-      toast({
-        title: "Succès",
-        description: message
-      });
-    } else {
-      toast({
-        title: "Erreur",
-        description: message,
-        variant: "destructive"
-      });
-    }
-  };
-
   // Handle adding/editing an article
   const onSubmit = async (values: ArticleFormValues) => {
     const { title, slug, categoryIndex, content, layout } = values;
     
     // Validate categoryIndex
     if (!validateCategoryIndex(categoryIndex, categories)) {
-      toast({
-        title: "Erreur",
-        description: "Catégorie invalide",
-        variant: "destructive"
-      });
       return categoryIndex;
     }
     
@@ -78,8 +56,7 @@ export const useArticleFormSubmit = (props: UseArticleFormProps) => {
             editArticleCategoryIndex,
             categoryIndex!,
             editArticleIndex,
-            { title, slug, content: content || '', layout },
-            showToast
+            { title, slug, content: content || '', layout }
           );
         } else {
           // Just update in the same category
@@ -111,7 +88,7 @@ export const useArticleFormSubmit = (props: UseArticleFormProps) => {
         
         toast({
           title: "Succès",
-          description: "Article modifié"
+          description: "Article modifié",
         });
         
         // Reset edit mode
@@ -124,8 +101,7 @@ export const useArticleFormSubmit = (props: UseArticleFormProps) => {
         await handleNewArticleCreation(
           updatedCategories,
           categoryIndex!,
-          { title, slug, content: content || '', layout },
-          showToast
+          { title, slug, content: content || '', layout }
         );
       }
       

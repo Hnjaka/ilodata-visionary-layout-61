@@ -14,13 +14,13 @@ const AdminBlog = () => {
   const navigate = useNavigate();
   const { isAdmin } = useAuth();
   // Use the blog data hook for retrieving data
-  const { categories, setCategories, loading, refetch } = useBlogData();
+  const { categories, setCategories, loading, refreshData } = useBlogData();
 
   // Memoize the refresh function to avoid triggering re-renders
   // Make sure it returns a Promise
   const handleRefresh = useCallback(async () => {
-    return await refetch();
-  }, [refetch]);
+    return await refreshData();
+  }, [refreshData]);
 
   // Load data on initial render only
   useEffect(() => {
@@ -77,7 +77,7 @@ const AdminBlog = () => {
   );
 
   return (
-    <ProtectedRoute adminOnly={true}>
+    <ProtectedRoute requireAdmin>
       <AdminContent />
     </ProtectedRoute>
   );

@@ -10,7 +10,7 @@ import {
   TableHeader, 
   TableRow 
 } from '@/components/ui/table';
-import { useToast } from '@/hooks/use-toast';
+import { toast } from '@/components/ui/use-toast';
 import { CategoryType, ArticleType } from '@/types/guides';
 import { supabase } from '@/integrations/supabase/client';
 
@@ -27,8 +27,6 @@ const ArticleList: React.FC<ArticleListProps> = ({
   searchTerm,
   onEditArticle
 }) => {
-  const { toast } = useToast();
-  
   // Handle deleting an article
   const handleDeleteArticle = async (categoryIndex: number, articleIndex: number) => {
     if (!categories[categoryIndex] || !categories[categoryIndex].articles) {
@@ -68,8 +66,8 @@ const ArticleList: React.FC<ArticleListProps> = ({
           setCategories(updatedCategories);
           
           toast({
-            title: "Succès",
-            description: "L'article a été supprimé"
+            title: "Supprimé",
+            description: "L'article a été supprimé",
           });
         }
       } catch (error) {
