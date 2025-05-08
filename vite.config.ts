@@ -13,6 +13,7 @@ export default defineConfig(({ mode }) => {
   if (mode === 'development') {
     try {
       const taggerPlugin = componentTagger();
+      // Ensure we're adding a properly typed plugin
       if (taggerPlugin) {
         plugins.push(taggerPlugin);
       }
