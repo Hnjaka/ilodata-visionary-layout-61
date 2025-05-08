@@ -5,25 +5,36 @@ import path from "path";
 import { componentTagger } from "lovable-tagger";
 
 // https://vitejs.dev/config/
-export default defineConfig(({ mode }) => ({
-  server: {
-    host: "::",
-    port: 8080,
-  },
-  plugins: [
-    react(),
-    mode === 'development' &&
-    componentTagger(),
-  ].filter(Boolean),
-  resolve: {
-    alias: {
-      "@": path.resolve(__dirname, "./src"),
+export default defineConfig(({ mode }) => {
+  // Ne charger le plugin lovable-tagger qu'en mode développement
+  // et seulement si la version est compatible
+  const plugins = [react()];
+  
+  if (mode === 'development') {
+    try {
+      // Tentative d'utilisation du plugin uniquement en développement
+      plugins.push(componentTagger());
+    } catch (error) {
+      console.warn('Lovable-tagger not loaded due to compatibility issues', error);
+    }
+  }
+
+  return {
+    server: {
+      host: "::",
+      port: 8080,
     },
-  },
-  // Ajout de la configuration external pour Netlify
-  build: {
-    rollupOptions: {
-      external: [],
+    plugins,
+    resolve: {
+      alias: {
+        "@": path.resolve(__dirname, "./src"),
+      },
     },
-  },
-}));
+    // Configuration pour Netlify
+    build: {
+      rollupOptions: {
+        external: [],
+      },
+    },
+  };
+});
