@@ -52,7 +52,6 @@
     "@tiptap/starter-kit": "^2.1.16",
     "@radix-ui/react-accordion": "^2.0.0",
     "@radix-ui/react-alert-dialog": "^2.0.0"
-// (Mettez à jour toutes les dépendances @radix-ui avec des versions majeures compatibles)
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "cmdk": "^1.0.0",
