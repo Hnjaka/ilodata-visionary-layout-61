@@ -8,13 +8,16 @@ interface UserStatusBadgeProps {
 }
 
 const UserStatusBadge: React.FC<UserStatusBadgeProps> = ({ status, isApproved }) => {
-  // If isApproved is provided directly, use that to determine status
-  const userStatus = isApproved !== undefined
-    ? isApproved ? 'active' : 'pending'
-    : status;
-    
-  // Convert userStatus to string for comparison if it's not already a string
-  const isActive = String(userStatus) === 'active' || String(userStatus) === 'true' || userStatus === true;
+  // Instead of comparing types, let's use a more straightforward approach
+  // If isApproved is provided directly, use that to determine active status
+  let isActive = false;
+  
+  if (isApproved !== undefined) {
+    isActive = isApproved;
+  } else if (status !== undefined) {
+    // Handle string status
+    isActive = status === 'active' || status === 'true';
+  }
   
   if (isActive) {
     return <Badge className="bg-green-100 text-green-800 hover:bg-green-200">Actif</Badge>;

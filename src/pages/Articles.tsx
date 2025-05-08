@@ -14,7 +14,7 @@ import ArticlesSeo from '@/components/articles/ArticlesSeo';
 const Articles = () => {
   const { toast } = useToast();
   const [loading, setLoading] = React.useState(true);
-  const [error, setError] = React.useState<string | null>(null);
+  const [error, setError] = React.useState(null);
   const [articles, setArticles] = React.useState([]);
 
   useEffect(() => {
