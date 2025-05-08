@@ -1,12 +1,19 @@
 
-import { useState, useEffect } from 'react';
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { toast } from '@/components/ui/use-toast';
-import { supabase } from '@/integrations/supabase/client';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
 import { CategoryType } from '@/types/guides';
-import { getIconByName, getIconName } from '@/data/guidesData';
-import { categoryFormSchema, CategoryFormValues } from './CategoryFormSchema';
+import { useToast } from '@/hooks/use-toast';
+import { supabase } from '@/integrations/supabase/client';
+
+// Define form schema for category
+import { z } from 'zod';
+
+const categoryFormSchema = z.object({
+  title: z.string().min(1, "Le titre ne peut pas être vide"),
+  icon: z.string().optional()
+});
+
+type CategoryFormValues = z.infer<typeof categoryFormSchema>;
 
 interface UseCategoryProps {
   categories: CategoryType[];
@@ -25,26 +32,22 @@ export const useCategory = ({
   setEditCategory,
   setEditCategoryIndex
 }: UseCategoryProps) => {
-  // Initialize react-hook-form
+  const { toast } = useToast();
+  
+  // Initialize form with react-hook-form
   const form = useForm<CategoryFormValues>({
     resolver: zodResolver(categoryFormSchema),
     defaultValues: {
-      title: "",
-      icon: "Book"
+      title: editCategory?.title || '',
+      icon: editCategory?.icon || ''
     }
   });
 
-  // Update form values when editing a category
-  useEffect(() => {
+  // Set form values when edit category changes
+  React.useEffect(() => {
     if (editCategory) {
-      const iconName = typeof editCategory.icon === 'string' 
-        ? editCategory.icon 
-        : getIconName(editCategory.icon);
-        
-      form.reset({
-        title: editCategory.title,
-        icon: iconName
-      });
+      form.setValue('title', editCategory.title);
+      form.setValue('icon', editCategory.icon || '');
     }
   }, [editCategory, form]);
 
@@ -53,71 +56,62 @@ export const useCategory = ({
     try {
       if (editCategory && editCategoryIndex !== null) {
         // Update existing category
+        const { title, icon } = values;
+        
+        // Update in Supabase
         const { error } = await supabase
           .from('guide_categories')
-          .update({
-            title: values.title,
-            icon: values.icon
-          })
+          .update({ title, icon })
           .eq('id', editCategory.id);
-          
+        
         if (error) throw error;
         
         // Update local state
         const updatedCategories = [...categories];
         updatedCategories[editCategoryIndex] = {
-          ...editCategory,
-          title: values.title,
-          icon: getIconByName(values.icon)
+          ...categories[editCategoryIndex],
+          title,
+          icon
         };
         
         setCategories(updatedCategories);
         
         toast({
           title: "Succès",
-          description: "Rubrique modifiée",
+          description: "Rubrique modifiée"
         });
         
         // Reset edit mode
         setEditCategory(null);
         setEditCategoryIndex(null);
-        
       } else {
         // Add new category
-        const { data: newCategory, error } = await supabase
+        const { title, icon } = values;
+        
+        // Add to Supabase
+        const { data, error } = await supabase
           .from('guide_categories')
-          .insert({
-            title: values.title,
-            icon: values.icon,
-            position: categories.length // Add at the end
-          })
+          .insert([{ title, icon, position: categories.length }])
           .select()
           .single();
-          
+        
         if (error) throw error;
         
-        // Now add to state with ID from Supabase
-        const updatedCategories = [...categories, {
-          id: newCategory.id,
-          title: values.title,
-          icon: getIconByName(values.icon),
-          articles: [],
-          position: categories.length
-        }];
-        
-        setCategories(updatedCategories);
+        // Add to local state with empty articles array
+        setCategories([...categories, { ...data, articles: [] }]);
         
         toast({
           title: "Succès",
-          description: "Nouvelle rubrique ajoutée",
+          description: "Nouvelle rubrique ajoutée"
         });
       }
       
+      // Reset the form
       form.reset({
-        title: "",
-        icon: "Book"
+        title: '',
+        icon: ''
       });
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error saving category:', error);
       toast({
         title: "Erreur",
@@ -132,14 +126,10 @@ export const useCategory = ({
     setEditCategory(null);
     setEditCategoryIndex(null);
     form.reset({
-      title: "",
-      icon: "Book"
+      title: '',
+      icon: ''
     });
   };
 
-  return {
-    form,
-    onSubmit,
-    handleCancel
-  };
+  return { form, onSubmit, handleCancel };
 };

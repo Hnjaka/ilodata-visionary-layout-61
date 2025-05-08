@@ -1,12 +1,14 @@
+
 import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
-import { toast } from '@/components/ui/use-toast';
+import { useToast } from '@/hooks/use-toast';
 import { CategoryType, ArticleType } from '@/types/guides';
 
 export const useGuidesData = () => {
   const [categories, setCategories] = useState<CategoryType[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<Error | null>(null);
+  const { toast } = useToast();
 
   useEffect(() => {
     const fetchGuidesData = async () => {
@@ -60,7 +62,7 @@ export const useGuidesData = () => {
     };
 
     fetchGuidesData();
-  }, []);
+  }, [toast]);
 
   // Function to update the order of categories
   const updateCategoryOrder = async (newOrder: CategoryType[]) => {
