@@ -14,11 +14,13 @@ declare module 'react' {
   export type ElementType = import('react').ElementType;
   export type Dispatch<A> = import('react').Dispatch<A>;
   export type SetStateAction<S> = import('react').SetStateAction<S>;
+  export type CSSProperties = import('react').CSSProperties;
   
   // Add hooks
   export const useState: typeof import('react').useState;
   export const useEffect: typeof import('react').useEffect;
   export const useRef: typeof import('react').useRef;
+  export const Fragment: typeof import('react').Fragment;
   
   // StrictMode component
   export const StrictMode: import('react').FC<{children: import('react').ReactNode}>;
