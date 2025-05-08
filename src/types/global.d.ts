@@ -1,15 +1,20 @@
 
+
 // This file contains global type declarations for the project
 
 // Declare modules for packages that don't have TypeScript definitions
 declare module 'react' {
   export * from 'react';
   export type FC<P = {}> = React.FunctionComponent<P>;
+  export type ElementType<P = any> = React.ElementType<P>;
+  export type ReactNode = React.ReactNode;
   export type ElementRef<T> = React.ElementRef<T>;
   export type ComponentPropsWithoutRef<T> = React.ComponentPropsWithoutRef<T>;
   export type HTMLAttributes<T> = React.HTMLAttributes<T>;
   export type FormEvent<T = Element> = React.FormEvent<T>;
   export type ChangeEvent<T = Element> = React.ChangeEvent<T>;
+  export type MouseEvent<T = Element> = React.MouseEvent<T>;
+  export type TouchEvent<T = Element> = React.TouchEvent<T>;
   
   export type Dispatch<A> = React.Dispatch<A>;
   export type SetStateAction<S> = React.SetStateAction<S>;
@@ -100,4 +105,27 @@ declare module '@/components/ui/badge' {
   export const badgeVariants: any;
 }
 
+// Fix Button component issues
+declare module '@/components/ui/button' {
+  export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement>, 
+    import("class-variance-authority").VariantProps<typeof import('@/components/ui/button').buttonVariants> {
+    asChild?: boolean;
+    children?: React.ReactNode;
+  }
+  
+  export const Button: React.ForwardRefExoticComponent<ButtonProps & React.RefAttributes<HTMLButtonElement>>;
+  export const buttonVariants: any;
+}
+
+// Fix Textarea component issues
+declare module '@/components/ui/textarea' {
+  export interface TextareaProps extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {
+    value?: string;
+    className?: string;
+  }
+  
+  export const Textarea: React.ForwardRefExoticComponent<TextareaProps & React.RefAttributes<HTMLTextAreaElement>>;
+}
+
 // Add any other missing module declarations here
+
