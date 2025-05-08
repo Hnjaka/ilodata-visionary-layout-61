@@ -1,161 +1,164 @@
 
 import { useState, useEffect } from 'react';
+import { toast } from '@/components/ui/use-toast';
 import { supabase } from '@/integrations/supabase/client';
-import { useToast } from '@/hooks/use-toast';
+import { getIconByName } from '@/data/guidesData';
 import { CategoryType, ArticleType } from '@/types/guides';
 
 export const useGuidesData = () => {
   const [categories, setCategories] = useState<CategoryType[]>([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<Error | null>(null);
-  const { toast } = useToast();
 
+  // Fetch categories and articles from Supabase
   useEffect(() => {
-    const fetchGuidesData = async () => {
+    const fetchCategoriesAndArticles = async () => {
       setLoading(true);
-      setError(null);
-
       try {
         // Fetch categories
         const { data: categoriesData, error: categoriesError } = await supabase
           .from('guide_categories')
           .select('*')
-          .order('position', { ascending: true });
-
-        if (categoriesError) {
-          throw categoriesError;
-        }
-
-        if (!categoriesData) {
-          throw new Error("Failed to fetch guide categories");
-        }
-
+          .order('position');
+          
+        if (categoriesError) throw categoriesError;
+        
         // Fetch articles for each category
         const categoriesWithArticles = await Promise.all(
-          categoriesData.map(async (category) => {
-            const { data: articlesData, error: articlesError } = await supabase
-              .from('guide_articles')
-              .select('*')
-              .eq('category_id', category.id)
-              .order('position', { ascending: true });
-
-            if (articlesError) {
-              console.error("Error fetching articles for category:", category.id, articlesError);
-              return { ...category, articles: [] }; // Return category with empty articles on error
+          (categoriesData || []).map(async (category) => {
+            try {
+              const { data: articlesData, error: articlesError } = await supabase
+                .from('guide_articles')
+                .select('*')
+                .eq('category_id', category.id)
+                .order('position');
+                
+              if (articlesError) throw articlesError;
+              
+              // Map the icon string to the actual icon component
+              const iconComponent = getIconByName(category.icon);
+              
+              // Format articles to match ArticleType
+              const formattedArticles: ArticleType[] = (articlesData || []).map(article => ({
+                id: article.id,
+                title: article.title || '',
+                slug: article.slug || '',
+                content: article.content || '',
+                layout: (article.layout || 'standard') as 'standard' | 'wide' | 'sidebar',
+                position: article.position || 0,
+                category_id: article.category_id
+              }));
+              
+              return {
+                id: category.id,
+                title: category.title || '',
+                icon: iconComponent,
+                articles: formattedArticles,
+                position: category.position || 0
+              };
+            } catch (error) {
+              console.error(`Error fetching articles for category ${category.id}:`, error);
+              return {
+                id: category.id,
+                title: category.title || '',
+                icon: getIconByName(category.icon),
+                articles: [],
+                position: category.position || 0
+              };
             }
-
-            return { ...category, articles: articlesData || [] };
           })
         );
-
-        setCategories(categoriesWithArticles as CategoryType[]);
-      } catch (err: any) {
-        setError(err);
+        
+        setCategories(categoriesWithArticles);
+      } catch (error) {
+        console.error('Error fetching categories and articles:', error);
         toast({
           title: "Erreur",
-          description: "Erreur lors du chargement des rubriques et articles",
+          description: "Erreur lors du chargement des données",
           variant: "destructive"
         });
+        setCategories([]);
       } finally {
         setLoading(false);
       }
     };
+    
+    fetchCategoriesAndArticles();
 
-    fetchGuidesData();
-  }, [toast]);
+    // We're removing the real-time subscriptions to prevent automatic page refreshes
+    // Manual refresh will now be required when data changes
+  }, []);
 
-  // Function to update the order of categories
-  const updateCategoryOrder = async (newOrder: CategoryType[]) => {
+  // Add a manual refresh function
+  const refreshData = async () => {
+    setLoading(true);
     try {
-      setLoading(true);
-
-      // Update the position of each category in the database
-      const updates = newOrder.map((category, index) =>
-        supabase
-          .from('guide_categories')
-          .update({ position: index })
-          .eq('id', category.id)
-      );
-
-      const results = await Promise.all(updates);
-
-      // Check for errors
-      const errors = results.filter((result) => result.error);
-      if (errors.length > 0) {
-        throw new Error(`Failed to update category order: ${errors.map((e) => e.error?.message).join(', ')}`);
-      }
-
-      // Update local state
-      setCategories(newOrder);
-
-      toast({
-        title: "Succès",
-        description: "Ordre des rubriques mis à jour",
-      });
-    } catch (error: any) {
-      setError(error);
-      toast({
-        title: "Erreur",
-        description: "Erreur lors de la mise à jour de l'ordre des rubriques",
-        variant: "destructive"
-      });
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  // Function to update the order of articles within a category
-  const updateArticleOrder = async (categoryId: string, newOrder: ArticleType[]) => {
-    try {
-      setLoading(true);
-
-      // Update the position of each article in the database
-      const updates = newOrder.map((article, index) =>
-        supabase
-          .from('guide_articles')
-          .update({ position: index })
-          .eq('id', article.id)
-      );
-
-      const results = await Promise.all(updates);
-
-      // Check for errors
-      const errors = results.filter((result) => result.error);
-      if (errors.length > 0) {
-        throw new Error(`Failed to update article order: ${errors.map((e) => e.error?.message).join(', ')}`);
-      }
-
-      // Update local state
-      setCategories((prevCategories) => {
-        return prevCategories.map((category) => {
-          if (category.id === categoryId) {
-            return { ...category, articles: newOrder };
+      // Fetch categories
+      const { data: categoriesData, error: categoriesError } = await supabase
+        .from('guide_categories')
+        .select('*')
+        .order('position');
+        
+      if (categoriesError) throw categoriesError;
+      
+      // Fetch articles for each category
+      const categoriesWithArticles = await Promise.all(
+        (categoriesData || []).map(async (category) => {
+          try {
+            const { data: articlesData, error: articlesError } = await supabase
+              .from('guide_articles')
+              .select('*')
+              .eq('category_id', category.id)
+              .order('position');
+              
+            if (articlesError) throw articlesError;
+            
+            // Map the icon string to the actual icon component
+            const iconComponent = getIconByName(category.icon);
+            
+            // Format articles to match ArticleType
+            const formattedArticles: ArticleType[] = (articlesData || []).map(article => ({
+              id: article.id,
+              title: article.title || '',
+              slug: article.slug || '',
+              content: article.content || '',
+              layout: (article.layout || 'standard') as 'standard' | 'wide' | 'sidebar',
+              position: article.position || 0,
+              category_id: article.category_id
+            }));
+            
+            return {
+              id: category.id,
+              title: category.title || '',
+              icon: iconComponent,
+              articles: formattedArticles,
+              position: category.position || 0
+            };
+          } catch (error) {
+            console.error(`Error fetching articles for category ${category.id}:`, error);
+            return {
+              id: category.id,
+              title: category.title || '',
+              icon: getIconByName(category.icon),
+              articles: [],
+              position: category.position || 0
+            };
           }
-          return category;
-        });
-      });
-
-      toast({
-        title: "Succès",
-        description: "Ordre des articles mis à jour",
-      });
-    } catch (error: any) {
-      setError(error);
+        })
+      );
+      
+      setCategories(categoriesWithArticles);
+    } catch (error) {
+      console.error('Error refreshing categories and articles:', error);
       toast({
         title: "Erreur",
-        description: "Erreur lors de la mise à jour de l'ordre des articles",
+        description: "Erreur lors du rafraîchissement des données",
         variant: "destructive"
       });
+      setCategories([]);
     } finally {
       setLoading(false);
     }
   };
 
-  return {
-    categories,
-    loading,
-    error,
-    updateCategoryOrder,
-    updateArticleOrder
-  };
+  return { categories, setCategories, loading, refreshData };
 };

@@ -2,10 +2,16 @@
 import React from 'react';
 import { Trash, Edit } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { useToast } from '@/hooks/use-toast';
+import { 
+  Table, 
+  TableBody, 
+  TableCell, 
+  TableHead, 
+  TableHeader, 
+  TableRow 
+} from '@/components/ui/table';
+import { toast } from '@/components/ui/use-toast';
 import { CategoryType } from '@/types/guides';
-import { supabase } from '@/integrations/supabase/client';
 
 interface CategoryListProps {
   categories: CategoryType[];
@@ -20,8 +26,6 @@ const CategoryList: React.FC<CategoryListProps> = ({
   searchTerm,
   onEditCategory 
 }) => {
-  const { toast } = useToast();
-  
   // Handle deleting a category
   const handleDeleteCategory = (index: number) => {
     if (window.confirm('Êtes-vous sûr de vouloir supprimer cette rubrique et tous ses articles ?')) {

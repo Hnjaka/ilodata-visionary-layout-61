@@ -1,98 +1,114 @@
 
-import { useState, useCallback } from 'react';
+import { useState, useEffect } from 'react';
+import { toast } from '@/components/ui/use-toast';
 import { supabase } from '@/integrations/supabase/client';
+import { getIconByName } from '@/data/guidesData';
 
-// Type definitions for blog data structures
-export interface BlogArticle {
+export type BlogCategory = {
+  id: string;
+  title: string;
+  icon: string; // Changed from React.ComponentType<any> to string to match DB schema
+  position: number;
+  articles: BlogArticle[];
+};
+
+export type BlogArticle = {
   id: string;
   title: string;
   slug: string;
   content?: string;
-  excerpt?: string;
   image?: string;
+  excerpt?: string;
   category_id: string;
-  category_title?: string;
+  position: number;
   published: boolean;
   published_at?: string;
-  position?: number;
-}
-
-export interface BlogCategory {
-  id: string;
-  title: string;
-  icon?: string;
-  position?: number;
-  articles: BlogArticle[];
-}
+};
 
 export const useBlogData = () => {
   const [categories, setCategories] = useState<BlogCategory[]>([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
 
-  // Fetch blog categories and articles from the database
-  const fetchData = useCallback(async () => {
+  // Remove automatic data fetching on component mount
+  // The data will only be loaded when refreshData is called explicitly
+
+  const fetchCategoriesAndArticles = async () => {
     setLoading(true);
-    setError(null);
-    
     try {
-      console.log("Fetching blog categories from Supabase");
-      // Get all categories first
+      // Fetch categories
       const { data: categoriesData, error: categoriesError } = await supabase
         .from('blog_categories')
         .select('*')
-        .order('position', { ascending: true });
-      
+        .order('position');
+        
       if (categoriesError) throw categoriesError;
       
-      // Get all articles
-      const { data: articlesData, error: articlesError } = await supabase
-        .from('blog_articles')
-        .select('*')
-        .order('position', { ascending: true });
-      
-      if (articlesError) throw articlesError;
-      
-      // Map articles to their categories
-      const categoriesWithArticles = categoriesData.map((category: any) => {
-        const categoryArticles = articlesData
-          .filter((article: any) => article.category_id === category.id)
-          .map((article: any) => ({
-            ...article,
-          }));
-          
-        return {
-          ...category,
-          articles: categoryArticles
-        };
-      });
+      // Fetch articles for each category
+      const categoriesWithArticles = await Promise.all(
+        (categoriesData || []).map(async (category) => {
+          try {
+            const { data: articlesData, error: articlesError } = await supabase
+              .from('blog_articles')
+              .select('*')
+              .eq('category_id', category.id)
+              .order('position');
+              
+            if (articlesError) throw articlesError;
+            
+            // Format articles to match BlogArticle type
+            const formattedArticles: BlogArticle[] = (articlesData || []).map(article => ({
+              id: article.id,
+              title: article.title,
+              slug: article.slug,
+              content: article.content,
+              image: article.image,
+              excerpt: article.excerpt,
+              category_id: article.category_id,
+              position: article.position,
+              published: article.published,
+              published_at: article.published_at,
+            }));
+            
+            return {
+              id: category.id,
+              title: category.title,
+              icon: category.icon, // Store as string
+              position: category.position,
+              articles: formattedArticles,
+            };
+          } catch (error) {
+            console.error(`Error fetching articles for category ${category.id}:`, error);
+            return {
+              id: category.id,
+              title: category.title,
+              icon: category.icon, // Store as string
+              position: category.position,
+              articles: [],
+            };
+          }
+        })
+      );
       
       setCategories(categoriesWithArticles);
-      console.log(`Loaded ${categoriesData.length} categories and ${articlesData.length} articles`);
-    } catch (err: any) {
-      console.error('Error fetching blog data:', err);
-      setError(err.message || 'Failed to load blog data');
+      toast({
+        title: "Succès",
+        description: "Données chargées avec succès",
+      });
+    } catch (error) {
+      console.error('Error fetching categories and articles:', error);
+      toast({
+        title: "Erreur",
+        description: "Erreur lors du chargement des données",
+        variant: "destructive"
+      });
+      setCategories([]);
     } finally {
       setLoading(false);
     }
-  }, []);
-
-  // Refresh data function that returns a Promise
-  const refreshData = useCallback(async () => {
-    try {
-      await fetchData();
-      return true;
-    } catch (err) {
-      console.error('Error refreshing blog data:', err);
-      return false;
-    }
-  }, [fetchData]);
-
-  return {
-    categories,
-    setCategories,
-    loading,
-    error,
-    refreshData
   };
+
+  // Rename to be clear it's for both initial loading and refreshing
+  const refreshData = fetchCategoriesAndArticles;
+
+  return { categories, setCategories, loading, setLoading, refreshData };
 };
