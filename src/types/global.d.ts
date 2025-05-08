@@ -4,6 +4,12 @@
 // Declare modules for packages that don't have TypeScript definitions
 declare module 'react' {
   export * from 'react';
+  export import ElementType = React.ElementType;
+  export import MouseEvent = React.MouseEvent;
+  export import TouchEvent = React.TouchEvent;
+  export import ReactNode = React.ReactNode;
+  export import Dispatch = React.Dispatch;
+  export import SetStateAction = React.SetStateAction;
 }
 
 declare module 'react-router-dom' {
