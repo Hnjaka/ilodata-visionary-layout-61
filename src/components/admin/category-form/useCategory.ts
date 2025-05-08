@@ -4,6 +4,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { CategoryType } from '@/types/guides';
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
+import { useEffect } from 'react';
 
 // Define form schema for category
 import { z } from 'zod';
@@ -44,7 +45,7 @@ export const useCategory = ({
   });
 
   // Set form values when edit category changes
-  React.useEffect(() => {
+  useEffect(() => {
     if (editCategory) {
       form.setValue('title', editCategory.title);
       form.setValue('icon', editCategory.icon || '');
