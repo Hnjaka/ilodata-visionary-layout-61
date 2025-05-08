@@ -6,10 +6,10 @@ import LoadingSpinner from '@/components/LoadingSpinner';
 
 interface ProtectedRouteProps {
   children: React.ReactNode;
-  requireAdmin?: boolean;
+  adminOnly?: boolean;
 }
 
-const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children, requireAdmin = false }) => {
+const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children, adminOnly = false }) => {
   const { user, loading, isAdmin, isApproved } = useAuth();
   const [authChecked, setAuthChecked] = useState(false);
   
@@ -20,14 +20,14 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children, requireAdmin 
       loading,
       isAdmin,
       isApproved,
-      requireAdmin
+      adminOnly
     });
     
     // Mark auth as checked after the initial load
     if (!loading && !authChecked) {
       setAuthChecked(true);
     }
-  }, [user, loading, isAdmin, isApproved, requireAdmin, authChecked]);
+  }, [user, loading, isAdmin, isApproved, adminOnly, authChecked]);
   
   // Show loading spinner while authentication state is being determined
   // But only on the initial load to prevent flickering
@@ -46,7 +46,7 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children, requireAdmin 
   }
   
   // If admin access is required but user is not an admin
-  if (requireAdmin && !isAdmin) {
+  if (adminOnly && !isAdmin) {
     console.log('ProtectedRoute: Admin access required but user is not admin, redirecting to home');
     return <Navigate to="/" replace />;
   }

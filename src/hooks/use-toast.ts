@@ -1,9 +1,12 @@
 
-import { useToast as useShadcnToast } from "@/components/ui/toast";
+import { useToast as useShadcnToast, toast as shadcnToast } from "@/components/ui/toast";
 
 export const useToast = useShadcnToast;
 
 export const toast = {
-  // Forwarding toast methods from shadcn/ui
-  ...useShadcnToast().toast,
+  // Forward toast methods correctly
+  error: shadcnToast.error,
+  success: shadcnToast.success,
+  warning: shadcnToast.warning,
+  info: shadcnToast.info
 };

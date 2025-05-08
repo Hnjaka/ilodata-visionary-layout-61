@@ -127,17 +127,11 @@ export {
   ToastAction,
 }
 
-// Added useToast hook implementation for consistency
+// Export useToast hook with proper implementation
 export function useToast() {
-  const [toasts, setToasts] = React.useState<ToastProps[]>([])
+  const [toasts, setToasts] = React.useState<Array<ToastProps & { id: string, title?: React.ReactNode, description?: React.ReactNode, action?: ToastActionElement }>>([])
 
-  function toast({
-    title,
-    description,
-    action,
-    variant,
-    ...props
-  }: ToastProps & {
+  function toast({ title, description, action, ...props }: ToastProps & {
     title?: React.ReactNode
     description?: React.ReactNode
     action?: ToastActionElement
@@ -148,11 +142,11 @@ export function useToast() {
       title,
       description,
       action,
-      variant,
       ...props,
     }
 
     setToasts((currentToasts) => [...currentToasts, newToast])
+
     return {
       id,
       dismiss: () => dismissToast(id),
@@ -180,11 +174,33 @@ export function useToast() {
   }
 }
 
-// Export the toast singleton for direct imports
+// Create properly callable toast functions
+const useToastInstance = useToast()
+
 export const toast = {
-  // We'll implement this with the Toaster component in a real app
-  error: (message: string) => console.error(message),
-  success: (message: string) => console.log(message),
-  warning: (message: string) => console.warn(message),
-  info: (message: string) => console.info(message),
+  error: (message: string) => {
+    return useToastInstance.toast({ 
+      variant: "destructive", 
+      title: "Error",
+      description: message
+    })
+  },
+  success: (message: string) => {
+    return useToastInstance.toast({ 
+      title: "Success",
+      description: message
+    })
+  },
+  warning: (message: string) => {
+    return useToastInstance.toast({ 
+      title: "Warning",
+      description: message
+    })
+  },
+  info: (message: string) => {
+    return useToastInstance.toast({ 
+      title: "Info",
+      description: message
+    })
+  }
 }
