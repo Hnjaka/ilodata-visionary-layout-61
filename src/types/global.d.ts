@@ -74,6 +74,27 @@ declare module 'lucide-react' {
   export const Trash: React.FC<IconProps>;
   export const Edit: React.FC<IconProps>;
   export const Upload: React.FC<IconProps>;
+  
+  // Additional icons for admin components
+  export const MessageCircle: React.FC<IconProps>;
+  export const MessageSquare: React.FC<IconProps>;
+  export const Award: React.FC<IconProps>;
+  export const Search: React.FC<IconProps>;
+  export const PlusCircle: React.FC<IconProps>;
+  export const Save: React.FC<IconProps>;
+  export const Code: React.FC<IconProps>;
+  export const Bold: React.FC<IconProps>;
+  export const Italic: React.FC<IconProps>;
+  export const Underline: React.FC<IconProps>;
+  export const Heading1: React.FC<IconProps>;
+  export const Heading2: React.FC<IconProps>;
+  export const Heading3: React.FC<IconProps>;
+  export const ListOrdered: React.FC<IconProps>;
+  export const List: React.FC<IconProps>;
+  export const Link: React.FC<IconProps>;
+  export const ExternalLink: React.FC<IconProps>;
+  export const Plus: React.FC<IconProps>;
+  export const RefreshCw: React.FC<IconProps>;
 }
 
 // Declare TanStack Query with necessary exports
