@@ -40,43 +40,43 @@
 
   <!-- Articles des guides -->
   <url>
-    <loc>https://ilodata.com/guides/fondamentaux-mise-en-page</loc>
+    <loc>https://ilodata.com/guides/police-marge-interligne</loc>
     <lastmod>2025-05-08</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://ilodata.com/guides/choisir-taille-police</loc>
+    <loc>https://ilodata.com/guides/taille-police-01-02</loc>
     <lastmod>2025-05-08</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://ilodata.com/guides/erreurs-mise-en-page</loc>
+    <loc>https://ilodata.com/guides/erreur-mise-en-page_01-03</loc>
     <lastmod>2025-05-08</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://ilodata.com/guides/adapter-modele-word</loc>
+    <loc>https://ilodata.com/guides/personnalisation-modele-word_02-01d</loc>
     <lastmod>2025-05-08</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://ilodata.com/guides/personnaliser-modele-word</loc>
+    <loc>https://ilodata.com/guides/astuce-word_02-02</loc>
     <lastmod>2025-05-08</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://ilodata.com/guides/preparer-fichier-impression</loc>
+    <loc>https://ilodata.com/guides/meilleures-pratiques_02-03</loc>
     <lastmod>2025-05-08</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://ilodata.com/guides/meilleures-pratiques-modeles</loc>
+    <loc>https://ilodata.com/guides/impression-03-01</loc>
     <lastmod>2025-05-08</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
@@ -84,19 +84,19 @@
   
   <!-- Articles de blog -->
   <url>
-    <loc>https://ilodata.com/articles/astuces-mise-en-page-livre</loc>
+    <loc>https://ilodata.com/articles/livre-numrique-7-tendances-majeures-suivre-en-2025-pour-les-auteurs-et-diteurs</loc>
     <lastmod>2025-05-08</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://ilodata.com/articles/choisir-modele-mise-en-page</loc>
+    <loc>https://ilodata.com/articles/le-livre-numrique-en-avril-2025-entre-innovation-et-dfis</loc>
     <lastmod>2025-05-08</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://ilodata.com/articles/erreurs-creation-livre-numerique</loc>
+    <loc>https://ilodata.com/articles/-design-ditorial-2025-5-tendances-incontournables-adopter-ds-maintenant</loc>
     <lastmod>2025-05-08</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
