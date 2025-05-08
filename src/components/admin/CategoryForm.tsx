@@ -1,11 +1,11 @@
 
 import React from 'react';
-import { Form } from "@/components/ui/form";
+import { Form } from '@/components/ui/form';
 import { CategoryType } from '@/types/guides';
-import { TitleField } from './category-form/TitleField';
-import { IconSelector } from './category-form/IconSelector';
-import { FormActions } from './category-form/FormActions';
-import { useCategory } from './category-form/useCategory';
+import { TitleField } from '@/components/admin/category-form/TitleField';
+import { IconSelector } from '@/components/admin/category-form/IconSelector';
+import { FormActions } from '@/components/admin/category-form/FormActions';
+import { useCategory } from '@/components/admin/category-form/useCategory';
 
 interface CategoryFormProps {
   categories: CategoryType[];
@@ -41,12 +41,12 @@ const CategoryForm: React.FC<CategoryFormProps> = (props) => {
         {editCategory ? "Modifier la rubrique" : "Ajouter une rubrique"}
       </h3>
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="flex gap-4 items-end">
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 md:space-y-0 md:flex md:space-x-4">
           <TitleField form={form} />
           <IconSelector form={form} />
           <FormActions 
-            editCategory={editCategory} 
-            onCancel={handleCancel} 
+            editCategory={editCategory}
+            onCancel={handleCancel}
           />
         </form>
       </Form>

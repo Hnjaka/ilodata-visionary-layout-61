@@ -1,17 +1,10 @@
-
 import React from 'react';
 import { Trash, Edit } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { 
-  Table, 
-  TableBody, 
-  TableCell, 
-  TableHead, 
-  TableHeader, 
-  TableRow 
-} from '@/components/ui/table';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { toast } from '@/components/ui/use-toast';
 import { CategoryType } from '@/types/guides';
+import { supabase } from '@/integrations/supabase/client';
 
 interface CategoryListProps {
   categories: CategoryType[];
