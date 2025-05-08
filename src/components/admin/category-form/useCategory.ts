@@ -1,8 +1,7 @@
-
 import { useState, useEffect } from 'react';
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { toast } from '@/components/ui/use-toast';
+import { toast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
 import { CategoryType } from '@/types/guides';
 import { getIconByName, getIconName } from '@/data/guidesData';
@@ -73,10 +72,7 @@ export const useCategory = ({
         
         setCategories(updatedCategories);
         
-        toast({
-          title: "Succès",
-          description: "Rubrique modifiée",
-        });
+        toast.success("Rubrique modifiée");
         
         // Reset edit mode
         setEditCategory(null);
@@ -107,10 +103,7 @@ export const useCategory = ({
         
         setCategories(updatedCategories);
         
-        toast({
-          title: "Succès",
-          description: "Nouvelle rubrique ajoutée",
-        });
+        toast.success("Nouvelle rubrique ajoutée");
       }
       
       form.reset({
@@ -119,11 +112,7 @@ export const useCategory = ({
       });
     } catch (error) {
       console.error('Error saving category:', error);
-      toast({
-        title: "Erreur",
-        description: "Erreur lors de l'enregistrement de la rubrique",
-        variant: "destructive"
-      });
+      toast.error("Erreur lors de l'enregistrement de la rubrique");
     }
   };
 

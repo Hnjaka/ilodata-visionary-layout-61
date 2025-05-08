@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Trash, Edit } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -10,7 +9,7 @@ import {
   TableHeader, 
   TableRow 
 } from '@/components/ui/table';
-import { toast } from '@/components/ui/use-toast';
+import { toast } from '@/hooks/use-toast';
 import { CategoryType, ArticleType } from '@/types/guides';
 import { supabase } from '@/integrations/supabase/client';
 
@@ -30,22 +29,14 @@ const ArticleList: React.FC<ArticleListProps> = ({
   // Handle deleting an article
   const handleDeleteArticle = async (categoryIndex: number, articleIndex: number) => {
     if (!categories[categoryIndex] || !categories[categoryIndex].articles) {
-      toast({
-        title: "Erreur",
-        description: "Impossible de supprimer l'article",
-        variant: "destructive"
-      });
+      toast.error("Impossible de supprimer l'article");
       return;
     }
 
     const article = categories[categoryIndex].articles[articleIndex];
     
     if (!article?.id) {
-      toast({
-        title: "Erreur",
-        description: "Identifiant de l'article manquant",
-        variant: "destructive"
-      });
+      toast.error("Identifiant de l'article manquant");
       return;
     }
 
@@ -65,18 +56,11 @@ const ArticleList: React.FC<ArticleListProps> = ({
           updatedCategories[categoryIndex].articles.splice(articleIndex, 1);
           setCategories(updatedCategories);
           
-          toast({
-            title: "Supprimé",
-            description: "L'article a été supprimé",
-          });
+          toast.success("L'article a été supprimé");
         }
       } catch (error) {
         console.error('Error deleting article:', error);
-        toast({
-          title: "Erreur",
-          description: "Erreur lors de la suppression de l'article",
-          variant: "destructive"
-        });
+        toast.error("Erreur lors de la suppression de l'article");
       }
     }
   };

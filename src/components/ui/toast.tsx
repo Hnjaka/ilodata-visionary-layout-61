@@ -174,33 +174,37 @@ export function useToast() {
   }
 }
 
-// Create properly callable toast functions
-const useToastInstance = useToast()
-
+// Create the toast singleton - this is important for direct imports
 export const toast = {
+  // The callable function for basic toast
+  default: ({ title, description, ...props }: { title?: string, description?: string } & ToastProps) => {
+    return useToast().toast({ title, description, ...props });
+  },
+  
+  // Helper functions for common toast types
   error: (message: string) => {
-    return useToastInstance.toast({ 
+    return useToast().toast({ 
       variant: "destructive", 
       title: "Error",
       description: message
-    })
+    });
   },
   success: (message: string) => {
-    return useToastInstance.toast({ 
+    return useToast().toast({ 
       title: "Success",
       description: message
-    })
+    });
   },
   warning: (message: string) => {
-    return useToastInstance.toast({ 
+    return useToast().toast({ 
       title: "Warning",
       description: message
-    })
+    });
   },
   info: (message: string) => {
-    return useToastInstance.toast({ 
+    return useToast().toast({ 
       title: "Info",
       description: message
-    })
+    });
   }
-}
+};

@@ -1,5 +1,5 @@
 
-import { useToast as useShadcnToast, toast as shadcnToast } from "@/components/ui/toast";
+// This file re-exports from hooks/use-toast to maintain backward compatibility
+import { useToast, toast } from "@/hooks/use-toast";
 
-export const useToast = useShadcnToast;
-export const toast = shadcnToast;
+export { useToast, toast };

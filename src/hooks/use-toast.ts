@@ -1,12 +1,11 @@
 
-import { useToast as useShadcnToast, toast as shadcnToast } from "@/components/ui/toast";
+// Export the useToast hook and toast functions directly from our toast implementation
+import { useToast as useToastImplementation, toast as toastImplementation } from "@/components/ui/toast";
 
-export const useToast = useShadcnToast;
+export const useToast = useToastImplementation;
 
+// Re-export toast with the correct callable interface
 export const toast = {
-  // Forward toast methods correctly
-  error: shadcnToast.error,
-  success: shadcnToast.success,
-  warning: shadcnToast.warning,
-  info: shadcnToast.info
+  ...toastImplementation, // This includes error, success, warning, info
+  // Add any additional toast methods or overwrites here if needed
 };

@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Trash, Edit } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -10,7 +9,7 @@ import {
   TableHeader, 
   TableRow 
 } from '@/components/ui/table';
-import { toast } from '@/components/ui/use-toast';
+import { toast } from '@/hooks/use-toast';
 import { BlogCategory } from '@/hooks/useBlogData';
 import { supabase } from '@/integrations/supabase/client';
 
@@ -32,21 +31,13 @@ const BlogCategoryList: React.FC<BlogCategoryListProps> = ({
     const category = categories[categoryIndex];
     
     if (!category?.id) {
-      toast({
-        title: "Erreur",
-        description: "Identifiant de la catégorie manquant",
-        variant: "destructive"
-      });
+      toast.error("Identifiant de la catégorie manquant");
       return;
     }
     
     // Check if category has articles
     if (category.articles && category.articles.length > 0) {
-      toast({
-        title: "Action impossible",
-        description: "Supprimez d'abord tous les articles de cette catégorie",
-        variant: "destructive"
-      });
+      toast.error("Supprimez d'abord tous les articles de cette catégorie");
       return;
     }
 
@@ -65,17 +56,10 @@ const BlogCategoryList: React.FC<BlogCategoryListProps> = ({
         updatedCategories.splice(categoryIndex, 1);
         setCategories(updatedCategories);
         
-        toast({
-          title: "Supprimée",
-          description: "La catégorie a été supprimée",
-        });
+        toast.success("La catégorie a été supprimée");
       } catch (error) {
         console.error('Error deleting category:', error);
-        toast({
-          title: "Erreur",
-          description: "Erreur lors de la suppression de la catégorie",
-          variant: "destructive"
-        });
+        toast.error("Erreur lors de la suppression de la catégorie");
       }
     }
   };

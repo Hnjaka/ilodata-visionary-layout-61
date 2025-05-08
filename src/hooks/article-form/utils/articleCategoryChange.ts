@@ -1,5 +1,5 @@
 
-import { toast } from '@/components/ui/use-toast';
+import { toast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
 
 /**
@@ -19,11 +19,7 @@ export const handleArticleCategoryChange = async (
 ) => {
   // Ensure the target category exists and has an articles array
   if (!updatedCategories[newCategoryIndex]) {
-    toast({
-      title: "Erreur",
-      description: "Catégorie cible invalide",
-      variant: "destructive"
-    });
+    toast.error("Catégorie cible invalide");
     return;
   }
   

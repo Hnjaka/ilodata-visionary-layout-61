@@ -1,5 +1,5 @@
 
-import { toast } from '@/components/ui/use-toast';
+import { toast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
 
 /**
@@ -17,11 +17,7 @@ export const handleNewArticleCreation = async (
 ) => {
   // Ensure the category exists
   if (!updatedCategories[categoryIndex]) {
-    toast({
-      title: "Erreur",
-      description: "Catégorie invalide",
-      variant: "destructive"
-    });
+    toast.error("Catégorie invalide");
     return;
   }
   
@@ -53,8 +49,5 @@ export const handleNewArticleCreation = async (
     id: newArticle.id
   });
   
-  toast({
-    title: "Succès",
-    description: "Nouvel article ajouté",
-  });
+  toast.success("Nouvel article ajouté");
 };

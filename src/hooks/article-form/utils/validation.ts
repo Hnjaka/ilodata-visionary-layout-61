@@ -1,5 +1,6 @@
 
-import { toast } from '@/components/ui/use-toast';
+// Import from hooks instead of components/ui
+import { toast } from "@/hooks/use-toast";
 
 /**
  * Validate if the selected category index is valid
@@ -11,11 +12,8 @@ export const validateCategoryIndex = (
   if (categoryIndex === undefined || 
       categoryIndex < 0 || 
       categoryIndex >= categories.length) {
-    toast({
-      title: "Erreur",
-      description: "Catégorie invalide",
-      variant: "destructive"
-    });
+    // Use the toast.error method directly
+    toast.error("Catégorie invalide");
     return false;
   }
   return true;

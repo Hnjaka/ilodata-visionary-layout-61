@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Trash, Edit } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -10,7 +9,7 @@ import {
   TableHeader, 
   TableRow 
 } from '@/components/ui/table';
-import { toast } from '@/components/ui/use-toast';
+import { toast } from '@/hooks/use-toast';
 import { CategoryType } from '@/types/guides';
 
 interface CategoryListProps {
@@ -33,10 +32,7 @@ const CategoryList: React.FC<CategoryListProps> = ({
       updatedCategories.splice(index, 1);
       setCategories(updatedCategories);
       
-      toast({
-        title: "Supprimé",
-        description: "La rubrique a été supprimée",
-      });
+      toast.success("La rubrique a été supprimée");
     }
   };
 
