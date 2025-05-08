@@ -1,7 +1,6 @@
 
 import React from 'react';
 import { Badge } from '@/components/ui/badge';
-import { cn } from '@/lib/utils';
 
 interface UserStatusBadgeProps {
   status?: string;
@@ -14,7 +13,10 @@ const UserStatusBadge: React.FC<UserStatusBadgeProps> = ({ status, isApproved })
     ? isApproved ? 'active' : 'pending'
     : status;
     
-  if (userStatus === 'active' || userStatus === true || userStatus === 'true') {
+  // Convert userStatus to string for comparison if it's not already a string
+  const isActive = userStatus === 'active' || userStatus === 'true' || userStatus === true;
+  
+  if (isActive) {
     return <Badge className="bg-green-100 text-green-800 hover:bg-green-200">Actif</Badge>;
   } else {
     return <Badge className="bg-amber-100 text-amber-800 hover:bg-amber-200">En attente</Badge>;
