@@ -37,8 +37,8 @@
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
-  
-  <!-- Guides Articles -->
+
+  <!-- Articles des guides -->
   <url>
     <loc>https://ilodata.com/guides/fondamentaux-mise-en-page</loc>
     <lastmod>2025-05-08</lastmod>
@@ -82,7 +82,7 @@
     <priority>0.7</priority>
   </url>
   
-  <!-- Blog Articles -->
+  <!-- Articles de blog -->
   <url>
     <loc>https://ilodata.com/articles/astuces-mise-en-page-livre</loc>
     <lastmod>2025-05-08</lastmod>

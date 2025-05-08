@@ -79,13 +79,15 @@ export async function updateSitemap() {
       sitemapContent += '\n\n  <!-- Articles de blog -->';
       
       blogArticles.forEach(article => {
-        sitemapContent += `
+        if (article.slug) {  // Vérifier que le slug existe et n'est pas vide
+          sitemapContent += `
   <url>
     <loc>${baseUrl}/articles/${article.slug}</loc>
     <lastmod>${today}</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>`;
+        }
       });
     }
     
@@ -94,13 +96,15 @@ export async function updateSitemap() {
       sitemapContent += '\n\n  <!-- Articles des guides -->';
       
       guideArticles.forEach(article => {
-        sitemapContent += `
+        if (article.slug) {  // Vérifier que le slug existe et n'est pas vide
+          sitemapContent += `
   <url>
     <loc>${baseUrl}/guides/${article.slug}</loc>
     <lastmod>${today}</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>`;
+        }
       });
     }
     
@@ -138,7 +142,9 @@ export async function updateSitemap() {
     fs.writeFileSync(path.join(process.cwd(), 'public', 'sitemap.xml'), sitemapContent);
     console.log('Sitemap mis à jour avec succès!');
     
+    return { success: true, message: 'Sitemap mis à jour avec succès!' };
   } catch (error) {
     console.error('Erreur lors de la mise à jour du sitemap:', error);
+    return { success: false, error };
   }
 }
