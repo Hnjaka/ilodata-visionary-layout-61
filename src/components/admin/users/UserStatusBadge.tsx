@@ -14,7 +14,7 @@ const UserStatusBadge: React.FC<UserStatusBadgeProps> = ({ status, isApproved })
     : status;
     
   // Convert userStatus to string for comparison if it's not already a string
-  const isActive = userStatus === 'active' || userStatus === 'true' || userStatus === true;
+  const isActive = String(userStatus) === 'active' || String(userStatus) === 'true' || userStatus === true;
   
   if (isActive) {
     return <Badge className="bg-green-100 text-green-800 hover:bg-green-200">Actif</Badge>;
