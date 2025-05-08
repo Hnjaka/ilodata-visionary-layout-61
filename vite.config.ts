@@ -6,14 +6,16 @@ import { componentTagger } from "lovable-tagger";
 
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => {
-  // Ne charger le plugin lovable-tagger qu'en mode développement
-  // et seulement si la version est compatible
+  // Configuration des plugins avec gestion conditionnelle de lovable-tagger
   const plugins = [react()];
   
+  // Ne charger le plugin lovable-tagger qu'en mode développement
   if (mode === 'development') {
     try {
-      // Tentative d'utilisation du plugin uniquement en développement
-      plugins.push(componentTagger());
+      const taggerPlugin = componentTagger();
+      if (taggerPlugin) {
+        plugins.push(taggerPlugin);
+      }
     } catch (error) {
       console.warn('Lovable-tagger not loaded due to compatibility issues', error);
     }
