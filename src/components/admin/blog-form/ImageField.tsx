@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button';
 import { UseFormReturn } from 'react-hook-form';
 import { BlogArticleFormValues } from './formSchema';
 import { Upload } from 'lucide-react';
-import { toast } from '@/components/ui/use-toast';
+import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
 import { uploadFile, getPublicFileUrl } from '@/utils/templateFileUtils';
 
@@ -17,6 +17,7 @@ interface ImageFieldProps {
 export const ImageField: React.FC<ImageFieldProps> = ({ form }) => {
   const [isUploading, setIsUploading] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const { toast } = useToast();
 
   const handleFileChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];

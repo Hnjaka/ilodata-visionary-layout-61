@@ -1,5 +1,5 @@
 
-import { toast } from '@/hooks/use-toast';
+import { useToast } from '@/hooks/use-toast';
 import { ArticleFormValues } from '@/components/admin/article-form/formSchema';
 import { UseArticleFormProps } from './types';
 import { supabase } from '@/integrations/supabase/client';
@@ -8,6 +8,7 @@ import { handleNewArticleCreation } from './utils/articleCreation';
 import { validateCategoryIndex } from './utils/validation';
 
 export const useArticleFormSubmit = (props: UseArticleFormProps) => {
+  const { toast } = useToast();
   const { 
     categories, 
     setCategories, 
@@ -37,7 +38,11 @@ export const useArticleFormSubmit = (props: UseArticleFormProps) => {
         
         // Ensure the categories and articles arrays exist
         if (!updatedCategories[editArticleCategoryIndex]) {
-          toast.error("Catégorie invalide");
+          toast({
+            title: "Erreur",
+            description: "Catégorie invalide",
+            variant: "destructive"
+          });
           return categoryIndex;
         }
         
@@ -82,7 +87,10 @@ export const useArticleFormSubmit = (props: UseArticleFormProps) => {
           }
         }
         
-        toast.success("Article modifié");
+        toast({
+          title: "Succès",
+          description: "Article modifié"
+        });
         
         // Reset edit mode
         setEditArticle(null);
@@ -103,7 +111,11 @@ export const useArticleFormSubmit = (props: UseArticleFormProps) => {
       return categoryIndex; // Return for form reset
     } catch (error) {
       console.error('Error saving article:', error);
-      toast.error("Erreur lors de l'enregistrement de l'article");
+      toast({
+        title: "Erreur",
+        description: "Erreur lors de l'enregistrement de l'article",
+        variant: "destructive"
+      });
       return categoryIndex;
     }
   };

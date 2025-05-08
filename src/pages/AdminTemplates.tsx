@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Header from '@/components/Header';
@@ -194,7 +193,7 @@ const AdminTemplates = () => {
   );
 
   return (
-    <ProtectedRoute requireAdmin>
+    <ProtectedRoute adminOnly={true}>
       <AdminContent />
     </ProtectedRoute>
   );

@@ -2,7 +2,7 @@
 import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { toast } from '@/components/ui/use-toast';
+import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
 import { BlogCategory } from '@/hooks/useBlogData';
 import { blogCategoryFormSchema, BlogCategoryFormValues } from '@/components/admin/blog-form/CategoryFormSchema';
@@ -24,6 +24,7 @@ export const useCategoryForm = ({
   setEditCategory,
   setEditCategoryIndex
 }: UseCategoryFormProps) => {
+  const { toast } = useToast();
   const form = useForm<BlogCategoryFormValues>({
     resolver: zodResolver(blogCategoryFormSchema),
     defaultValues: {

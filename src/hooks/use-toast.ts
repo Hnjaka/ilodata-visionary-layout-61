@@ -1,11 +1,9 @@
 
-// Export the useToast hook and toast functions directly from our toast implementation
+// Import des fonctions useToast et toast depuis notre implémentation
 import { useToast as useToastImplementation, toast as toastImplementation } from "@/components/ui/toast";
 
+// Export du hook useToast
 export const useToast = useToastImplementation;
 
-// Re-export toast with the correct callable interface
-export const toast = {
-  ...toastImplementation, // This includes error, success, warning, info
-  // Add any additional toast methods or overwrites here if needed
-};
+// Export de l'objet toast avec une API cohérente
+export const toast = toastImplementation;

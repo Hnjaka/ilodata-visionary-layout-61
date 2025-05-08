@@ -1,5 +1,5 @@
 
-// Import from hooks instead of components/ui
+// Import depuis hooks au lieu de components/ui
 import { toast } from "@/hooks/use-toast";
 
 /**
@@ -12,7 +12,7 @@ export const validateCategoryIndex = (
   if (categoryIndex === undefined || 
       categoryIndex < 0 || 
       categoryIndex >= categories.length) {
-    // Use the toast.error method directly
+    // Utiliser la méthode error de l'objet toast
     toast.error("Catégorie invalide");
     return false;
   }

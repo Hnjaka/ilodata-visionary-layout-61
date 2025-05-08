@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Trash, Edit } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -9,7 +10,7 @@ import {
   TableHeader, 
   TableRow 
 } from '@/components/ui/table';
-import { toast } from '@/hooks/use-toast';
+import { useToast } from '@/hooks/use-toast';
 import { CategoryType, ArticleType } from '@/types/guides';
 import { supabase } from '@/integrations/supabase/client';
 
@@ -26,17 +27,27 @@ const ArticleList: React.FC<ArticleListProps> = ({
   searchTerm,
   onEditArticle
 }) => {
+  const { toast } = useToast();
+  
   // Handle deleting an article
   const handleDeleteArticle = async (categoryIndex: number, articleIndex: number) => {
     if (!categories[categoryIndex] || !categories[categoryIndex].articles) {
-      toast.error("Impossible de supprimer l'article");
+      toast({
+        title: "Erreur",
+        description: "Impossible de supprimer l'article",
+        variant: "destructive"
+      });
       return;
     }
 
     const article = categories[categoryIndex].articles[articleIndex];
     
     if (!article?.id) {
-      toast.error("Identifiant de l'article manquant");
+      toast({
+        title: "Erreur",
+        description: "Identifiant de l'article manquant",
+        variant: "destructive"
+      });
       return;
     }
 
@@ -56,11 +67,18 @@ const ArticleList: React.FC<ArticleListProps> = ({
           updatedCategories[categoryIndex].articles.splice(articleIndex, 1);
           setCategories(updatedCategories);
           
-          toast.success("L'article a été supprimé");
+          toast({
+            title: "Succès",
+            description: "L'article a été supprimé"
+          });
         }
       } catch (error) {
         console.error('Error deleting article:', error);
-        toast.error("Erreur lors de la suppression de l'article");
+        toast({
+          title: "Erreur",
+          description: "Erreur lors de la suppression de l'article",
+          variant: "destructive"
+        });
       }
     }
   };

@@ -127,32 +127,63 @@ export {
   ToastAction,
 }
 
-// Export useToast hook with proper implementation
+// Définition du hook useToast avec la bonne implémentation
 export function useToast() {
   const [toasts, setToasts] = React.useState<Array<ToastProps & { id: string, title?: React.ReactNode, description?: React.ReactNode, action?: ToastActionElement }>>([])
 
-  function toast({ title, description, action, ...props }: ToastProps & {
-    title?: React.ReactNode
-    description?: React.ReactNode
-    action?: ToastActionElement
-  }) {
-    const id = Math.random().toString(36).substring(2)
-    const newToast = {
-      id,
-      title,
-      description,
-      action,
-      ...props,
+  const toast = React.useMemo(() => {
+    function toast({ title, description, action, ...props }: ToastProps & {
+      title?: React.ReactNode
+      description?: React.ReactNode
+      action?: ToastActionElement
+    }) {
+      const id = Math.random().toString(36).substring(2)
+      const newToast = {
+        id,
+        title,
+        description,
+        action,
+        ...props,
+      }
+
+      setToasts((currentToasts) => [...currentToasts, newToast])
+
+      return {
+        id,
+        dismiss: () => dismissToast(id),
+        update: (props: ToastProps) => updateToast(id, props),
+      }
     }
-
-    setToasts((currentToasts) => [...currentToasts, newToast])
-
+    
     return {
-      id,
-      dismiss: () => dismissToast(id),
-      update: (props: ToastProps) => updateToast(id, props),
+      ...toast,
+      error: (message: string) => {
+        return toast({
+          variant: "destructive",
+          title: "Error",
+          description: message,
+        })
+      },
+      success: (message: string) => {
+        return toast({
+          title: "Success",
+          description: message,
+        })
+      },
+      warning: (message: string) => {
+        return toast({
+          title: "Warning",
+          description: message,
+        })
+      },
+      info: (message: string) => {
+        return toast({
+          title: "Info",
+          description: message,
+        })
+      },
     }
-  }
+  }, [])
 
   function dismissToast(id: string) {
     setToasts((currentToasts) =>
@@ -174,37 +205,45 @@ export function useToast() {
   }
 }
 
-// Create the toast singleton - this is important for direct imports
+// Création de l'objet toast pour les imports directs
 export const toast = {
-  // The callable function for basic toast
-  default: ({ title, description, ...props }: { title?: string, description?: string } & ToastProps) => {
-    return useToast().toast({ title, description, ...props });
+  // Fonction principale pour créer un toast
+  default: function({ title, description, ...props }: { title?: string, description?: string } & ToastProps) {
+    const { toast: hookToast } = useToast();
+    return hookToast({ title, description, ...props });
   },
   
-  // Helper functions for common toast types
-  error: (message: string) => {
-    return useToast().toast({ 
-      variant: "destructive", 
-      title: "Error",
-      description: message
+  // Fonctions d'assistance pour les types de toasts courants
+  error: function(message: string) {
+    const { toast: hookToast } = useToast();
+    return hookToast({
+      variant: "destructive",
+      title: "Erreur",
+      description: message,
     });
   },
-  success: (message: string) => {
-    return useToast().toast({ 
-      title: "Success",
-      description: message
+  
+  success: function(message: string) {
+    const { toast: hookToast } = useToast();
+    return hookToast({
+      title: "Succès",
+      description: message,
     });
   },
-  warning: (message: string) => {
-    return useToast().toast({ 
-      title: "Warning",
-      description: message
+  
+  warning: function(message: string) {
+    const { toast: hookToast } = useToast();
+    return hookToast({
+      title: "Avertissement",
+      description: message,
     });
   },
-  info: (message: string) => {
-    return useToast().toast({ 
-      title: "Info",
-      description: message
+  
+  info: function(message: string) {
+    const { toast: hookToast } = useToast();
+    return hookToast({
+      title: "Information",
+      description: message,
     });
-  }
-};
+  },
+}

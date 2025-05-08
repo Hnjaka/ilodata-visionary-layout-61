@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Trash, Edit } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -9,7 +10,7 @@ import {
   TableHeader, 
   TableRow 
 } from '@/components/ui/table';
-import { toast } from '@/hooks/use-toast';
+import { useToast } from '@/hooks/use-toast';
 import { BlogCategory } from '@/hooks/useBlogData';
 import { supabase } from '@/integrations/supabase/client';
 
@@ -26,18 +27,28 @@ const BlogCategoryList: React.FC<BlogCategoryListProps> = ({
   searchTerm,
   onEditCategory
 }) => {
+  const { toast } = useToast();
+  
   // Handle deleting a category
   const handleDeleteCategory = async (categoryIndex: number) => {
     const category = categories[categoryIndex];
     
     if (!category?.id) {
-      toast.error("Identifiant de la catégorie manquant");
+      toast({
+        title: "Erreur",
+        description: "Identifiant de la catégorie manquant",
+        variant: "destructive"
+      });
       return;
     }
     
     // Check if category has articles
     if (category.articles && category.articles.length > 0) {
-      toast.error("Supprimez d'abord tous les articles de cette catégorie");
+      toast({
+        title: "Erreur",
+        description: "Supprimez d'abord tous les articles de cette catégorie",
+        variant: "destructive"
+      });
       return;
     }
 
@@ -56,10 +67,17 @@ const BlogCategoryList: React.FC<BlogCategoryListProps> = ({
         updatedCategories.splice(categoryIndex, 1);
         setCategories(updatedCategories);
         
-        toast.success("La catégorie a été supprimée");
+        toast({
+          title: "Succès",
+          description: "La catégorie a été supprimée"
+        });
       } catch (error) {
         console.error('Error deleting category:', error);
-        toast.error("Erreur lors de la suppression de la catégorie");
+        toast({
+          title: "Erreur",
+          description: "Erreur lors de la suppression de la catégorie",
+          variant: "destructive"
+        });
       }
     }
   };

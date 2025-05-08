@@ -77,7 +77,7 @@ const AdminBlog = () => {
   );
 
   return (
-    <ProtectedRoute requireAdmin>
+    <ProtectedRoute adminOnly={true}>
       <AdminContent />
     </ProtectedRoute>
   );

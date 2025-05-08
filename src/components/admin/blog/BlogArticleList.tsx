@@ -25,7 +25,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { Copy } from 'lucide-react';
-import { toast } from "@/components/ui/use-toast"
+import { useToast } from "@/hooks/use-toast"
 import { useClipboard } from '@mantine/hooks';
 import { cn } from "@/lib/utils";
 
@@ -50,6 +50,7 @@ const BlogArticleList: React.FC<BlogArticleListProps> = ({
 }) => {
   const [search, setSearch] = useState("");
   const clipboard = useClipboard({ timeout: 750 });
+  const { toast } = useToast();
 
   const copyArticleLink = (article: BlogArticle) => {
     const articleLink = `${window.location.origin}/articles/${article.slug}`;
