@@ -1,8 +1,14 @@
 
 project_id = "valzxjecoceltiyzkogw"
 
-[functions.send-admin-approval-email]
-verify_jwt = true
+[api]
+enabled = true
+port = 54321
+schemas = ["public", "storage"]
 
-[functions.delete-user-account]
-verify_jwt = true
+[db]
+port = 54322
+
+[studio]
+enabled = true
+port = 54323

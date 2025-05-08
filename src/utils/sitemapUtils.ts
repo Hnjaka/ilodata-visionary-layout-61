@@ -76,19 +76,23 @@ ${allPages.map(page => `  <url>
 
     // Stocker le contenu du sitemap dans la base de données pour référence future
     try {
-      // Try to create or update the site_config table first
-      const { error: tableError } = await supabase.rpc('create_site_config_if_not_exists');
+      // Call the RPC function to create the site_config table if it doesn't exist
+      const { error: tableError } = await supabase
+        .functions.invoke('create-site-config-if-not-exists');
       
       if (tableError) {
         console.warn('Warning: Could not create site_config table:', tableError);
         // Continue anyway, we'll attempt to store the sitemap content
       }
       
-      // Try to store the sitemap content using a raw SQL query
-      const { error: saveError } = await supabase.rpc('update_sitemap', {
-        sitemap_content: sitemapContent,
-        updated_timestamp: new Date().toISOString()
-      });
+      // Call the RPC function to update the sitemap
+      const { error: saveError } = await supabase
+        .functions.invoke('update-sitemap', {
+          body: {
+            sitemap_content: sitemapContent,
+            updated_timestamp: new Date().toISOString()
+          }
+        });
 
       if (saveError) {
         console.error("Erreur lors de l'enregistrement du sitemap:", saveError);
@@ -112,7 +116,9 @@ ${allPages.map(page => `  <url>
 export async function getSitemapContent() {
   try {
     try {
-      const { data, error } = await supabase.rpc('get_sitemap_content');
+      // Call the RPC function to get the sitemap content
+      const { data, error } = await supabase
+        .functions.invoke('get-sitemap-content');
       
       if (error) {
         console.error('Erreur lors de la récupération du sitemap:', error);

@@ -14,13 +14,10 @@ const UserStatusBadge: React.FC<UserStatusBadgeProps> = ({ status, isApproved })
     ? isApproved ? 'active' : 'pending'
     : status;
     
-  switch(userStatus) {
-    case 'active':
-      return <Badge className="bg-green-100 text-green-800 hover:bg-green-200">Actif</Badge>;
-    case true: // This case is never reached since userStatus is a string
-      return <Badge className="bg-green-100 text-green-800 hover:bg-green-200">Actif</Badge>;
-    default:
-      return <Badge className="bg-amber-100 text-amber-800 hover:bg-amber-200">En attente</Badge>;
+  if (userStatus === 'active' || userStatus === true) {
+    return <Badge className="bg-green-100 text-green-800 hover:bg-green-200">Actif</Badge>;
+  } else {
+    return <Badge className="bg-amber-100 text-amber-800 hover:bg-amber-200">En attente</Badge>;
   }
 };
 
