@@ -13,6 +13,9 @@ import path from 'path';
  */
 export async function updateSitemap() {
   try {
+    // URL de base du site
+    const baseUrl = 'https://ilodata.com';
+    
     // Date du jour pour lastmod
     const today = format(new Date(), 'yyyy-MM-dd');
     
@@ -35,37 +38,37 @@ export async function updateSitemap() {
     let sitemapContent = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://ilodata.com/</loc>
+    <loc>${baseUrl}/</loc>
     <lastmod>${today}</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://ilodata.com/about</loc>
+    <loc>${baseUrl}/about</loc>
     <lastmod>${today}</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://ilodata.com/services</loc>
+    <loc>${baseUrl}/services</loc>
     <lastmod>${today}</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://ilodata.com/guides</loc>
+    <loc>${baseUrl}/guides</loc>
     <lastmod>${today}</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://ilodata.com/articles</loc>
+    <loc>${baseUrl}/articles</loc>
     <lastmod>${today}</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://ilodata.com/contact</loc>
+    <loc>${baseUrl}/contact</loc>
     <lastmod>${today}</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
@@ -78,7 +81,7 @@ export async function updateSitemap() {
       blogArticles.forEach(article => {
         sitemapContent += `
   <url>
-    <loc>https://ilodata.com/articles/${article.slug}</loc>
+    <loc>${baseUrl}/articles/${article.slug}</loc>
     <lastmod>${today}</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
@@ -93,7 +96,7 @@ export async function updateSitemap() {
       guideArticles.forEach(article => {
         sitemapContent += `
   <url>
-    <loc>https://ilodata.com/guides/${article.slug}</loc>
+    <loc>${baseUrl}/guides/${article.slug}</loc>
     <lastmod>${today}</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
@@ -106,25 +109,25 @@ export async function updateSitemap() {
   
   <!-- Autres pages -->
   <url>
-    <loc>https://ilodata.com/legal/cgu</loc>
+    <loc>${baseUrl}/legal/cgu</loc>
     <lastmod>${today}</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>https://ilodata.com/legal/confidentialite</loc>
+    <loc>${baseUrl}/legal/confidentialite</loc>
     <lastmod>${today}</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>https://ilodata.com/legal/mentions-legales</loc>
+    <loc>${baseUrl}/legal/mentions-legales</loc>
     <lastmod>${today}</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>https://ilodata.com/faq</loc>
+    <loc>${baseUrl}/faq</loc>
     <lastmod>${today}</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
