@@ -95,6 +95,11 @@ declare module 'lucide-react' {
   export const ExternalLink: React.FC<IconProps>;
   export const Plus: React.FC<IconProps>;
   export const RefreshCw: React.FC<IconProps>;
+  export const UserCheck: React.FC<IconProps>;
+  export const Pencil: React.FC<IconProps>;
+  export const Shield: React.FC<IconProps>;
+  export const X: React.FC<IconProps>;
+  export const Copy: React.FC<IconProps>;
 }
 
 // Declare TanStack Query with necessary exports
@@ -209,6 +214,22 @@ interface GuideItemProps {
 // Also declare the cn utility from @/lib/utils
 declare module '@/lib/utils' {
   export function cn(...inputs: (string | undefined | null | false)[]): string;
+}
+
+// Add mantine hooks module declaration
+declare module '@mantine/hooks' {
+  export interface ClipboardOptions {
+    timeout?: number;
+  }
+  
+  export interface UseClipboardReturn {
+    copy: (text: string) => void;
+    copied: boolean;
+    reset: () => void;
+    error: Error | null;
+  }
+  
+  export function useClipboard(options?: ClipboardOptions): UseClipboardReturn;
 }
 
 // Add any other missing module declarations here
