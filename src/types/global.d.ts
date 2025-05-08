@@ -1,5 +1,4 @@
 
-
 // This file contains global type declarations for the project
 
 // Declare modules for packages that don't have TypeScript definitions
@@ -86,6 +85,7 @@ declare module 'lucide-react' {
   export const Plus: any;
   export const RefreshCw: any;
   export const ChevronDown: any;
+  export const Upload: any;
 }
 
 declare module '@tanstack/react-query' {
@@ -107,9 +107,10 @@ declare module '@/components/ui/badge' {
 
 // Fix Button component issues
 declare module '@/components/ui/button' {
-  export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement>, 
-    import("class-variance-authority").VariantProps<typeof import('@/components/ui/button').buttonVariants> {
+  export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
     asChild?: boolean;
+    variant?: "default" | "destructive" | "outline" | "secondary" | "ghost" | "link";
+    size?: "default" | "sm" | "lg" | "icon";
     children?: React.ReactNode;
   }
   
@@ -128,4 +129,3 @@ declare module '@/components/ui/textarea' {
 }
 
 // Add any other missing module declarations here
-
