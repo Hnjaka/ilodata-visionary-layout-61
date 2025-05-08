@@ -1,5 +1,5 @@
 
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight, BookOpen } from 'lucide-react';
 import { cn } from '@/lib/utils';
@@ -9,57 +9,17 @@ import DateFormatter from '@/components/blog/DateFormatter';
 import BlogPostCard from '@/components/blog/BlogPostCard';
 import BlogEmptyState from '@/components/blog/BlogEmptyState';
 import BlogErrorState from '@/components/blog/BlogErrorState';
-import { BlogPost } from '@/hooks/useBlogPosts';
-
-// Make sure this interface aligns with the one in useBlogPosts.ts
-const blogPosts: BlogPost[] = [
-  {
-    id: '1',
-    title: "5 astuces pour réussir la mise en page de votre livre",
-    excerpt: "Découvrez les techniques essentielles pour créer une mise en page professionnelle et attractive pour votre livre.",
-    image: "https://images.unsplash.com/photo-1499750310107-5fef28a66643?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80",
-    published_at: "2023-04-15T00:00:00.000Z",
-    category_title: "Design éditorial",
-    slug: "astuces-mise-en-page-livre",
-    content: "",
-    category_id: "",
-    position: 0,
-    published: true
-  },
-  {
-    id: '2',
-    title: "Comment choisir le bon modèle de mise en page pour votre projet ?",
-    excerpt: "Guide complet pour sélectionner le modèle qui correspond parfaitement à votre type de livre et à vos objectifs.",
-    image: "https://images.unsplash.com/photo-1494438639946-1ebd1d20bf85?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1167&q=80",
-    published_at: "2023-05-03T00:00:00.000Z",
-    category_title: "Conseils pratiques",
-    slug: "choisir-modele-mise-en-page",
-    content: "",
-    category_id: "",
-    position: 0,
-    published: true
-  },
-  {
-    id: '3',
-    title: "Les erreurs à éviter lors de la création d'un livre numérique",
-    excerpt: "Évitez les pièges courants qui peuvent compromettre la qualité de votre ebook et nuire à l'expérience de lecture.",
-    image: "https://images.unsplash.com/photo-1595373650160-963a12639e38?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80",
-    published_at: "2023-06-21T00:00:00.000Z",
-    category_title: "Livres numériques",
-    slug: "erreurs-creation-livre-numerique",
-    content: "",
-    category_id: "",
-    position: 0,
-    published: true
-  }
-];
+import { useBlogPosts } from '@/hooks/useBlogPosts';
 
 const BlogSection = () => {
   const sectionRef = useRef<HTMLDivElement>(null);
   const { user, isAdmin } = useAuth();
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-  const [posts, setPosts] = useState<BlogPost[]>(blogPosts);
+  const { blogPosts, loading, error, fetchBlogPosts } = useBlogPosts();
+  
+  // Fetch blog posts when component mounts
+  useEffect(() => {
+    fetchBlogPosts();
+  }, []);
   
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -92,6 +52,9 @@ const BlogSection = () => {
     });
   }, [user, isAdmin]);
 
+  // Get only the first 3 blog posts for the homepage section
+  const displayedPosts = blogPosts.slice(0, 3);
+
   return (
     <section id="blog" className="section-padding bg-gradient-to-b from-white to-blue-50">
       <div 
@@ -115,10 +78,10 @@ const BlogSection = () => {
             <LoadingSpinner />
           </div>
         ) : error ? (
-          <BlogErrorState error={error} onRetry={() => setPosts(blogPosts)} />
-        ) : posts.length > 0 ? (
+          <BlogErrorState error={error} onRetry={fetchBlogPosts} />
+        ) : displayedPosts.length > 0 ? (
           <div className="grid md:grid-cols-3 gap-6 md:gap-8">
-            {posts.map((post, index) => (
+            {displayedPosts.map((post, index) => (
               <div 
                 key={post.id} 
                 className={cn("animate-fade-up", `delay-${(index + 1) * 100}`)}
@@ -128,11 +91,10 @@ const BlogSection = () => {
             ))}
           </div>
         ) : (
-          <BlogEmptyState onRetry={() => setPosts(blogPosts)} />
+          <BlogEmptyState onRetry={fetchBlogPosts} />
         )}
 
         <div className="text-center mt-12">
-          {/* Updated link to point to /articles instead of /blog */}
           <Link to="/articles" className="button-secondary inline-flex items-center mr-2">
             Voir tous les articles
             <ArrowRight size={16} className="ml-1 transition-transform group-hover:translate-x-1" />
