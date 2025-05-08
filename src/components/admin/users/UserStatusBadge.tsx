@@ -14,7 +14,7 @@ const UserStatusBadge: React.FC<UserStatusBadgeProps> = ({ status, isApproved })
     ? isApproved ? 'active' : 'pending'
     : status;
     
-  if (userStatus === 'active' || userStatus === true) {
+  if (userStatus === 'active' || userStatus === true || userStatus === 'true') {
     return <Badge className="bg-green-100 text-green-800 hover:bg-green-200">Actif</Badge>;
   } else {
     return <Badge className="bg-amber-100 text-amber-800 hover:bg-amber-200">En attente</Badge>;
