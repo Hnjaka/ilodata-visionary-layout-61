@@ -36,7 +36,7 @@ export const useCategoryForm = ({
   useEffect(() => {
     if (editCategory) {
       form.setValue("title", editCategory.title);
-      form.setValue("icon", typeof editCategory.icon === 'string' ? editCategory.icon : 'Book');
+      form.setValue("icon", editCategory.icon ? typeof editCategory.icon === 'string' ? editCategory.icon : 'Book' : 'Book');
     }
   }, [editCategory, form]);
 
@@ -92,8 +92,9 @@ export const useCategoryForm = ({
           const newCategory: BlogCategory = {
             id: data[0].id,
             title: data[0].title,
-            icon: values.icon,
+            slug: "", // Add required slug property
             position: data[0].position,
+            icon: values.icon,
             articles: []
           };
           

@@ -7,6 +7,7 @@ export interface BlogCategory {
   title: string;
   slug: string;
   position: number;
+  icon?: string; // Add icon property to fix errors
   articles?: BlogArticle[];
 }
 
@@ -50,11 +51,15 @@ export const useBlogData = () => {
       if (articlesError) throw articlesError;
       
       // Merge articles into their categories
-      const categoriesWithArticles = categoriesData.map((category: BlogCategory) => {
+      const categoriesWithArticles = categoriesData.map((category: any) => {
         const categoryArticles = articlesData.filter(
           (article: BlogArticle) => article.category_id === category.id
         );
-        return { ...category, articles: categoryArticles };
+        return { 
+          ...category, 
+          slug: category.slug || '', // Add default for slug if not present
+          articles: categoryArticles 
+        };
       });
       
       setCategories(categoriesWithArticles);

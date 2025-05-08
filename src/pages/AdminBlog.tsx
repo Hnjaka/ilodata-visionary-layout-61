@@ -14,13 +14,13 @@ const AdminBlog = () => {
   const navigate = useNavigate();
   const { isAdmin } = useAuth();
   // Use the blog data hook for retrieving data
-  const { categories, setCategories, loading, refreshData } = useBlogData();
+  const { categories, setCategories, loading, refetch } = useBlogData();
 
   // Memoize the refresh function to avoid triggering re-renders
   // Make sure it returns a Promise
   const handleRefresh = useCallback(async () => {
-    return await refreshData();
-  }, [refreshData]);
+    return await refetch();
+  }, [refetch]);
 
   // Load data on initial render only
   useEffect(() => {
