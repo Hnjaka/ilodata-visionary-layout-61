@@ -1,10 +1,10 @@
 
 import { supabase } from '@/integrations/supabase/client';
-import { promises as fs } from 'fs';
-import path from 'path';
 
 /**
- * Génère et met à jour le fichier sitemap.xml avec les pages du site et les articles/guides dynamiques
+ * Génère et met à jour le contenu du sitemap.xml
+ * Au lieu d'écrire dans un fichier (ce qui n'est pas possible dans un navigateur),
+ * on stocke le contenu dans une variable qui peut être rendue dans une page spéciale
  */
 export async function generateSitemap() {
   try {
@@ -70,9 +70,24 @@ ${allPages.map(page => `  <url>
 </urlset>
 `;
 
-    // Écrire le fichier sitemap.xml
-    const sitemapPath = path.join(process.cwd(), 'public', 'sitemap.xml');
-    await fs.writeFile(sitemapPath, sitemapContent, 'utf-8');
+    // Stocker le contenu du sitemap dans la base de données pour référence future
+    // Utiliser une table spéciale pour les configurations du site
+    const { error: saveError } = await supabase
+      .from('site_config')
+      .upsert(
+        { id: 'sitemap', content: sitemapContent, updated_at: new Date() },
+        { onConflict: 'id' }
+      );
+
+    if (saveError) {
+      console.error('Erreur lors de l\'enregistrement du sitemap:', saveError);
+      // Si la table n'existe pas encore, on continue sans erreur
+      if (saveError.code === '42P01') {
+        console.log('La table site_config n\'existe pas, création ignorée');
+      } else {
+        throw saveError;
+      }
+    }
     
     console.log('Sitemap mis à jour avec succès');
     
@@ -80,5 +95,26 @@ ${allPages.map(page => `  <url>
   } catch (error) {
     console.error('Erreur lors de la génération du sitemap:', error);
     throw error;
+  }
+}
+
+// Fonction pour récupérer le contenu du sitemap depuis la base de données
+export async function getSitemapContent() {
+  try {
+    const { data, error } = await supabase
+      .from('site_config')
+      .select('content')
+      .eq('id', 'sitemap')
+      .single();
+
+    if (error) {
+      console.error('Erreur lors de la récupération du sitemap:', error);
+      return null;
+    }
+
+    return data?.content || null;
+  } catch (error) {
+    console.error('Erreur lors de la récupération du sitemap:', error);
+    return null;
   }
 }

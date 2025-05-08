@@ -1,8 +1,9 @@
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { toast } from '@/components/ui/use-toast';
 import { supabase } from '@/integrations/supabase/client';
 import { getIconByName } from '@/data/guidesData';
+import { updateSitemap } from '@/utils/updateSitemap';
 
 export type BlogCategory = {
   id: string;
@@ -97,8 +98,7 @@ export const useBlogData = () => {
       
       // Tentative de mise à jour du sitemap
       try {
-        const { default: { generateSitemap } } = await import('@/utils/sitemapUtils');
-        await generateSitemap();
+        await updateSitemap();
       } catch (sitemapError) {
         console.error("Erreur lors de la mise à jour du sitemap:", sitemapError);
         // Ne pas bloquer la fonction principale si la mise à jour du sitemap échoue

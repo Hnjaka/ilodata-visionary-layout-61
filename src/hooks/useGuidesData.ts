@@ -4,6 +4,7 @@ import { toast } from '@/components/ui/use-toast';
 import { supabase } from '@/integrations/supabase/client';
 import { getIconByName } from '@/data/guidesData';
 import { CategoryType, ArticleType } from '@/types/guides';
+import { updateSitemap } from '@/utils/updateSitemap';
 
 export const useGuidesData = () => {
   const [categories, setCategories] = useState<CategoryType[]>([]);
@@ -150,8 +151,7 @@ export const useGuidesData = () => {
       
       // Tentative de mise à jour du sitemap
       try {
-        const { default: { generateSitemap } } = await import('@/utils/sitemapUtils');
-        await generateSitemap();
+        await updateSitemap();
       } catch (sitemapError) {
         console.error("Erreur lors de la mise à jour du sitemap:", sitemapError);
         // Ne pas bloquer la fonction principale si la mise à jour du sitemap échoue
