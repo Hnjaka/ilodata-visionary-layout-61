@@ -1,4 +1,3 @@
-
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 
@@ -10,16 +9,15 @@ export const handleArticleCategoryChange = async (
   oldCategoryIndex: number,
   newCategoryIndex: number,
   articleIndex: number,
-  articleData: { title: string, slug: string, content: string, layout?: string }
+  articleData: { title: string, slug: string, content: string, layout?: string },
+  showToast?: (message: string, type: "success" | "error") => void // Nouveau paramètre pour gérer les toasts
 ) => {
-  const toast = useToast().toast;
+  // On ne peut pas utiliser useToast() en dehors d'un composant React
+  // On reçoit donc une fonction de callback pour gérer les toasts
 
   // Ensure both categories exist
   if (!updatedCategories[oldCategoryIndex] || !updatedCategories[newCategoryIndex]) {
-    toast({
-      title: "Erreur", 
-      description: "Catégorie invalide"
-    });
+    if (showToast) showToast("Catégorie invalide", "error");
     return;
   }
   

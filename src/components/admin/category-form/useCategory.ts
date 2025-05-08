@@ -90,58 +90,48 @@ export const useCategory = ({
           .from('guide_categories')
           .insert({
             title: values.title,
-            icon: values.icon,
-            position: categories.length // Add at the end
+            icon: values.icon
           })
           .select()
           .single();
           
         if (error) throw error;
         
-        // Now add to state with ID from Supabase
-        const updatedCategories = [...categories, {
-          id: newCategory.id,
-          title: values.title,
-          icon: getIconByName(values.icon),
-          articles: [],
-          position: categories.length
-        }];
-        
-        setCategories(updatedCategories);
+        // Add to local state
+        setCategories([
+          ...categories,
+          {
+            id: newCategory.id,
+            title: values.title,
+            icon: getIconByName(values.icon),
+            articles: []
+          }
+        ]);
         
         toast({
-          title: "Succès",
+          title: "Succès", 
           description: "Nouvelle rubrique ajoutée"
         });
       }
       
+      // Reset the form
       form.reset({
         title: "",
         icon: "Book"
       });
-    } catch (error) {
+      
+    } catch (error: any) {
       console.error('Error saving category:', error);
       toast({
         title: "Erreur",
-        description: "Erreur lors de l'enregistrement de la rubrique",
+        description: error.message || "Erreur lors de l'enregistrement de la rubrique",
         variant: "destructive"
       });
     }
   };
 
-  // Cancel editing
-  const handleCancel = () => {
-    setEditCategory(null);
-    setEditCategoryIndex(null);
-    form.reset({
-      title: "",
-      icon: "Book"
-    });
-  };
-
   return {
     form,
-    onSubmit,
-    handleCancel
+    onSubmit
   };
 };

@@ -20,12 +20,33 @@ export const useArticleFormSubmit = (props: UseArticleFormProps) => {
     setEditArticleIndex
   } = props;
 
+  // Fonction pour gérer les toasts dans les utils
+  const showToast = (message: string, type: "success" | "error") => {
+    if (type === "success") {
+      toast({
+        title: "Succès",
+        description: message
+      });
+    } else {
+      toast({
+        title: "Erreur",
+        description: message,
+        variant: "destructive"
+      });
+    }
+  };
+
   // Handle adding/editing an article
   const onSubmit = async (values: ArticleFormValues) => {
     const { title, slug, categoryIndex, content, layout } = values;
     
     // Validate categoryIndex
     if (!validateCategoryIndex(categoryIndex, categories)) {
+      toast({
+        title: "Erreur",
+        description: "Catégorie invalide",
+        variant: "destructive"
+      });
       return categoryIndex;
     }
     
@@ -57,7 +78,8 @@ export const useArticleFormSubmit = (props: UseArticleFormProps) => {
             editArticleCategoryIndex,
             categoryIndex!,
             editArticleIndex,
-            { title, slug, content: content || '', layout }
+            { title, slug, content: content || '', layout },
+            showToast
           );
         } else {
           // Just update in the same category
@@ -102,7 +124,8 @@ export const useArticleFormSubmit = (props: UseArticleFormProps) => {
         await handleNewArticleCreation(
           updatedCategories,
           categoryIndex!,
-          { title, slug, content: content || '', layout }
+          { title, slug, content: content || '', layout },
+          showToast
         );
       }
       
