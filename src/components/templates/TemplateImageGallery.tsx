@@ -38,7 +38,7 @@ const TemplateImageGallery: React.FC<TemplateImageGalleryProps> = ({
       className="aspect-video overflow-hidden relative cursor-pointer bg-gray-100"
       onClick={onClick}
     >
-      <div className="w-full h-full flex items-center justify-center pt-16"> {/* Updated to pt-16 for ~4cm of top padding */}
+      <div className="w-full h-full flex items-center justify-center pt-24"> {/* Updated to pt-24 for ~6cm of top padding */}
         <img 
           src={processedImages[currentImageIndex] || getUnsplashFallback('books')}
           alt={title}
