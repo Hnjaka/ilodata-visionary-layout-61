@@ -54,9 +54,9 @@ const TemplateDetailModal = ({
           </DialogDescription>
         </DialogHeader>
         
-        <div className="grid md:grid-cols-3 gap-8 mt-4">
-          {/* Main preview - Now takes up 2 columns and ensures full visibility */}
-          <div className="md:col-span-2 relative overflow-hidden rounded-lg bg-white border border-slate-200">
+        <div className="grid grid-cols-12 gap-8 mt-4">
+          {/* Main preview - Takes up 8 columns */}
+          <div className="col-span-8 relative overflow-hidden rounded-lg bg-white border border-slate-200">
             {allImages.length > 0 ? (
               <div className="relative w-full h-full">
                 <AspectRatio ratio={3/2} className="w-full h-full">
@@ -74,8 +74,35 @@ const TemplateDetailModal = ({
             )}
           </div>
           
-          {/* Template info and thumbnails - Now in a single column on the right */}
-          <div className="flex flex-col">
+          {/* Thumbnails - Takes up 1 column in the middle */}
+          {allImages.length > 1 && (
+            <div className="col-span-1">
+              <div className="flex flex-col gap-2 h-full">
+                {allImages.map((image, index) => (
+                  <button 
+                    key={index}
+                    onClick={() => selectImage(index)}
+                    aria-label={`Aperçu ${index + 1}`}
+                    className={cn(
+                      "w-14 h-14 cursor-pointer border-2 rounded overflow-hidden transition-all",
+                      index === currentImageIndex 
+                        ? "border-blue-500 shadow-md" 
+                        : "border-transparent hover:border-blue-300"
+                    )}
+                  >
+                    <img 
+                      src={getImageUrl(image)}
+                      alt={`Miniature ${index + 1}`}
+                      className="w-full h-full object-contain p-1"
+                    />
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
+          
+          {/* Template info - Takes up 3 columns on the right */}
+          <div className={`flex flex-col ${allImages.length > 1 ? 'col-span-3' : 'col-span-4'}`}>
             <div className="mb-4">
               <h3 className="text-sm font-medium text-gray-500">Description</h3>
               <p className="mt-1 text-gray-900">{template.description || 'Pas de description disponible.'}</p>
@@ -94,34 +121,6 @@ const TemplateDetailModal = ({
               <div className="mb-4">
                 <h3 className="text-sm font-medium text-gray-500">Tags</h3>
                 <p className="mt-1 text-gray-900">{template.tags}</p>
-              </div>
-            )}
-            
-            {/* Thumbnails now aligned vertically on the right side */}
-            {allImages.length > 0 && (
-              <div className="mt-4 mb-4">
-                <h3 className="text-sm font-medium text-gray-500 mb-2">Aperçus</h3>
-                <div className="flex flex-wrap gap-2">
-                  {allImages.map((image, index) => (
-                    <button 
-                      key={index}
-                      onClick={() => selectImage(index)}
-                      aria-label={`Aperçu ${index + 1}`}
-                      className={cn(
-                        "w-16 h-16 cursor-pointer border-2 rounded overflow-hidden transition-all",
-                        index === currentImageIndex 
-                          ? "border-blue-500 shadow-md" 
-                          : "border-transparent hover:border-blue-300"
-                      )}
-                    >
-                      <img 
-                        src={getImageUrl(image)}
-                        alt={`Miniature ${index + 1}`}
-                        className="w-full h-full object-contain p-1"
-                      />
-                    </button>
-                  ))}
-                </div>
               </div>
             )}
             
