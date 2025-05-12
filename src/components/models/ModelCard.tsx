@@ -98,7 +98,7 @@ const ModelCard = ({
           <div className="grid grid-cols-12 gap-8 mt-4">
             {/* Main preview - Takes up 8 columns */}
             <div className="col-span-8 relative overflow-hidden rounded-lg bg-gray-100 border border-slate-200">
-              <div className="w-full h-full flex items-start justify-center">
+              <div className="w-full h-full flex items-start justify-center pt-8"> {/* Added pt-8 for ~2cm of top padding */}
                 <AspectRatio ratio={3/2} className="w-full">
                   <div className="w-full h-full flex items-center justify-center">
                     <img 
