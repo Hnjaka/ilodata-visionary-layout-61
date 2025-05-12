@@ -38,11 +38,13 @@ const TemplateImageGallery: React.FC<TemplateImageGalleryProps> = ({
       className="aspect-video overflow-hidden relative cursor-pointer"
       onClick={onClick}
     >
-      <img 
-        src={processedImages[currentImageIndex] || getUnsplashFallback('books')}
-        alt={title}
-        className="w-full h-full object-contain scale-130 transform-none" 
-      />
+      <div className="w-full h-full flex items-center justify-center">
+        <img 
+          src={processedImages[currentImageIndex] || getUnsplashFallback('books')}
+          alt={title}
+          className="w-full h-full object-contain scale-130" 
+        />
+      </div>
       
       {processedImages.length > 1 && (
         <>

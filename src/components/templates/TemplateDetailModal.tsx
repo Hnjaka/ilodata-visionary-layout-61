@@ -58,13 +58,15 @@ const TemplateDetailModal = ({
           {/* Main preview - Takes up 8 columns */}
           <div className="col-span-8 relative overflow-hidden rounded-lg bg-white border border-slate-200">
             {allImages.length > 0 ? (
-              <div className="relative w-full h-full">
-                <AspectRatio ratio={3/2} className="w-full h-full">
-                  <img 
-                    src={getImageUrl(allImages[currentImageIndex])}
-                    alt={`${template.titre} - aperçu ${currentImageIndex + 1}`}
-                    className="w-full h-full object-contain scale-130 transform-none"
-                  />
+              <div className="relative w-full h-full flex items-start justify-center">
+                <AspectRatio ratio={3/2} className="w-full">
+                  <div className="w-full h-full flex items-center justify-center">
+                    <img 
+                      src={getImageUrl(allImages[currentImageIndex])}
+                      alt={`${template.titre} - aperçu ${currentImageIndex + 1}`}
+                      className="w-full h-full object-contain scale-130"
+                    />
+                  </div>
                 </AspectRatio>
               </div>
             ) : (
