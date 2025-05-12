@@ -96,14 +96,14 @@ const ModelCard = ({
           </DialogHeader>
           
           <div className="grid md:grid-cols-3 gap-8 mt-4">
-            {/* Main preview - Now takes up 2 columns and has full height */}
+            {/* Main preview - Now takes up 2 columns and has 50% larger size */}
             <div className="md:col-span-2 relative overflow-hidden rounded-lg bg-white border border-slate-200">
               <div className="w-full h-full">
-                <AspectRatio ratio={16/9} className="w-full h-full">
+                <AspectRatio ratio={3/2} className="w-full h-full">
                   <img 
                     src={images[currentImageIndex]} 
                     alt={`${title} - aperçu ${currentImageIndex + 1}`} 
-                    className="w-full h-full object-contain"
+                    className="w-full h-full object-contain scale-150"
                   />
                 </AspectRatio>
               </div>
