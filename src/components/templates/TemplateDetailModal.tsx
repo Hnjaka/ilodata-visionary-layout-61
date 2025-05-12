@@ -55,15 +55,15 @@ const TemplateDetailModal = ({
         </DialogHeader>
         
         <div className="grid md:grid-cols-3 gap-8 mt-4">
-          {/* Main preview - Now takes up 2 columns */}
+          {/* Main preview - Now takes up 2 columns and has full height */}
           <div className="md:col-span-2 relative overflow-hidden rounded-lg bg-white border border-slate-200">
             {allImages.length > 0 ? (
-              <div className="relative">
-                <AspectRatio ratio={16/9}>
+              <div className="relative w-full h-full">
+                <AspectRatio ratio={16/9} className="w-full h-full">
                   <img 
                     src={getImageUrl(allImages[currentImageIndex])}
                     alt={`${template.titre} - aperçu ${currentImageIndex + 1}`}
-                    className="w-full h-full object-contain p-4"
+                    className="w-full h-full object-contain"
                   />
                 </AspectRatio>
               </div>

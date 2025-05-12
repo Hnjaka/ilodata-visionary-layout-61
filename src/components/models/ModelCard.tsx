@@ -57,13 +57,13 @@ const ModelCard = ({
     <>
       <div className={`bg-white rounded-lg shadow-lg overflow-hidden transform transition-all duration-700 hover:shadow-xl ${delay}`}>
         <div 
-          className="aspect-square bg-gray-200 cursor-pointer relative" 
+          className="aspect-video bg-gray-200 cursor-pointer relative" 
           onClick={() => setIsModalOpen(true)}
         >
           <img 
             src={mainImage} 
             alt={title} 
-            className="w-full h-full object-contain p-2"
+            className="w-full h-full object-contain"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 hover:opacity-100 transition-opacity flex items-end justify-center">
             <span className="text-white pb-4 font-medium text-sm">Voir les détails</span>
@@ -96,15 +96,17 @@ const ModelCard = ({
           </DialogHeader>
           
           <div className="grid md:grid-cols-3 gap-8 mt-4">
-            {/* Main preview - Now takes up 2 columns */}
+            {/* Main preview - Now takes up 2 columns and has full height */}
             <div className="md:col-span-2 relative overflow-hidden rounded-lg bg-white border border-slate-200">
-              <AspectRatio ratio={16/9}>
-                <img 
-                  src={images[currentImageIndex]} 
-                  alt={`${title} - aperçu ${currentImageIndex + 1}`} 
-                  className="w-full h-full object-contain p-4"
-                />
-              </AspectRatio>
+              <div className="w-full h-full">
+                <AspectRatio ratio={16/9} className="w-full h-full">
+                  <img 
+                    src={images[currentImageIndex]} 
+                    alt={`${title} - aperçu ${currentImageIndex + 1}`} 
+                    className="w-full h-full object-contain"
+                  />
+                </AspectRatio>
+              </div>
             </div>
             
             {/* Model info and thumbnails - Now in a single column on the right */}
