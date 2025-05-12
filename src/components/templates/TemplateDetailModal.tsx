@@ -54,51 +54,27 @@ const TemplateDetailModal = ({
           </DialogDescription>
         </DialogHeader>
         
-        <div className="grid md:grid-cols-2 gap-8 mt-4">
-          <div className="flex flex-col gap-6">
-            <div className="relative overflow-hidden rounded-lg bg-white border border-slate-200">
-              {allImages.length > 0 ? (
-                <div className="relative">
-                  <AspectRatio ratio={4/3}>
-                    <img 
-                      src={getImageUrl(allImages[currentImageIndex])}
-                      alt={`${template.titre} - aperçu ${currentImageIndex + 1}`}
-                      className="w-full h-full object-contain p-4"
-                    />
-                  </AspectRatio>
-                </div>
-              ) : (
-                <div className="aspect-video flex items-center justify-center">
-                  <span className="text-slate-400">Pas d'aperçu disponible</span>
-                </div>
-              )}
-            </div>
-            
-            {allImages.length > 0 && (
-              <div className="flex flex-wrap gap-3 justify-center">
-                {allImages.map((image, index) => (
-                  <button 
-                    key={index}
-                    onClick={() => selectImage(index)}
-                    aria-label={`Aperçu ${index + 1}`}
-                    className={cn(
-                      "w-24 h-24 cursor-pointer border-2 rounded overflow-hidden transition-all",
-                      index === currentImageIndex 
-                        ? "border-blue-500 shadow-md" 
-                        : "border-transparent hover:border-blue-300"
-                    )}
-                  >
-                    <img 
-                      src={getImageUrl(image)}
-                      alt={`Miniature ${index + 1}`}
-                      className="w-full h-full object-contain p-2"
-                    />
-                  </button>
-                ))}
+        <div className="grid md:grid-cols-3 gap-8 mt-4">
+          {/* Main preview - Now takes up 2 columns */}
+          <div className="md:col-span-2 relative overflow-hidden rounded-lg bg-white border border-slate-200">
+            {allImages.length > 0 ? (
+              <div className="relative">
+                <AspectRatio ratio={16/9}>
+                  <img 
+                    src={getImageUrl(allImages[currentImageIndex])}
+                    alt={`${template.titre} - aperçu ${currentImageIndex + 1}`}
+                    className="w-full h-full object-contain p-4"
+                  />
+                </AspectRatio>
+              </div>
+            ) : (
+              <div className="aspect-video flex items-center justify-center">
+                <span className="text-slate-400">Pas d'aperçu disponible</span>
               </div>
             )}
           </div>
           
+          {/* Template info and thumbnails - Now in a single column on the right */}
           <div className="flex flex-col">
             <div className="mb-4">
               <h3 className="text-sm font-medium text-gray-500">Description</h3>
@@ -118,6 +94,34 @@ const TemplateDetailModal = ({
               <div className="mb-4">
                 <h3 className="text-sm font-medium text-gray-500">Tags</h3>
                 <p className="mt-1 text-gray-900">{template.tags}</p>
+              </div>
+            )}
+            
+            {/* Thumbnails now aligned vertically on the right side */}
+            {allImages.length > 0 && (
+              <div className="mt-4 mb-4">
+                <h3 className="text-sm font-medium text-gray-500 mb-2">Aperçus</h3>
+                <div className="flex flex-wrap gap-2">
+                  {allImages.map((image, index) => (
+                    <button 
+                      key={index}
+                      onClick={() => selectImage(index)}
+                      aria-label={`Aperçu ${index + 1}`}
+                      className={cn(
+                        "w-16 h-16 cursor-pointer border-2 rounded overflow-hidden transition-all",
+                        index === currentImageIndex 
+                          ? "border-blue-500 shadow-md" 
+                          : "border-transparent hover:border-blue-300"
+                      )}
+                    >
+                      <img 
+                        src={getImageUrl(image)}
+                        alt={`Miniature ${index + 1}`}
+                        className="w-full h-full object-contain p-1"
+                      />
+                    </button>
+                  ))}
+                </div>
               </div>
             )}
             

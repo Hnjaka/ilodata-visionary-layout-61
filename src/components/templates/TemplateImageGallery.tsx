@@ -35,7 +35,7 @@ const TemplateImageGallery: React.FC<TemplateImageGalleryProps> = ({
 
   return (
     <div 
-      className="aspect-square overflow-hidden relative cursor-pointer"
+      className="aspect-video overflow-hidden relative cursor-pointer"
       onClick={onClick}
     >
       <img 
