@@ -63,7 +63,7 @@ const TemplateDetailModal = ({
                   <img 
                     src={getImageUrl(allImages[currentImageIndex])}
                     alt={`${template.titre} - aperçu ${currentImageIndex + 1}`}
-                    className="w-full h-full object-contain scale-150 transform-none"
+                    className="w-full h-full object-contain scale-130 transform-none"
                   />
                 </AspectRatio>
               </div>

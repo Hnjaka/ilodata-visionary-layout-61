@@ -41,7 +41,7 @@ const TemplateImageGallery: React.FC<TemplateImageGalleryProps> = ({
       <img 
         src={processedImages[currentImageIndex] || getUnsplashFallback('books')}
         alt={title}
-        className="w-full h-full object-contain scale-125 transform-none" 
+        className="w-full h-full object-contain scale-130 transform-none" 
       />
       
       {processedImages.length > 1 && (
