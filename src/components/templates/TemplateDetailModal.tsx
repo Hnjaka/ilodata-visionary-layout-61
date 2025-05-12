@@ -56,7 +56,7 @@ const TemplateDetailModal = ({
         
         <div className="grid grid-cols-12 gap-8 mt-4">
           {/* Main preview - Takes up 8 columns */}
-          <div className="col-span-8 relative overflow-hidden rounded-lg bg-white border border-slate-200">
+          <div className="col-span-8 relative overflow-hidden rounded-lg bg-gray-100 border border-slate-200">
             {allImages.length > 0 ? (
               <div className="relative w-full h-full flex items-start justify-center">
                 <AspectRatio ratio={3/2} className="w-full">
@@ -86,7 +86,7 @@ const TemplateDetailModal = ({
                     onClick={() => selectImage(index)}
                     aria-label={`Aperçu ${index + 1}`}
                     className={cn(
-                      "w-14 h-14 cursor-pointer border-2 rounded overflow-hidden transition-all",
+                      "w-14 h-14 cursor-pointer border-2 rounded overflow-hidden transition-all bg-white",
                       index === currentImageIndex 
                         ? "border-blue-500 shadow-md" 
                         : "border-transparent hover:border-blue-300"
