@@ -5,12 +5,10 @@ import { Dot } from "lucide-react"
 
 import { cn } from "@/lib/utils"
 
-// Define an interface for the OTPInputContext
 interface OTPInputContextType {
   slots: SlotProps[];
 }
 
-// Create a context with an initial empty value
 const OTPInputContext = React.createContext<OTPInputContextType>({ 
   slots: [] 
 });

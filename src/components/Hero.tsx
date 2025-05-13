@@ -25,7 +25,7 @@ const Hero = () => {
 
   return (
     <section className="relative w-full min-h-screen flex items-center justify-center overflow-hidden pt-16 bg-cover bg-center" 
-      style={{ backgroundImage: "url('https://images.unsplash.com/photo-1488590528505-98d2b5aba04b?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80')" }}>
+      style={{ backgroundImage: "url('https://images.unsplash.com/photo-1562932831-afcfe48b5786?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80')" }}>
       {/* Dark overlay for better text contrast */}
       <div className="absolute inset-0 bg-black opacity-50 z-0"></div>
       

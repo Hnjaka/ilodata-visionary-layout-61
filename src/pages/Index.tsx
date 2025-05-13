@@ -6,7 +6,6 @@ import WhyChooseSection from '@/components/Services/WhyChooseSection';
 import PricingSection from '@/components/Services/PricingSection';
 import KdpGuideSection from '@/components/Services/KdpGuideSection';
 import Contact from '@/components/Contact';
-import About from '@/components/About';
 import Footer from '@/components/Footer';
 
 const Index = () => {

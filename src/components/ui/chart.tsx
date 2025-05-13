@@ -6,7 +6,6 @@ import {
   BarChart,
   Line,
   Bar,
-  Cell,
   XAxis,
   YAxis,
   CartesianGrid,
@@ -118,14 +117,14 @@ function Chart({
             bottom: 16,
           }}
         >
-          {showGridLines ? (
+          {showGridLines && (
             <CartesianGrid
               strokeDasharray="3 3"
               stroke="hsl(var(--border))"
               strokeOpacity={0.5}
             />
-          ) : null}
-          {showXAxis ? (
+          )}
+          {showXAxis && (
             <XAxis
               dataKey={xAxisKey}
               stroke="hsl(var(--muted-foreground))"
@@ -133,29 +132,29 @@ function Chart({
               tickLine={false}
               axisLine={false}
               tickMargin={8}
-              tickFormatter={(value) => {
+              tickFormatter={(value: any) => {
                 if (typeof value === "string") {
                   return value.length > 10
                     ? `${value.slice(0, 10)}...`
                     : value
                 }
-                return value
+                return String(value)
               }}
             />
-          ) : null}
-          {showYAxis ? (
+          )}
+          {showYAxis && (
             <YAxis
               stroke="hsl(var(--muted-foreground))"
               fontSize={12}
               tickLine={false}
               axisLine={false}
               tickMargin={8}
-              tickFormatter={(value) =>
-                valueFormatter ? valueFormatter(value) : value
+              tickFormatter={(value: any) =>
+                valueFormatter ? valueFormatter(value) : String(value)
               }
             />
-          ) : null}
-          {showTooltip ? (
+          )}
+          {showTooltip && (
             <Tooltip
               content={({ active, payload, label }) => {
                 if (!active || !payload) return null
@@ -165,46 +164,48 @@ function Chart({
                     payload={payload}
                     label={label}
                     formatter={(value, name) => [
-                      valueFormatter ? valueFormatter(value) : value,
+                      valueFormatter ? valueFormatter(value) : String(value),
                       name,
                     ]}
                   />
                 )
               }}
             />
-          ) : null}
-          {showLegend ? (
+          )}
+          {showLegend && (
             <Legend
               iconSize={12}
               fontSize={12}
               iconType="circle"
               margin={{ top: 16 }}
             />
-          ) : null}
-          {yKeys.map((key, index) => (
-            <ChartDataComp
-              key={key}
-              type="monotone"
-              dataKey={key}
-              stroke={dataColors[index % dataColors.length]}
-              fill={dataColors[index % dataColors.length]}
-              strokeWidth={2}
-              activeDot={{
-                r: 4,
-                stroke: "hsl(var(--background))",
-                strokeWidth: 1,
-              }}
-              {...(type === "bar" && {
-                isAnimationActive: showAnimation,
-                barSize: 30,
-                // radius: [4, 4, 0, 0],
-              })}
-              {...(type === "line" && {
-                isAnimationActive: showAnimation,
-                dot: false,
-              })}
-            />
-          ))}
+          )}
+          {yKeys.map((key, index) => {
+            const DataComponent = chartDataComponents[type];
+            return (
+              <DataComponent
+                key={key}
+                type="monotone"
+                dataKey={key}
+                stroke={dataColors[index % dataColors.length]}
+                fill={dataColors[index % dataColors.length]}
+                strokeWidth={2}
+                activeDot={{
+                  r: 4,
+                  stroke: "hsl(var(--background))",
+                  strokeWidth: 1,
+                }}
+                {...(type === "bar" && {
+                  isAnimationActive: showAnimation,
+                  barSize: 30,
+                })}
+                {...(type === "line" && {
+                  isAnimationActive: showAnimation,
+                  dot: false,
+                })}
+              />
+            )
+          })}
         </ChartComp>
       </ResponsiveContainer>
     </div>
