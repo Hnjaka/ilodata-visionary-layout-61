@@ -179,29 +179,32 @@ function Chart({
               margin={{ top: 16 }}
             />
           )}
-          {yKeys.map((key, index) => (
-            <ChartDataComp
-              key={key}
-              type="monotone"
-              dataKey={key}
-              stroke={dataColors[index % dataColors.length]}
-              fill={dataColors[index % dataColors.length]}
-              strokeWidth={2}
-              activeDot={{
-                r: 4,
-                stroke: "hsl(var(--background))",
-                strokeWidth: 1,
-              }}
-              {...(type === "bar" && {
-                isAnimationActive: showAnimation,
-                barSize: 30,
-              })}
-              {...(type === "line" && {
-                isAnimationActive: showAnimation,
-                dot: false,
-              })}
-            />
-          ))}
+          {yKeys.map((key, index) => {
+            const DataComponent = chartDataComponents[type];
+            return (
+              <DataComponent
+                key={key}
+                type="monotone"
+                dataKey={key}
+                stroke={dataColors[index % dataColors.length]}
+                fill={dataColors[index % dataColors.length]}
+                strokeWidth={2}
+                activeDot={{
+                  r: 4,
+                  stroke: "hsl(var(--background))",
+                  strokeWidth: 1,
+                }}
+                {...(type === "bar" && {
+                  isAnimationActive: showAnimation,
+                  barSize: 30,
+                })}
+                {...(type === "line" && {
+                  isAnimationActive: showAnimation,
+                  dot: false,
+                })}
+              />
+            )
+          })}
         </ChartComp>
       </ResponsiveContainer>
     </div>

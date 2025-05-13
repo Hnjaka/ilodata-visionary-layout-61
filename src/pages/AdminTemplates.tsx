@@ -12,7 +12,7 @@ import {
   TableHeader, 
   TableRow 
 } from '@/components/ui/table';
-import { Pencil, Trash2, Plus, Eye, EyeOff, Settings } from 'lucide-react';
+import { Pencil, Trash2, Plus, Settings } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import { useAuth } from '@/hooks/useAuth';
@@ -155,9 +155,9 @@ const AdminTemplates = () => {
                         </TableCell>
                         <TableCell>
                           {template.visible ? (
-                            <Eye className="text-green-500" />
+                            <span className="text-green-500">Visible</span>
                           ) : (
-                            <EyeOff className="text-red-500" />
+                            <span className="text-red-500">Masqué</span>
                           )}
                         </TableCell>
                         <TableCell>

@@ -2,14 +2,14 @@
 import { 
   Book, 
   FileText, 
-  Shapes, 
-  Printer, 
-  ImageIcon, 
-  PanelLeft, 
-  LayoutTemplate,
-  FileCode,
-  LucideIcon
+  BookOpen, 
+  Printer as PrinterIcon, 
+  Image, 
+  Menu, 
+  LayoutGrid,
+  FileCode as FileCodeIcon
 } from "lucide-react";
+import type { LucideIcon } from "lucide-react";
 
 export const getCategoryData = () => {
   return [
@@ -37,7 +37,7 @@ export const getCategoryData = () => {
     },
     {
       title: "Modèles et templates",
-      icon: LayoutTemplate,
+      icon: LayoutGrid,
       articles: [
         {
           title: "Comment personnaliser un modèle Word en 5 étapes",
@@ -55,7 +55,7 @@ export const getCategoryData = () => {
     },
     {
       title: "Design et formatage",
-      icon: Shapes,
+      icon: BookOpen,
       articles: [
         {
           title: "Techniques de design pour les non-designers",
@@ -69,7 +69,7 @@ export const getCategoryData = () => {
     },
     {
       title: "Ressources techniques",
-      icon: FileCode,
+      icon: FileCodeIcon,
       articles: [
         {
           title: "Convertir correctement des fichiers pour l'édition",
@@ -94,12 +94,12 @@ export const getIconByName = (name: string): LucideIcon => {
   const iconMap: IconMap = {
     'Book': Book,
     'FileText': FileText,
-    'Shapes': Shapes,
-    'Printer': Printer,
-    'ImageIcon': ImageIcon,
-    'PanelLeft': PanelLeft,
-    'LayoutTemplate': LayoutTemplate,
-    'FileCode': FileCode
+    'BookOpen': BookOpen,
+    'PrinterIcon': PrinterIcon,
+    'Image': Image,
+    'Menu': Menu,
+    'LayoutGrid': LayoutGrid,
+    'FileCodeIcon': FileCodeIcon
   };
   
   return iconMap[name] || Book;
@@ -108,7 +108,7 @@ export const getIconByName = (name: string): LucideIcon => {
 // Function to get the name of an icon component
 export const getIconName = (iconComponent: LucideIcon): string => {
   const iconEntries = Object.entries({
-    Book, FileText, Shapes, Printer, ImageIcon, PanelLeft, LayoutTemplate, FileCode
+    Book, FileText, BookOpen, PrinterIcon, Image, Menu, LayoutGrid, FileCodeIcon
   });
   
   for (const [name, component] of iconEntries) {
