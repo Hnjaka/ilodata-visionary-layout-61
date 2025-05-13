@@ -25,7 +25,7 @@ const Hero = () => {
 
   return (
     <section className="relative w-full min-h-screen flex items-center justify-center overflow-hidden pt-16 bg-cover bg-center" 
-      style={{ backgroundImage: "url('https://images.unsplash.com/photo-1649972904349-6e44c42644a7?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80')" }}>
+      style={{ backgroundImage: "url('https://images.unsplash.com/photo-1488590528505-98d2b5aba04b?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80')" }}>
       {/* Dark overlay for better text contrast */}
       <div className="absolute inset-0 bg-black opacity-50 z-0"></div>
       
@@ -43,25 +43,26 @@ const Hero = () => {
         <div className="text-center max-w-5xl mx-auto">
           <div className="inline-block mb-4 animate-fade-down">
             <span className="px-3 py-1 rounded-full bg-blue-50 text-ilodata-600 text-sm font-medium border border-blue-100">
-              L'art de la mise en page
+              Mise en page Amazon KDP
             </span>
           </div>
           
           <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold mb-6 tracking-tight text-white animate-fade-down delay-100">
-            Besoin d'une mise en page professionnelle ?
+            Tarif mise en page de livre sur Word pour autoédition
           </h1>
           
           <p className="text-xl md:text-2xl text-blue-100 max-w-3xl mx-auto mb-8 animate-fade-down delay-200">
-            Nous créons votre fichier Word prêt à imprimer ou à publier.
+            Professionnalisez votre manuscrit grâce à nos modèles Word et notre accompagnement personnalisé. Publiez facilement sur Amazon Kindle (KDP).
           </p>
           
           <div className="flex flex-col sm:flex-row justify-center items-center gap-4 sm:gap-6 animate-fade-up delay-300">
             <Link to="/services" className="button-primary group flex items-center gap-2 w-full sm:w-auto">
-              Voir nos services
+              Découvrir nos tarifs
+              <ArrowRight size={18} className="transition-transform group-hover:translate-x-1" />
             </Link>
             <Link to="/templates" className="button-secondary w-full sm:w-auto flex items-center gap-2">
               <Download size={18} />
-              Télécharger un modèle gratuit
+              Télécharger un modèle Word
             </Link>
           </div>
         </div>
