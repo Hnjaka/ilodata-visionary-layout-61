@@ -9,8 +9,10 @@ const PricingSection = () => {
     <section className="py-16 md:py-24 bg-white">
       <div className="container mx-auto px-4 md:px-6 fade-in-section">
         <div className="text-center mb-16">
-          <h2 className="section-title text-center">Nos tarifs de mise en page Word</h2>
-          <p className="section-subtitle max-w-3xl mx-auto">
+          <h2 className="text-3xl md:text-4xl font-bold text-slate-800 mb-6 flex items-center justify-center gap-2">
+            <span className="text-2xl">💰</span> Nos tarifs de mise en page Word
+          </h2>
+          <p className="text-lg text-slate-600 max-w-3xl mx-auto">
             Nous proposons trois formules adaptées à tous les profils d'auteurs, avec des tarifs clairs et sans surprise.
           </p>
         </div>
@@ -44,6 +46,10 @@ const PricingSection = () => {
             </TableBody>
           </Table>
         </div>
+
+        <p className="text-lg text-center mb-12 flex items-center justify-center gap-2">
+          <span className="text-ilodata-600">➡️</span> Tous nos tarifs de mise en page livre sont transparents, sans frais cachés. Vous recevez un document final prêt à l'export en PDF ou DOCX, selon vos besoins.
+        </p>
 
         <div className="grid md:grid-cols-3 gap-8">
           {/* Formule Essentielle */}
@@ -150,14 +156,6 @@ const PricingSection = () => {
               Commander
             </Link>
           </div>
-        </div>
-
-        <div className="mt-12 text-center">
-          <img 
-            src="https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?q=80&w=1974&auto=format&fit=crop"
-            alt="tarif mise en page livre pour Amazon et Word" 
-            className="rounded-lg shadow-lg max-w-3xl mx-auto"
-          />
         </div>
       </div>
     </section>

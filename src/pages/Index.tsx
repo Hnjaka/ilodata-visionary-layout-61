@@ -18,6 +18,7 @@ const Index = () => {
       <PricingSection />
       <KdpGuideSection />
       <WhyChooseILODATA />
+      <Contact />
       <Footer />
     </div>
   );
