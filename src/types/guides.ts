@@ -1,28 +1,24 @@
 
-import { type LucideIcon } from "lucide-react";
+import { LucideIcon } from 'lucide-react';
 
-export interface GuideCategory {
-  id: string;
-  title: string;
-  icon: LucideIcon;
-  slug: string;
-  created_at: string;
-  articles?: GuideArticle[];
-  position?: number;
-}
-
-export interface GuideArticle {
-  id: string;
+export interface ArticleType {
+  id?: string;
   title: string;
   slug: string;
-  excerpt?: string;
-  created_at: string;
-  guide_category_id: string;
-  published: boolean;
-  layout?: string;
   content?: string;
+  layout?: 'standard' | 'wide' | 'sidebar';
+  position?: number;
+  category_id?: string;
+  created_at?: string;
+  updated_at?: string;
 }
 
-// Add aliases for backward compatibility
-export type CategoryType = GuideCategory;
-export type ArticleType = GuideArticle;
+export interface CategoryType {
+  id?: string;
+  title: string;
+  icon: LucideIcon | string;
+  articles: ArticleType[];
+  position?: number;
+  created_at?: string;
+  updated_at?: string;
+}

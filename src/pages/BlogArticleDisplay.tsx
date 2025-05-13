@@ -164,7 +164,7 @@ const BlogArticleDisplay = () => {
       
       <div className="mb-8">
         <img 
-          src={getImageWithFallback(article?.image, getImageCategory() as "general" | "books" | "tech" | "design" | "writing")} 
+          src={getImageWithFallback(article?.image, getImageCategory() as keyof typeof import('@/utils/imageUtils').unsplashImages)} 
           alt={article?.title || 'Image de l\'article'} 
           className="w-full h-auto rounded-lg shadow-md"
         />
