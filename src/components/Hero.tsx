@@ -25,7 +25,7 @@ const Hero = () => {
 
   return (
     <section className="relative w-full min-h-screen flex items-center justify-center overflow-hidden pt-16 bg-cover bg-center" 
-      style={{ backgroundImage: "url('https://images.unsplash.com/photo-1562932831-afcfe48b5786?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80')" }}>
+      style={{ backgroundImage: "url('https://images.unsplash.com/photo-1610116306796-6fea9f4fae38?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80')" }}>
       {/* Dark overlay for better text contrast */}
       <div className="absolute inset-0 bg-black opacity-50 z-0"></div>
       
@@ -51,9 +51,14 @@ const Hero = () => {
             Tarif mise en page de livre sur Word pour autoédition
           </h1>
           
-          <p className="text-xl md:text-2xl text-blue-100 max-w-3xl mx-auto mb-8 animate-fade-down delay-200">
-            Professionnalisez votre manuscrit grâce à nos modèles Word et notre accompagnement personnalisé. Publiez facilement sur Amazon Kindle (KDP).
-          </p>
+          <div className="text-xl md:text-2xl text-blue-100 max-w-4xl mx-auto mb-8 animate-fade-down delay-200 space-y-4">
+            <p>
+              Vous êtes auteur indépendant ou autoédité et vous recherchez une solution simple, professionnelle et abordable pour finaliser votre livre ? Chez <strong>ILODATA</strong>, nous vous accompagnons dans toutes les étapes de la <strong>mise en page Word professionnelle</strong>, afin que votre ouvrage soit prêt à être publié sur Amazon KDP ou en impression traditionnelle.
+            </p>
+            <p>
+              Nos services sont conçus pour répondre aux besoins des auteurs qui souhaitent un résultat de qualité sans passer par des logiciels complexes. Grâce à nos modèles Word optimisés, vous obtenez rapidement un rendu propre, structuré et conforme aux standards d'édition.
+            </p>
+          </div>
           
           <div className="flex flex-col sm:flex-row justify-center items-center gap-4 sm:gap-6 animate-fade-up delay-300">
             <Link to="/services" className="button-primary group flex items-center gap-2 w-full sm:w-auto">

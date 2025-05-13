@@ -16,10 +16,14 @@ const WhyChooseSection = () => {
           </div>
           
           <div className="animate-fade-left">
-            <h2 className="text-3xl font-bold mb-6 text-slate-800">Pourquoi choisir une mise en page Word professionnelle ?</h2>
+            <h2 className="text-3xl font-bold mb-6 text-slate-800">Mise en page Word professionnelle : pourquoi est-ce essentiel ?</h2>
+            
+            <p className="text-slate-700 mb-4">
+              Une bonne mise en page influence directement la lisibilité, l'esthétique et la crédibilité de votre livre. Nous utilisons Microsoft Word pour vous proposer des fichiers faciles à modifier, mais avec une structure soignée : marges calibrées, styles automatisés, pagination élégante, chapitrage dynamique, etc.
+            </p>
             
             <p className="text-slate-700 mb-8">
-              Une <strong>mise en page Word professionnelle</strong> est essentielle pour que votre livre ait un rendu soigné et soit conforme aux exigences d'<strong>Amazon KDP</strong>. Nous proposons des modèles élégants, compatibles avec Word, et faciles à utiliser.
+              Nos modèles conviennent aussi bien aux romans, essais, mémoires, qu'aux guides pratiques. De plus, ils sont conçus pour s'adapter aux exigences d'Amazon Kindle Direct Publishing (KDP).
             </p>
             
             <ul className="space-y-4">
@@ -28,7 +32,7 @@ const WhyChooseSection = () => {
                   <Check size={24} />
                 </div>
                 <p className="text-slate-700">
-                  <span className="font-semibold">Conforme aux standards</span> - Respecte les exigences d'Amazon KDP pour une publication sans erreur
+                  <span className="font-semibold">Expertise dans l'autoédition</span> - Nous connaissons parfaitement les exigences d'Amazon KDP
                 </p>
               </li>
               <li className="flex">
@@ -36,7 +40,7 @@ const WhyChooseSection = () => {
                   <Check size={24} />
                 </div>
                 <p className="text-slate-700">
-                  <span className="font-semibold">Simple à utiliser</span> - Nos modèles Word sont intuitifs et accompagnés de guides
+                  <span className="font-semibold">Résultats professionnels</span> - Avec un outil accessible comme Word
                 </p>
               </li>
               <li className="flex">
@@ -44,7 +48,7 @@ const WhyChooseSection = () => {
                   <Check size={24} />
                 </div>
                 <p className="text-slate-700">
-                  <span className="font-semibold">Rendu professionnel</span> - Donnez à votre livre l'apparence d'un ouvrage édité par un professionnel
+                  <span className="font-semibold">Tarifs accessibles</span> - Pour auteurs débutants comme confirmés
                 </p>
               </li>
               <li className="flex">
@@ -52,7 +56,7 @@ const WhyChooseSection = () => {
                   <Check size={24} />
                 </div>
                 <p className="text-slate-700">
-                  <span className="font-semibold">Gain de temps</span> - Évitez des heures de formatage manuel et de corrections
+                  <span className="font-semibold">Accompagnement humain</span> - Service rapide et personnalisé
                 </p>
               </li>
             </ul>

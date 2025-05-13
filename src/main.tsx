@@ -16,6 +16,15 @@ const updateMetaTags = () => {
     document.head.appendChild(metaDescription);
   }
   metaDescription.setAttribute('content', 'Découvrez nos tarifs de mise en page de livre Word et nos conseils pour publier sur Amazon KDP. Modèles pros et simples à utiliser.');
+
+  // Add or update author meta tag
+  let metaAuthor = document.querySelector('meta[name="author"]');
+  if (!metaAuthor) {
+    metaAuthor = document.createElement('meta');
+    metaAuthor.setAttribute('name', 'author');
+    document.head.appendChild(metaAuthor);
+  }
+  metaAuthor.setAttribute('content', 'ILODATA');
 };
 
 // Call the function to update meta tags

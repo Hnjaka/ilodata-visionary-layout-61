@@ -5,6 +5,7 @@ import Hero from '@/components/Hero';
 import WhyChooseSection from '@/components/Services/WhyChooseSection';
 import PricingSection from '@/components/Services/PricingSection';
 import KdpGuideSection from '@/components/Services/KdpGuideSection';
+import WhyChooseILODATA from '@/components/Services/WhyChooseILODATA';
 import Contact from '@/components/Contact';
 import Footer from '@/components/Footer';
 
@@ -16,7 +17,7 @@ const Index = () => {
       <WhyChooseSection />
       <PricingSection />
       <KdpGuideSection />
-      <Contact />
+      <WhyChooseILODATA />
       <Footer />
     </div>
   );

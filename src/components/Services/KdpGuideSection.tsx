@@ -1,17 +1,19 @@
 
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowRight, BookOpen, FileText, Settings } from 'lucide-react';
+import { ArrowRight, BookOpen, FileText, Settings, CheckCircle } from 'lucide-react';
 
 const KdpGuideSection = () => {
   return (
-    <section className="py-16 md:py-24 bg-blue-50">
+    <section className="py-16 md:py-24 bg-blue-50" id="guide-kdp">
       <div className="container mx-auto px-4 md:px-6 fade-in-section">
         <div className="text-center mb-16">
-          <h2 className="section-title text-center">Comment faire la mise en page de livre pour Amazon KDP ?</h2>
+          <h2 className="section-title text-center">Comment faire la mise en page de livre pour Amazon ?</h2>
           <p className="section-subtitle max-w-3xl mx-auto">
-            Publier un livre sur Amazon demande de respecter des normes précises. Nous vous guidons pas à pas pour 
-            <strong> faire la mise en page de votre livre pour Amazon</strong>, depuis Word jusqu'à l'export PDF prêt à publier.
+            Faire la mise en page de votre livre pour Amazon demande de respecter certaines normes : tailles de page, styles de paragraphes, marges, sauts de section, etc. Pas d'inquiétude : nous vous expliquons tout dans un guide étape par étape et nous prenons en charge la mise en forme technique pour vous.
+          </p>
+          <p className="text-slate-600 mb-8">
+            Même si vous ne maîtrisez pas Word à 100 %, notre système vous permet de récupérer un fichier parfaitement calibré, prêt à être envoyé sur votre compte KDP.
           </p>
         </div>
 
