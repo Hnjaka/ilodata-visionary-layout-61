@@ -1,3 +1,4 @@
+
 // This file contains utility functions for image handling
 
 /**
@@ -40,4 +41,15 @@ export const getImageWithFallback = (imageUrl: string | null | undefined, catego
  */
 export const getPlaceholderImage = (width = 800, height = 600, text = "Image placée ici"): string => {
   return `https://via.placeholder.com/${width}x${height}.png?text=${encodeURIComponent(text)}`;
+};
+
+/**
+ * Returns an Unsplash fallback image URL for a specific category
+ * @param category The category for image selection
+ * @param width Width parameter for the image
+ * @param height Height parameter for the image
+ * @returns URL for the fallback image
+ */
+export const getUnsplashFallback = (category: keyof typeof unsplashImages = "general", width = 1200, height = 800): string => {
+  return `${unsplashImages[category]}?auto=format&fit=crop&w=${width}&h=${height}&q=80`;
 };

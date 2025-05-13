@@ -1,5 +1,5 @@
 
-import type { LucideIcon } from "lucide-react";
+import { type LucideIcon } from "lucide-react";
 
 export interface GuideCategory {
   id: string;
@@ -8,6 +8,7 @@ export interface GuideCategory {
   slug: string;
   created_at: string;
   articles?: GuideArticle[];
+  position?: number;
 }
 
 export interface GuideArticle {
@@ -19,4 +20,9 @@ export interface GuideArticle {
   guide_category_id: string;
   published: boolean;
   layout?: string;
+  content?: string;
 }
+
+// Add aliases for backward compatibility
+export type CategoryType = GuideCategory;
+export type ArticleType = GuideArticle;

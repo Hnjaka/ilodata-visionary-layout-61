@@ -82,12 +82,18 @@ const TableHead = React.forwardRef<
 ))
 TableHead.displayName = "TableHead"
 
+// Add the colSpan prop explicitly to TableCell
+interface TableCellProps extends React.HTMLAttributes<HTMLTableCellElement> {
+  colSpan?: number;
+}
+
 const TableCell = React.forwardRef<
   HTMLTableCellElement,
-  React.HTMLAttributes<HTMLTableCellElement>
->(({ className, ...props }, ref) => (
+  TableCellProps
+>(({ className, colSpan, ...props }, ref) => (
   <td
     ref={ref}
+    colSpan={colSpan}
     className={cn("p-4 align-middle [&:has([role=checkbox])]:pr-0", className)}
     {...props}
   />

@@ -2,28 +2,29 @@
 import * as React from "react"
 import { cva, type VariantProps } from "class-variance-authority"
 import {
-  LineChart,
-  BarChart,
-  Line,
-  Bar,
-  XAxis,
-  YAxis,
+  LineChart as RechartsLineChart, 
+  BarChart as RechartsBarChart,
+  Line as RechartsLine, 
+  Bar as RechartsBar,
+  XAxis as RechartsXAxis, 
+  YAxis as RechartsYAxis,
   CartesianGrid,
-  Tooltip,
-  Legend,
-  ResponsiveContainer,
+  Tooltip as RechartsTooltip,
+  Legend as RechartsLegend,
+  ResponsiveContainer
 } from "recharts"
 
 import { cn } from "@/lib/utils"
 
+// Renamed components to avoid conflicts
 const chartComponents = {
-  line: LineChart,
-  bar: BarChart,
+  line: RechartsLineChart,
+  bar: RechartsBarChart,
 }
 
 const chartDataComponents = {
-  line: Line,
-  bar: Bar,
+  line: RechartsLine,
+  bar: RechartsBar,
 }
 
 export interface CustomTooltipProps extends React.HTMLAttributes<HTMLDivElement> {
@@ -124,7 +125,7 @@ function Chart({
             />
           )}
           {showXAxis && (
-            <XAxis
+            <RechartsXAxis
               dataKey={xAxisKey}
               stroke="hsl(var(--muted-foreground))"
               fontSize={12}
@@ -142,7 +143,7 @@ function Chart({
             />
           )}
           {showYAxis && (
-            <YAxis
+            <RechartsYAxis
               stroke="hsl(var(--muted-foreground))"
               fontSize={12}
               tickLine={false}
@@ -154,7 +155,7 @@ function Chart({
             />
           )}
           {showTooltip && (
-            <Tooltip
+            <RechartsTooltip
               content={({ active, payload, label }) => {
                 if (!active || !payload) return null
                 return (
@@ -172,7 +173,7 @@ function Chart({
             />
           )}
           {showLegend && (
-            <Legend
+            <RechartsLegend
               iconSize={12}
               fontSize={12}
               iconType="circle"

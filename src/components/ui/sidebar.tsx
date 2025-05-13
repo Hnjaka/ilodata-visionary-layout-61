@@ -1,294 +1,283 @@
 
+import React, { useState, useEffect } from "react";
+import { Sheet, SheetContent } from "@/components/ui/sheet";
+import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import * as React from "react";
-import { Menu } from "lucide-react";
-import { SheetContent } from "./sheet";
+import { FileText, ChevronRight, Menu } from "lucide-react";
 
-interface SidebarContextProps {
-  open: boolean;
-  setOpen: (open: boolean) => void;
-  isMobile: boolean;
-}
+// Types for sidebar and children
+type SidebarContext = {
+  expanded: boolean;
+  setExpanded: React.Dispatch<React.SetStateAction<boolean>>;
+  mobileOpen: boolean;
+  setMobileOpen: React.Dispatch<React.SetStateAction<boolean>>;
+};
 
-const SidebarContext = React.createContext<SidebarContextProps>({
-  open: false,
-  setOpen: () => {},
-  isMobile: false,
+const SidebarContext = React.createContext<SidebarContext>({
+  expanded: true,
+  setExpanded: () => {},
+  mobileOpen: false,
+  setMobileOpen: () => {},
 });
 
-interface SidebarProviderProps {
+// Hook to use the sidebar context
+export const useSidebar = () => {
+  const context = React.useContext(SidebarContext);
+  if (!context) {
+    throw new Error("useSidebar must be used within a SidebarProvider");
+  }
+  return context;
+};
+
+interface SidebarProps {
   children: React.ReactNode;
+  defaultExpanded?: boolean;
+  className?: string;
+  side?: "left" | "right";
 }
 
-export function SidebarProvider({
+export function Sidebar({
   children,
-}: SidebarProviderProps) {
-  const [open, setOpen] = React.useState<boolean>(true);
-  const [isMobile, setIsMobile] = React.useState<boolean>(false);
+  defaultExpanded = true,
+  className,
+  side = "left",
+}: SidebarProps) {
+  const [expanded, setExpanded] = useState(defaultExpanded);
+  const [mobileOpen, setMobileOpen] = useState(false);
 
-  React.useEffect(() => {
-    const checkIsMobile = () => {
-      setIsMobile(window.innerWidth < 768);
+  // Close mobile sidebar on window resize
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth > 768 && mobileOpen) {
+        setMobileOpen(false);
+      }
     };
 
-    checkIsMobile();
-    setOpen(!isMobile);
-
-    window.addEventListener("resize", checkIsMobile);
-    return () => window.removeEventListener("resize", checkIsMobile);
-  }, []);
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, [mobileOpen]);
 
   return (
-    <SidebarContext.Provider value={{ open, setOpen, isMobile }}>
-      {children}
+    <SidebarContext.Provider
+      value={{ expanded, setExpanded, mobileOpen, setMobileOpen }}
+    >
+      {/* Mobile sidebar (sheet) */}
+      <Sheet open={mobileOpen} onOpenChange={setMobileOpen}>
+        <SheetContent 
+          side={side} 
+          className="p-0" 
+          data-sidebar="true" 
+          data-mobile="true"
+        >
+          <div className="h-full overflow-y-auto py-4">
+            {children}
+          </div>
+        </SheetContent>
+      </Sheet>
+
+      {/* Desktop sidebar */}
+      <div
+        data-expanded={expanded}
+        className={cn(
+          "hidden md:flex h-full flex-col border-r bg-background transition-all duration-300",
+          expanded ? "w-64" : "w-16",
+          className
+        )}
+      >
+        {children}
+      </div>
+
+      {/* Mobile trigger button (fixed to bottom of screen) */}
+      <Button
+        variant="outline"
+        size="icon"
+        className="fixed md:hidden z-40 bottom-4 left-4 h-10 w-10 rounded-full shadow-lg bg-primary text-primary-foreground"
+        onClick={() => setMobileOpen(true)}
+      >
+        <Menu className="h-5 w-5" />
+      </Button>
     </SidebarContext.Provider>
   );
 }
 
-export function useSidebar() {
-  return React.useContext(SidebarContext);
-}
-
-interface SidebarProps {
-  className?: string;
+interface SidebarHeaderProps {
   children?: React.ReactNode;
-  showMobile?: boolean;
+  className?: string;
 }
 
-export function Sidebar({
-  className,
-  children,
-  showMobile = true,
-}: SidebarProps) {
-  const { open, isMobile } = useSidebar();
-
-  if (isMobile && showMobile) {
-    return (
-      <SheetContent
-        side="left"
-        className={cn("p-0", className)}
-        data-sidebar="true"
-        data-mobile="true"
-      >
-        {children}
-      </SheetContent>
-    );
-  }
+export function SidebarHeader({ children, className }: SidebarHeaderProps) {
+  const { expanded } = useSidebar();
 
   return (
     <div
       className={cn(
-        "h-full border-r",
-        open ? "w-64" : "w-16 border-r-blue-400",
-        className,
+        "flex h-14 items-center border-b px-4",
+        expanded ? "justify-between" : "justify-center",
+        className
       )}
-      data-sidebar={open ? "open" : "closed"}
     >
       {children}
     </div>
   );
 }
 
-interface SidebarTriggerProps {
-  className?: string;
-}
-
-export function SidebarTrigger({ className }: SidebarTriggerProps) {
-  const { open, setOpen } = useSidebar();
-
+export function SidebarHeaderTitle({ children, className }: { children: React.ReactNode; className?: string }) {
+  const { expanded } = useSidebar();
+  
+  if (!expanded) return null;
+  
   return (
-    <button
-      className={cn("p-2", className)}
-      onClick={() => setOpen(!open)}
-    >
-      <Menu />
-      <span className="sr-only">Toggle Sidebar</span>
-    </button>
-  );
-}
-
-interface SidebarHeaderProps {
-  className?: string;
-  children?: React.ReactNode;
-}
-
-export function SidebarHeader({
-  className,
-  children,
-}: SidebarHeaderProps) {
-  return (
-    <div
-      className={cn("p-4 border-b", className)}
-    >
-      {children || <div className="h-8" />}
+    <div className={cn("text-lg font-semibold", className)}>
+      {children}
     </div>
   );
 }
 
-interface SidebarContentProps {
-  className?: string;
-  children?: React.ReactNode;
+export function SidebarCollapseToggle() {
+  const { expanded, setExpanded } = useSidebar();
+
+  return (
+    <Button
+      variant="ghost"
+      size="icon"
+      onClick={() => setExpanded(!expanded)}
+      className="h-8 w-8"
+    >
+      <ChevronRight
+        className={cn(
+          "h-5 w-5 transition-transform",
+          expanded ? "rotate-180" : "rotate-0"
+        )}
+      />
+    </Button>
+  );
 }
 
-export function SidebarContent({
-  className,
-  children,
-}: SidebarContentProps) {
+interface SidebarNavProps {
+  children: React.ReactNode;
+  className?: string;
+}
+
+export function SidebarNav({ children, className }: SidebarNavProps) {
   return (
     <div
-      className={cn("p-2", className)}
+      className={cn(
+        "flex-1 overflow-auto py-2 px-4",
+        className
+      )}
     >
-      {children}
+      <nav className="flex flex-col gap-1">{children}</nav>
     </div>
   );
 }
 
 interface SidebarFooterProps {
+  children: React.ReactNode;
   className?: string;
-  children?: React.ReactNode;
 }
 
-export function SidebarFooter({
-  className,
-  children,
-}: SidebarFooterProps) {
+export function SidebarFooter({ children, className }: SidebarFooterProps) {
   return (
     <div
-      className={cn("p-4 mt-auto border-t", className)}
+      className={cn("p-4 border-t", className)}
     >
       {children}
     </div>
   );
 }
 
-interface SidebarGroupProps {
+interface SidebarItemProps {
+  title: string;
+  icon?: React.ReactNode;
+  isActive?: boolean;
+  href?: string;
+  onClick?: () => void;
   className?: string;
-  children?: React.ReactNode;
+  badge?: React.ReactNode;
+  external?: boolean;
 }
 
-export function SidebarGroup({
+export function SidebarItem({
+  title,
+  icon,
+  isActive,
+  href,
+  onClick,
   className,
-  children,
-}: SidebarGroupProps) {
+  badge,
+  external
+}: SidebarItemProps) {
+  const { expanded } = useSidebar();
+  
+  const ItemIcon = icon || <FileText className="h-4 w-4" />;
+  
+  const content = (
+    <>
+      <span className="w-5 h-5 flex items-center justify-center">
+        {ItemIcon}
+      </span>
+      {expanded && <span className="ml-2">{title}</span>}
+      {badge && expanded && <span className="ml-auto">{badge}</span>}
+    </>
+  );
+  
+  const itemClass = cn(
+    "flex items-center h-9 rounded-md px-3 text-sm font-medium transition-colors",
+    isActive ? "bg-accent text-accent-foreground" : "hover:bg-accent hover:text-accent-foreground",
+    !expanded && "justify-center px-0",
+    className
+  );
+  
+  if (href) {
+    return external ? (
+      <a 
+        href={href} 
+        target="_blank" 
+        rel="noopener noreferrer"
+        className={itemClass}
+      >
+        {content}
+      </a>
+    ) : (
+      <a 
+        href={href} 
+        className={itemClass}
+      >
+        {content}
+      </a>
+    );
+  }
+  
   return (
-    <div
-      className={cn("pb-4", className)}
+    <button 
+      type="button"
+      onClick={onClick} 
+      className={itemClass}
     >
-      {children}
-    </div>
+      {content}
+    </button>
   );
 }
 
-interface SidebarGroupLabelProps {
-  className?: string;
-  children?: React.ReactNode;
-}
-
-export function SidebarGroupLabel({
-  className,
+export function SidebarSection({
   children,
-}: SidebarGroupLabelProps) {
-  const { open } = useSidebar();
-
-  if (!open) return null;
+  title,
+  className,
+}: {
+  children: React.ReactNode;
+  title?: string;
+  className?: string;
+}) {
+  const { expanded } = useSidebar();
 
   return (
-    <div
-      className={cn(
-        "px-2 mb-2 text-xs font-semibold tracking-tight text-muted-foreground",
-        className
+    <div className={cn("py-2", className)}>
+      {title && expanded && (
+        <div className="px-2 mb-2 text-xs font-semibold tracking-wider text-muted-foreground">
+          {title}
+        </div>
       )}
-    >
-      {children}
+      <div className="flex flex-col gap-1">{children}</div>
     </div>
-  );
-}
-
-interface SidebarGroupContentProps {
-  className?: string;
-  children?: React.ReactNode;
-}
-
-export function SidebarGroupContent({
-  className,
-  children,
-}: SidebarGroupContentProps) {
-  return (
-    <div
-      className={cn("space-y-1", className)}
-    >
-      {children}
-    </div>
-  );
-}
-
-interface SidebarMenuProps {
-  className?: string;
-  children?: React.ReactNode;
-}
-
-export function SidebarMenu({
-  className,
-  children,
-}: SidebarMenuProps) {
-  return (
-    <nav
-      className={cn("space-y-1", className)}
-    >
-      {children}
-    </nav>
-  );
-}
-
-interface SidebarMenuItemProps {
-  className?: string;
-  children?: React.ReactNode;
-}
-
-export function SidebarMenuItem({
-  className,
-  children,
-}: SidebarMenuItemProps) {
-  return (
-    <div
-      className={cn("px-2", className)}
-    >
-      {children}
-    </div>
-  );
-}
-
-interface SidebarMenuButtonProps {
-  className?: string;
-  children?: React.ReactNode;
-  asChild?: boolean;
-  active?: boolean;
-}
-
-export function SidebarMenuButton({
-  className,
-  children,
-  asChild,
-  active,
-}: SidebarMenuButtonProps) {
-  const { open } = useSidebar();
-  const Comp = asChild ? React.Fragment : "button";
-  const compProps = asChild 
-    ? {} 
-    : { type: "button" };
-
-  return (
-    <Comp
-      {...compProps}
-      className={asChild ? undefined : cn(
-        "flex items-center w-full gap-2 px-3 py-2 text-sm rounded-lg",
-        "hover:bg-primary/5 hover:text-foreground",
-        active && "bg-primary/10 text-foreground",
-        !open && "justify-center",
-        className
-      )}
-    >
-      {children}
-    </Comp>
   );
 }
