@@ -10,7 +10,7 @@ const MobileQuoteButton: React.FC<MobileQuoteButtonProps> = ({ onLinkClick }) =>
   return (
     <Link 
       to="/contact" 
-      className="button-quote w-full text-center mt-2"
+      className="w-full button-quote flex items-center justify-center"
       onClick={onLinkClick}
     >
       Demandez un devis

@@ -10,8 +10,10 @@ interface MobileMenuToggleProps {
 const MobileMenuToggle: React.FC<MobileMenuToggleProps> = ({ isOpen, onToggle }) => {
   return (
     <button 
-      className="md:hidden text-slate-800"
+      className="md:hidden text-slate-800 p-2 rounded hover:bg-slate-100 transition-colors"
       onClick={onToggle}
+      aria-expanded={isOpen}
+      aria-label={isOpen ? "Fermer le menu" : "Ouvrir le menu"}
     >
       {isOpen ? <X size={24} /> : <Menu size={24} />}
     </button>

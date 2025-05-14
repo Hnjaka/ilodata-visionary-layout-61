@@ -6,6 +6,7 @@ import MobileAuthButtons from './mobile/MobileAuthButtons';
 import MobileAdminLinks from './mobile/MobileAdminLinks';
 import MobileQuoteButton from './mobile/MobileQuoteButton';
 import { useToast } from '@/hooks/use-toast';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 interface MobileNavItemsProps {
   isAdmin: boolean;
@@ -24,7 +25,9 @@ const MobileNavItems: React.FC<MobileNavItemsProps> = ({
   onLoginClick, 
   onSignOut 
 }) => {
-  if (!isOpen) return null;
+  const isMobile = useIsMobile();
+  
+  if (!isOpen || !isMobile) return null;
   
   // Debug log to check isAdmin value in MobileNavItems
   console.log('MobileNavItems - isAdmin:', isAdmin, 'User:', user?.email);
