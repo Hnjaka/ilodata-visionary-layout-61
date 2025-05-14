@@ -11,7 +11,7 @@ import ServiceCta from '@/components/services/ServiceCta';
 
 const Services = () => {
   useEffect(() => {
-    document.title = "Services de mise en page pour auteurs et éditeurs | ilodata.com";
+    document.title = "Tarif mise en page Word et livre | Mise en page Amazon Kindle";
     
     let metaDescription = document.querySelector('meta[name="description"]');
     if (!metaDescription) {
@@ -19,7 +19,7 @@ const Services = () => {
       metaDescription.setAttribute('name', 'description');
       document.head.appendChild(metaDescription);
     }
-    metaDescription.setAttribute('content', 'Découvrez nos services de mise en page sur mesure, modèles Word et formations pour créer des livres professionnels. Parfait pour les auteurs indépendants et les éditeurs.');
+    metaDescription.setAttribute('content', 'Découvrez nos tarifs de mise en page de livre Word et nos conseils pour publier sur Amazon KDP. Modèles pros et simples à utiliser.');
     
     const sections = document.querySelectorAll('.fade-in-section');
     sections.forEach(section => {
