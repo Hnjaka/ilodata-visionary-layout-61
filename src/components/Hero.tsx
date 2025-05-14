@@ -1,9 +1,11 @@
 
 import React, { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 const Hero = () => {
   const heroRef = useRef<HTMLDivElement>(null);
+  const isMobile = useIsMobile();
 
   useEffect(() => {
     const handleParallax = () => {
@@ -18,12 +20,15 @@ const Hero = () => {
       }
     };
 
-    window.addEventListener('scroll', handleParallax);
-    return () => window.removeEventListener('scroll', handleParallax);
-  }, []);
+    // Désactiver l'effet de parallaxe sur mobile pour de meilleures performances
+    if (!isMobile) {
+      window.addEventListener('scroll', handleParallax);
+      return () => window.removeEventListener('scroll', handleParallax);
+    }
+  }, [isMobile]);
 
   return (
-    <section className="relative w-full min-h-screen flex items-center justify-center overflow-hidden pt-16 bg-cover bg-center" 
+    <section className="relative w-full min-h-[90vh] md:min-h-screen flex items-center justify-center overflow-hidden pt-16 bg-cover bg-center" 
       style={{ backgroundImage: "url('https://images.unsplash.com/photo-1649972904349-6e44c42644a7?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80')" }}>
       {/* Dark overlay for better text contrast */}
       <div className="absolute inset-0 bg-black opacity-50 z-0"></div>
@@ -37,18 +42,18 @@ const Hero = () => {
       {/* Content wrapper */}
       <div 
         ref={heroRef}
-        className="container px-4 sm:px-6 py-24 md:py-32 relative z-10"
+        className="container px-4 sm:px-6 py-16 md:py-24 lg:py-32 relative z-10"
       >
         <div className="text-center max-w-5xl mx-auto">
-          <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold mb-6 tracking-tight text-white animate-fade-down">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-5 sm:mb-6 tracking-tight text-white animate-fade-down">
             Tarif mise en page de livre sur Word pour autoédition
           </h1>
           
-          <p className="text-xl md:text-2xl text-blue-100 max-w-4xl mx-auto mb-6 animate-fade-down delay-100">
+          <p className="text-lg sm:text-xl md:text-2xl text-blue-100 max-w-4xl mx-auto mb-4 sm:mb-6 animate-fade-down delay-100">
             Vous êtes auteur indépendant ou autoédité et vous recherchez une solution simple, professionnelle et abordable pour finaliser votre livre ? 
           </p>
           
-          <p className="text-xl md:text-2xl text-blue-100 max-w-4xl mx-auto mb-8 animate-fade-down delay-200">
+          <p className="text-lg sm:text-xl md:text-2xl text-blue-100 max-w-4xl mx-auto mb-6 sm:mb-8 animate-fade-down delay-200">
             Chez ILODATA, nous vous accompagnons dans toutes les étapes de la mise en page Word professionnelle, afin que votre ouvrage soit prêt à être publié sur Amazon KDP ou en impression traditionnelle.
           </p>
           

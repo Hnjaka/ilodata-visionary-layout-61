@@ -1,8 +1,20 @@
+
 import * as React from "react"
 import { OTPInput, OTPInputContext } from "input-otp"
 import { Dot } from "lucide-react"
 
 import { cn } from "@/lib/utils"
+
+// Définition d'un mock pour OTPInputContext si nécessaire
+interface OTPSlotProps {
+  char: string;
+  hasFakeCaret: boolean;
+  isActive: boolean;
+}
+
+interface MockOTPInputContext {
+  slots: OTPSlotProps[];
+}
 
 const InputOTP = React.forwardRef<
   React.ElementRef<typeof OTPInput>,
@@ -32,8 +44,9 @@ const InputOTPSlot = React.forwardRef<
   React.ElementRef<"div">,
   React.ComponentPropsWithoutRef<"div"> & { index: number }
 >(({ index, className, ...props }, ref) => {
-  const inputOTPContext = React.useContext(OTPInputContext)
-  const { char, hasFakeCaret, isActive } = inputOTPContext.slots[index]
+  const otp = React.useContext(OTPInputContext || React.createContext<MockOTPInputContext>({ slots: [] }));
+  const slot = otp.slots?.[index] || { char: '', hasFakeCaret: false, isActive: false };
+  const { char, hasFakeCaret, isActive } = slot;
 
   return (
     <div

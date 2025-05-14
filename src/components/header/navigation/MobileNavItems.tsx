@@ -30,9 +30,9 @@ const MobileNavItems: React.FC<MobileNavItemsProps> = ({
   console.log('MobileNavItems - isAdmin:', isAdmin, 'User:', user?.email);
   
   return (
-    <div className="md:hidden absolute top-full left-0 right-0 bg-white shadow-lg animate-fade-down">
-      <div className="container mx-auto px-4 py-4">
-        <nav className="flex flex-col space-y-3">
+    <div className="md:hidden fixed top-[72px] left-0 right-0 bottom-0 bg-white z-50 overflow-y-auto animate-in slide-in-from-top duration-300">
+      <div className="container mx-auto px-4 py-6">
+        <nav className="flex flex-col space-y-4">
           {/* Navigation Links */}
           <MobileNavLinks onLinkClick={onLinkClick} />
           
@@ -46,7 +46,9 @@ const MobileNavItems: React.FC<MobileNavItemsProps> = ({
           />
           
           {/* Quote Button */}
-          <MobileQuoteButton onLinkClick={onLinkClick} />
+          <div className="mt-4 pt-4 border-t border-gray-200">
+            <MobileQuoteButton onLinkClick={onLinkClick} />
+          </div>
         </nav>
       </div>
     </div>
