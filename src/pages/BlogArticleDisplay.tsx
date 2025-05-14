@@ -150,6 +150,8 @@ const BlogArticleDisplay = () => {
     }).format(date);
   };
 
+  const imageCategory = getImageCategory();
+
   return (
     <ArticleLayout 
       title={article?.title || 'Article'} 
@@ -164,7 +166,7 @@ const BlogArticleDisplay = () => {
       
       <div className="mb-8">
         <img 
-          src={getImageWithFallback(article?.image, getImageCategory() as keyof typeof import('@/utils/imageUtils').unsplashImages)} 
+          src={getImageWithFallback(article?.image, imageCategory as "general" | "books" | "tech" | "design" | "writing")} 
           alt={article?.title || 'Image de l\'article'} 
           className="w-full h-auto rounded-lg shadow-md"
         />

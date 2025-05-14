@@ -5,14 +5,14 @@ import { Dot } from "lucide-react"
 
 import { cn } from "@/lib/utils"
 
-// Définition d'un mock pour OTPInputContext si nécessaire
+// Define types for OTPInputContext to handle the slots property
 interface OTPSlotProps {
   char: string;
   hasFakeCaret: boolean;
   isActive: boolean;
 }
 
-interface MockOTPInputContext {
+interface OTPInputContextType {
   slots: OTPSlotProps[];
 }
 
@@ -44,8 +44,8 @@ const InputOTPSlot = React.forwardRef<
   React.ElementRef<"div">,
   React.ComponentPropsWithoutRef<"div"> & { index: number }
 >(({ index, className, ...props }, ref) => {
-  const otp = React.useContext(OTPInputContext || React.createContext<MockOTPInputContext>({ slots: [] }));
-  const slot = otp.slots?.[index] || { char: '', hasFakeCaret: false, isActive: false };
+  const otp = React.useContext(OTPInputContext as React.Context<OTPInputContextType>);
+  const slot = otp?.slots?.[index] || { char: '', hasFakeCaret: false, isActive: false };
   const { char, hasFakeCaret, isActive } = slot;
 
   return (

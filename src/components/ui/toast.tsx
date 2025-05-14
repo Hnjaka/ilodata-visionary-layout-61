@@ -1,3 +1,4 @@
+
 import * as React from "react"
 import * as ToastPrimitives from "@radix-ui/react-toast"
 import { cva, type VariantProps } from "class-variance-authority"
@@ -114,6 +115,56 @@ type ToastProps = React.ComponentPropsWithoutRef<typeof Toast>
 
 type ToastActionElement = React.ReactElement<typeof ToastAction>
 
+// Add utility functions for using Toast
+function useToast() {
+  const [toasts, setToasts] = React.useState<{
+    id: string;
+    title?: React.ReactNode;
+    description?: React.ReactNode;
+    action?: ToastActionElement;
+    variant?: "default" | "destructive";
+  }[]>([])
+
+  const toast = React.useMemo(
+    () => ({
+      toast: (props: {
+        title?: React.ReactNode;
+        description?: React.ReactNode;
+        action?: ToastActionElement;
+        variant?: "default" | "destructive";
+      }) => {
+        const id = Math.random().toString(36).substring(2, 9)
+        setToasts((prevToasts) => [...prevToasts, { id, ...props }])
+        return id
+      },
+      dismiss: (toastId?: string) => {
+        setToasts((prevToasts) =>
+          toastId
+            ? prevToasts.filter((toast) => toast.id !== toastId)
+            : []
+        )
+      }
+    }),
+    []
+  )
+
+  return {
+    ...toast,
+    toasts
+  }
+}
+
+// Export simplified toast function
+const toast = (props: {
+  title?: React.ReactNode;
+  description?: React.ReactNode;
+  action?: ToastActionElement;
+  variant?: "default" | "destructive";
+}) => {
+  // This is just for API compatibility
+  return props;
+}
+
 export {
   type ToastProps,
   type ToastActionElement,
@@ -124,4 +175,6 @@ export {
   ToastDescription,
   ToastClose,
   ToastAction,
+  useToast,
+  toast
 }

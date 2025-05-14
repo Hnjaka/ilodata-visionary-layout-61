@@ -16,6 +16,9 @@ declare module 'react' {
   export type TouchEvent<T = Element> = React.TouchEvent<T>;
   export type KeyboardEvent<T = Element> = React.KeyboardEvent<T>;
   export type ButtonHTMLAttributes<T> = React.ButtonHTMLAttributes<T>;
+  export type TextareaHTMLAttributes<T> = React.TextareaHTMLAttributes<T>;
+  export type TdHTMLAttributes<T> = React.TdHTMLAttributes<T>;
+  export type ReactElement<P = any, T extends string | JSXElementConstructor<any> = string | JSXElementConstructor<any>> = React.ReactElement<P, T>;
   
   export type Dispatch<A> = React.Dispatch<A>;
   export type SetStateAction<S> = React.SetStateAction<S>;
@@ -36,6 +39,7 @@ declare module 'react' {
   export type ComponentProps<T> = React.ComponentProps<T>;
   export type ComponentType<T> = React.ComponentType<T>;
   export type CSSProperties = React.CSSProperties;
+  export type JSXElementConstructor<P> = React.JSXElementConstructor<P>;
 }
 
 declare module 'react-router-dom' {
@@ -47,12 +51,13 @@ declare module 'react-router-dom' {
   export const Link: any;
   export const useNavigate: any;
   export const useParams: any;
+  export const useLocation: any;
 }
 
 declare module 'lucide-react' {
   export * from 'lucide-react';
   
-  // Déclarer tous les icônes utilisés
+  // Declare all icons used
   export const ArrowRight: any;
   export const ArrowLeft: any;
   export const BookOpen: any;
@@ -103,6 +108,7 @@ declare module 'lucide-react' {
   export const Plus: any;
   export const RefreshCw: any;
   export const ChevronDown: any;
+  export const ChevronUp: any;
   export const Upload: any;
   export const Mail: any;
   export const Lock: any;
@@ -121,6 +127,18 @@ declare module 'lucide-react' {
   export const MoreHorizontal: any;
   export const Circle: any;
   export const Dot: any;
+  export const GripVertical: any;
+  export const PanelLeft: any;
+  export const Shapes: any;
+  export const Printer: any;
+  export const ImageIcon: any;
+  export const LayoutTemplate: any;
+  export const FileCode: any;
+  export const Eye: any;
+  export const EyeOff: any;
+  
+  // Add LucideIcon type
+  export type LucideIcon = React.ComponentType<React.SVGProps<SVGSVGElement> & { size?: number | string; }>;
 }
 
 declare module '@tanstack/react-query' {

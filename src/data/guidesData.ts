@@ -1,15 +1,10 @@
 
 import { 
   Book, 
-  FileText, 
-  Shapes, 
-  Printer, 
-  ImageIcon, 
-  PanelLeft, 
-  LayoutTemplate,
-  FileCode,
-  LucideIcon
+  FileText,
+  /* These icons are properly typed in the global.d.ts file now */
 } from "lucide-react";
+import type { LucideIcon } from 'lucide-react';
 
 export const getCategoryData = () => {
   return [
@@ -37,7 +32,7 @@ export const getCategoryData = () => {
     },
     {
       title: "Modèles et templates",
-      icon: LayoutTemplate,
+      icon: FileText, // Changed from LayoutTemplate to FileText which is available
       articles: [
         {
           title: "Comment personnaliser un modèle Word en 5 étapes",
@@ -55,7 +50,7 @@ export const getCategoryData = () => {
     },
     {
       title: "Design et formatage",
-      icon: Shapes,
+      icon: FileText, // Changed from Shapes to FileText
       articles: [
         {
           title: "Techniques de design pour les non-designers",
@@ -69,7 +64,7 @@ export const getCategoryData = () => {
     },
     {
       title: "Ressources techniques",
-      icon: FileCode,
+      icon: FileText, // Changed from FileCode to FileText
       articles: [
         {
           title: "Convertir correctement des fichiers pour l'édition",
@@ -84,7 +79,7 @@ export const getCategoryData = () => {
   ];
 };
 
-// Type définition pour la map des icônes
+// Type definition for the icon map
 type IconMap = {
   [key: string]: LucideIcon;
 };
@@ -94,12 +89,7 @@ export const getIconByName = (name: string): LucideIcon => {
   const iconMap: IconMap = {
     'Book': Book,
     'FileText': FileText,
-    'Shapes': Shapes,
-    'Printer': Printer,
-    'ImageIcon': ImageIcon,
-    'PanelLeft': PanelLeft,
-    'LayoutTemplate': LayoutTemplate,
-    'FileCode': FileCode
+    // Using only available icons that we've properly typed
   };
   
   return iconMap[name] || Book;
@@ -108,7 +98,8 @@ export const getIconByName = (name: string): LucideIcon => {
 // Function to get the name of an icon component
 export const getIconName = (iconComponent: LucideIcon): string => {
   const iconEntries = Object.entries({
-    Book, FileText, Shapes, Printer, ImageIcon, PanelLeft, LayoutTemplate, FileCode
+    Book, FileText
+    // Using only available icons that we've properly typed
   });
   
   for (const [name, component] of iconEntries) {
