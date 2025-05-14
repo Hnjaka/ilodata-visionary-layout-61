@@ -29,9 +29,6 @@ const MobileNavItems: React.FC<MobileNavItemsProps> = ({
   
   if (!isOpen || !isMobile) return null;
   
-  // Debug log to check isAdmin value in MobileNavItems
-  console.log('MobileNavItems - isAdmin:', isAdmin, 'User:', user?.email);
-  
   return (
     <div className="md:hidden fixed top-[72px] left-0 right-0 bottom-0 bg-white z-50 overflow-y-auto animate-in slide-in-from-top duration-300">
       <div className="container mx-auto px-4 py-6">

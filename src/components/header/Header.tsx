@@ -18,7 +18,7 @@ const Header = () => {
   const { toast } = useToast();
   const navigate = useNavigate();
 
-  // Calcul explicite du statut d'administrateur
+  // Explicitly calculate admin status
   const showAdminMenu = Boolean(isAdmin && user);
 
   const handleSignOut = async () => {
@@ -26,8 +26,14 @@ const Header = () => {
       console.log("Attempting to sign out from Header component");
       await signOut();
       
-      // La notification est maintenant gérée dans le composant UserAuthButtons
+      toast({
+        title: "Déconnexion réussie",
+        description: "Vous avez été déconnecté avec succès."
+      });
+      
       console.log("Sign out successful from Header component");
+      navigate('/', { replace: true });
+      return Promise.resolve();
     } catch (error) {
       console.error("Erreur lors de la déconnexion:", error);
       toast({
@@ -35,6 +41,7 @@ const Header = () => {
         description: "Un problème est survenu lors de la déconnexion.",
         variant: "destructive"
       });
+      return Promise.reject(error);
     }
   };
 
@@ -52,6 +59,24 @@ const Header = () => {
     setIsMobileMenuOpen(false);
   };
 
+  // Setup click outside listener to close mobile menu
+  React.useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      const headerElement = document.querySelector('header');
+      if (headerElement && !headerElement.contains(event.target as Node) && isMobileMenuOpen) {
+        setIsMobileMenuOpen(false);
+      }
+    };
+
+    if (isMobileMenuOpen) {
+      document.addEventListener('mousedown', handleClickOutside);
+    }
+    
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [isMobileMenuOpen]);
+
   // Debug log to check isAdmin value
   console.log('Header - User:', user?.email, 'isAdmin:', isAdmin, 'showAdminMenu:', showAdminMenu);
 
@@ -62,7 +87,11 @@ const Header = () => {
       <div className="container mx-auto px-4 md:px-6">
         <div className="flex items-center justify-between">
           <HeaderLogo />
-          <DesktopNavItems isAdmin={showAdminMenu} />
+          
+          {/* Desktop navigation - hidden on mobile */}
+          <div className="hidden md:block">
+            <DesktopNavItems isAdmin={showAdminMenu} />
+          </div>
           
           <div className="hidden md:flex items-center space-x-4">
             {user ? (
