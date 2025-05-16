@@ -40,72 +40,227 @@
 
   <!-- Articles des guides -->
   <url>
-    <loc>https://ilodata.com/guides/fondamentaux-mise-en-page</loc>
+    <loc>https://ilodata.com/guides/taille-police-01-02</loc>
     <lastmod>2025-05-16</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://ilodata.com/guides/choisir-taille-police</loc>
+    <loc>https://ilodata.com/guides/erreur-mise-en-page_01-03</loc>
     <lastmod>2025-05-16</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://ilodata.com/guides/erreurs-mise-en-page</loc>
+    <loc>https://ilodata.com/guides/police-marge-interligne-01-01</loc>
     <lastmod>2025-05-16</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://ilodata.com/guides/preparer-fichier-impression</loc>
+    <loc>https://ilodata.com/guides/personnalisation-modele-word_02-01</loc>
     <lastmod>2025-05-16</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://ilodata.com/guides/personnaliser-modele-word</loc>
+    <loc>https://ilodata.com/guides/astuce-word_02-02</loc>
     <lastmod>2025-05-16</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://ilodata.com/guides/adapter-modele-word</loc>
+    <loc>https://ilodata.com/guides/meilleures-pratiques_02-03</loc>
     <lastmod>2025-05-16</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://ilodata.com/guides/meilleures-pratiques-modeles</loc>
+    <loc>https://ilodata.com/guides/impression-03-01</loc>
     <lastmod>2025-05-16</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://ilodata.com/guides/techniques-design-non-designers</loc>
+    <loc>https://ilodata.com/guides/différence-entre-livre-papier-et-ebook-03-02</loc>
     <lastmod>2025-05-16</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://ilodata.com/guides/guide-formatage-texte</loc>
+    <loc>https://ilodata.com/guides/format-de-livre-03-03</loc>
     <lastmod>2025-05-16</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://ilodata.com/guides/convertir-fichiers-edition</loc>
+    <loc>https://ilodata.com/guides/mise-en-page-aux-liseuses-04-01</loc>
     <lastmod>2025-05-16</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://ilodata.com/guides/utilisation-avancee-styles-word</loc>
+    <loc>https://ilodata.com/guides/mise-en-page-ebook-04-02</loc>
     <lastmod>2025-05-16</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
-  
+  <url>
+    <loc>https://ilodata.com/guides/conversion-fichier-word-en-EPUB-ou-mobi-04-03</loc>
+    <lastmod>2025-05-16</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+    <url>
+    <loc>https://ilodata.com/guides/structure-05-01</loc>
+    <lastmod>2025-05-16</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+    <url>
+    <loc>https://ilodata.com/guides/alignement-et-espacement-05-02</loc>
+    <lastmod>2025-05-16</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+    <url>
+    <loc>https://ilodata.com/guides/utilisation-de-style-Word-05-03</loc>
+    <lastmod>2025-05-16</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+    <url>
+    <loc>https://ilodata.com/guides/intégration-image-06-01</loc>
+    <lastmod>2025-05-16</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+    <url>
+    <loc>https://ilodata.com/guides/résolution-des-illustrations-et-des-photos-06-02</loc>
+    <lastmod>2025-05-16</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+    <url>
+    <loc>https://ilodata.com/guides/astuces-06-03</loc>
+    <lastmod>2025-05-16</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+    <url>
+    <loc>https://ilodata.com/guides/numérotation-des-pages-07-01</loc>
+    <lastmod>2025-05-16</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+    <url>
+    <loc>https://ilodata.com/guides/en-têtes-et-pieds-de-page-07-02</loc>
+    <lastmod>2025-05-16</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+    <url>
+    <loc>https://ilodata.com/guides/sections-numérotations-07-03</loc>
+    <lastmod>2025-05-16</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+    <url>
+    <loc>https://ilodata.com/guides/création-table-des-matières-08-01</loc>
+    <lastmod>2025-05-16</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+    <url>
+    <loc>https://ilodata.com/guides/astuces-table-des-matières-08-02</loc>
+    <lastmod>2025-05-16</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+    <url>
+    <loc>https://ilodata.com/guides/adaptation-table-des-matières-08-03</loc>
+    <lastmod>2025-05-16</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+    <url>
+    <loc>https://ilodata.com/guides/police-parfaite-09-01</loc>
+    <lastmod>2025-05-16</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+    <url>
+    <loc>https://ilodata.com/guides/polices-mise-en-page-professionnelle-09-02</loc>
+    <lastmod>2025-05-16</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+    <url>
+    <loc>https://ilodata.com/guides/avantages-et-inconvénients-09-03</loc>
+    <lastmod>2025-05-16</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+    <url>
+    <loc>https://ilodata.com/guides/étapes-indispensables-10-01</loc>
+    <lastmod>2025-05-16</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+    <url>
+    <loc>https://ilodata.com/guides/erreurs-de-mise-en-page-10-02</loc>
+    <lastmod>2025-05-16</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+    <url>
+    <loc>https://ilodata.com/guides/erreurs-de-mise-en-page-10-02</loc>
+    <lastmod>2025-05-16</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+    <url>
+    <loc>https://ilodata.com/guides/outils-correction-texte-10-03</loc>
+    <lastmod>2025-05-16</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+    <url>
+    <loc>https://ilodata.com/guides/exportation-fichier-word-11-01</loc>
+    <lastmod>2025-05-16</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+    <url>
+    <loc>https://ilodata.com/guides/vérification-fichier-11-02</loc>
+    <lastmod>2025-05-16</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+    <url>
+    <loc>https://ilodata.com/guides/formats-fichiers-impression-ebooks-11-03</loc>
+    <lastmod>2025-05-16</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+    <url>
+    <loc>https://ilodata.com/guides/économisation-temps-et-argent-12-01</loc>
+    <lastmod>2025-05-16</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+    <url>
+    <loc>https://ilodata.com/guides/outils-gratuits-mise-en-page-12-02</loc>
+    <lastmod>2025-05-16</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+    <url>
+    <loc>https://ilodata.com/guides/étapes-clés-réussite-projet-12-03</loc>
+    <lastmod>2025-05-16</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
   <!-- Articles de blog -->
   <url>
     <loc>https://ilodata.com/articles/livre-numrique-7-tendances-majeures-suivre-en-2025-pour-les-auteurs-et-diteurs</loc>
