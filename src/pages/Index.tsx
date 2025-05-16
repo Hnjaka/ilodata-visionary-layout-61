@@ -10,6 +10,8 @@ import WhyChooseUs from '@/components/WhyChooseUs';
 import Testimonials from '@/components/Testimonials';
 import Contact from '@/components/Contact';
 import Footer from '@/components/Footer';
+import Guides from '@/components/Guides';
+import ServiceCta from '@/components/ServiceCta';
 
 const Index = () => {
   useEffect(() => {
@@ -44,6 +46,8 @@ const Index = () => {
       <PricingTable />
       <AmazonKdpSection />
       <WhyChooseUs />
+      <Guides />
+      <ServiceCta />
       <Testimonials />
       <Contact />
       <Footer />
