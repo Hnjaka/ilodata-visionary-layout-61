@@ -44,8 +44,9 @@ const InputOTPSlot = React.forwardRef<
   React.ElementRef<"div">,
   React.ComponentPropsWithoutRef<"div"> & { index: number }
 >(({ index, className, ...props }, ref) => {
-  const otp = React.useContext(OTPInputContext as React.Context<OTPInputContextType>);
-  const slot = otp?.slots?.[index] || { char: '', hasFakeCaret: false, isActive: false };
+  const contextValue = React.useContext(OTPInputContext);
+  const context = contextValue as unknown as OTPInputContextType;
+  const slot = context?.slots?.[index] || { char: '', hasFakeCaret: false, isActive: false };
   const { char, hasFakeCaret, isActive } = slot;
 
   return (

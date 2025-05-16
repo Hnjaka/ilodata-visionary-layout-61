@@ -154,6 +154,7 @@ const BlogArticleDisplay = () => {
   };
 
   const imageCategory = getImageCategory();
+  const imageCategoryType = imageCategory as "general" | "books" | "tech" | "design" | "writing";
 
   return (
     <ArticleLayout 
@@ -169,7 +170,7 @@ const BlogArticleDisplay = () => {
       
       <div className="mb-8">
         <img 
-          src={getImageWithFallback(article?.image, imageCategory as "general" | "books" | "tech" | "design" | "writing")} 
+          src={getImageWithFallback(article?.image, imageCategoryType)} 
           alt={article?.title || 'Image de l\'article'} 
           className="w-full h-auto rounded-lg shadow-md"
         />
