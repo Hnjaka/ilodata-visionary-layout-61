@@ -16,7 +16,7 @@ interface BlogArticleWithCategory extends BlogArticle {
 }
 
 const BlogArticleDisplay = () => {
-  const { slug } = useParams<{ slug: string }>();
+  const { slug } = useParams();
   const [article, setArticle] = useState<BlogArticleWithCategory | null>(null);
   const [loading, setLoading] = useState(true);
   const [notFound, setNotFound] = useState(false);
