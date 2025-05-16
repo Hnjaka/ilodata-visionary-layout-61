@@ -14,7 +14,7 @@ import ConclusionSection from '@/components/article/ConclusionSection';
 const FondamentauxMiseEnPage = () => {
   // Mise à jour des balises meta pour le SEO
   useEffect(() => {
-    document.title = "Guide de mise en page professionnelle | ilodata.com";
+    document.title = "Guide de mise en page professionnelle – Conseils et mise en page pro | Ilodata";
     
     // Création ou mise à jour de la balise meta description
     let metaDescription = document.querySelector('meta[name="description"]');

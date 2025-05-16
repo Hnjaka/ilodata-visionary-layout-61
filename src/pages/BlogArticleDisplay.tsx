@@ -51,6 +51,9 @@ const BlogArticleDisplay = () => {
         
         console.log('Article found:', articleData);
         setArticle(articleData);
+        
+        // Set page title using the new format
+        document.title = `${articleData.title} – Conseils et mise en page pro | Ilodata`;
       } catch (error) {
         console.error('Error in fetchArticleBySlug:', error);
         setNotFound(true);

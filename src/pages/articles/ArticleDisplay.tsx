@@ -63,6 +63,9 @@ const ArticleDisplay = () => {
         }
         
         setArticle(articleData);
+
+        // Set the document title with the new format
+        document.title = `${articleData.title} – Conseils et mise en page pro | Ilodata`;
       } catch (error) {
         console.error('Error in fetchArticleBySlug:', error);
         setNotFound(true);
@@ -144,7 +147,7 @@ const ArticleDisplay = () => {
     >
       <div className="mb-6">
         <img 
-          src={getImageWithFallback(article.image, getImageCategory() as keyof typeof import('@/utils/imageUtils').unsplashImages)} 
+          src={getImageWithFallback(article.image, getImageCategory() as "general" | "books" | "tech" | "design" | "writing")} 
           alt={article.title} 
           className="w-full h-auto rounded-lg shadow-md"
         />

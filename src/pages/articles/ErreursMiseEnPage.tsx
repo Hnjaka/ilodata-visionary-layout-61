@@ -18,7 +18,7 @@ import Conclusion from '@/components/article/ErrorsInLayout/Conclusion';
 
 const ErreursMiseEnPage = () => {
   useEffect(() => {
-    document.title = "Les erreurs courantes à éviter lors de la mise en page d'un livre | ilodata.com";
+    document.title = "Les erreurs courantes à éviter lors de la mise en page d'un livre – Conseils et mise en page pro | Ilodata";
     
     let metaDescription = document.querySelector('meta[name="description"]');
     if (!metaDescription) {

@@ -16,7 +16,7 @@ import FontSizeConclusionSection from '@/components/article/FontSizeConclusionSe
 const ChoisirTaillePolice = () => {
   // Mise à jour des balises meta pour le SEO
   useEffect(() => {
-    document.title = "Comment choisir la bonne taille de police pour votre livre ? | ilodata.com";
+    document.title = "Comment choisir la bonne taille de police pour votre livre ? – Conseils et mise en page pro | Ilodata";
     
     // Création ou mise à jour de la balise meta description
     let metaDescription = document.querySelector('meta[name="description"]');

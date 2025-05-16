@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import ArticleLayout from '@/components/article/ArticleLayout';
 import Introduction from '@/components/article/MeilleuresPratiquesModeles/Introduction';
 import ChoixModele from '@/components/article/MeilleuresPratiquesModeles/ChoixModele';
@@ -12,6 +12,11 @@ import ServicesMiseEnPage from '@/components/article/MeilleuresPratiquesModeles/
 import Conclusion from '@/components/article/MeilleuresPratiquesModeles/Conclusion';
 
 const MeilleuresPratiquesModeles = () => {
+  // Ajout du useEffect pour mettre à jour le titre
+  useEffect(() => {
+    document.title = "Les meilleures pratiques pour utiliser nos modèles de mise en page – Conseils et mise en page pro | Ilodata";
+  }, []);
+
   // Breadcrumbs definition
   const breadcrumbs = [
     { label: "Accueil", url: "/" },

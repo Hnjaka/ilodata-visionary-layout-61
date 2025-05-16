@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import ArticleLayout from '@/components/article/ArticleLayout';
 import Introduction from '@/components/article/CustomizeWordTemplate/Introduction';
 import Step1 from '@/components/article/CustomizeWordTemplate/Step1';
@@ -11,6 +11,20 @@ import FAQ from '@/components/article/CustomizeWordTemplate/FAQ';
 import Conclusion from '@/components/article/CustomizeWordTemplate/Conclusion';
 
 const PersonnaliserModeleWord = () => {
+  // Ajout du useEffect pour mettre à jour le titre
+  useEffect(() => {
+    document.title = "Comment personnaliser un modèle de mise en page sous Word – Conseils et mise en page pro | Ilodata";
+
+    // Ajout de la meta description
+    let metaDescription = document.querySelector('meta[name="description"]');
+    if (!metaDescription) {
+      metaDescription = document.createElement('meta');
+      metaDescription.setAttribute("name", "description");
+      document.head.appendChild(metaDescription);
+    }
+    metaDescription.setAttribute("content", "Apprenez à personnaliser un modèle Word en 5 étapes simples pour obtenir une mise en page professionnelle adaptée à votre projet de livre.");
+  }, []);
+
   const breadcrumbs = [
     { label: "Accueil", url: "/" },
     { label: "Guides et Conseils", url: "/guides" },

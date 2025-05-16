@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import ArticleLayout from '@/components/article/ArticleLayout';
 import Introduction from '@/components/article/PreparerFichierImpression/Introduction';
 import MargesSection from '@/components/article/PreparerFichierImpression/MargesSection';
@@ -11,6 +11,20 @@ import ServiceSection from '@/components/article/PreparerFichierImpression/Servi
 import Conclusion from '@/components/article/PreparerFichierImpression/Conclusion';
 
 const PreparerFichierImpression = () => {
+  // Ajout du useEffect pour mettre à jour le titre
+  useEffect(() => {
+    document.title = "Comment préparer votre fichier pour l'impression – Conseils et mise en page pro | Ilodata";
+
+    // Mise à jour de la meta description
+    let metaDescription = document.querySelector('meta[name="description"]');
+    if (!metaDescription) {
+      metaDescription = document.createElement('meta');
+      metaDescription.setAttribute("name", "description");
+      document.head.appendChild(metaDescription);
+    }
+    metaDescription.setAttribute("content", "Guide complet pour préparer correctement votre fichier à l'impression : marges, fonds perdus et résolution. Conseils d'experts pour un résultat professionnel.");
+  }, []);
+
   const tocItems = [
     { id: 'introduction', title: 'Introduction' },
     { id: 'marges', title: 'Les marges' },

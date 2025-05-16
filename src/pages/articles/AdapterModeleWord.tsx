@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import ArticleLayout from '@/components/article/ArticleLayout';
 import Introduction from '@/components/article/AdapterModeleWord/Introduction';
 import StylesTips from '@/components/article/AdapterModeleWord/StylesTips';
@@ -11,6 +11,20 @@ import SectionsTips from '@/components/article/AdapterModeleWord/SectionsTips';
 import Conclusion from '@/components/article/AdapterModeleWord/Conclusion';
 
 const AdapterModeleWord = () => {
+  // Ajout du useEffect pour mettre à jour le titre
+  useEffect(() => {
+    document.title = "Astuces pour adapter un modèle Word à votre texte – Conseils et mise en page pro | Ilodata";
+
+    // Ajout de la meta description
+    let metaDescription = document.querySelector('meta[name="description"]');
+    if (!metaDescription) {
+      metaDescription = document.createElement('meta');
+      metaDescription.setAttribute("name", "description");
+      document.head.appendChild(metaDescription);
+    }
+    metaDescription.setAttribute("content", "Découvrez comment adapter efficacement un modèle Word à votre texte tout en conservant une mise en page professionnelle et cohérente.");
+  }, []);
+
   // Breadcrumbs definition
   const breadcrumbs = [
     { label: "Accueil", url: "/" },
