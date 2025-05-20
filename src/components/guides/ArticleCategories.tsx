@@ -6,6 +6,7 @@ import { getIconByName } from '@/data/guidesData';
 import LoadingSpinner from '@/components/LoadingSpinner';
 import { CategoryType, ArticleType } from '@/types/guides';
 import { Book, FileText } from 'lucide-react';
+import { toast } from '@/components/ui/use-toast';
 
 const ArticleCategories = () => {
   const [categories, setCategories] = useState<CategoryType[]>([]);
@@ -81,6 +82,36 @@ const ArticleCategories = () => {
         );
         
         setCategories(categoriesWithArticles);
+
+        // Setup realtime subscription for updates
+        const categoriesChannel = supabase
+          .channel('public:guide_categories')
+          .on('postgres_changes', { 
+            event: '*', 
+            schema: 'public', 
+            table: 'guide_categories' 
+          }, () => {
+            console.log('Categories updated, refreshing data');
+            fetchCategoriesAndArticles();
+          })
+          .subscribe();
+
+        const articlesChannel = supabase
+          .channel('public:guide_articles')
+          .on('postgres_changes', { 
+            event: '*', 
+            schema: 'public', 
+            table: 'guide_articles' 
+          }, () => {
+            console.log('Articles updated, refreshing data');
+            fetchCategoriesAndArticles();
+          })
+          .subscribe();
+
+        return () => {
+          supabase.removeChannel(categoriesChannel);
+          supabase.removeChannel(articlesChannel);
+        };
       } catch (error) {
         console.error('Error fetching categories and articles:', error);
         setError("Impossible de charger les articles. Veuillez réessayer ultérieurement.");
@@ -94,7 +125,6 @@ const ArticleCategories = () => {
   
   // Helper function to get demo data if no categories exist in database
   const getDemoCategoryData = (): CategoryType[] => {
-    // Import icons directly instead of using require()
     return [
       {
         id: '1',
