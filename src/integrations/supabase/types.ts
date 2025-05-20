@@ -160,6 +160,63 @@ export type Database = {
         }
         Relationships: []
       }
+      notifications: {
+        Row: {
+          created_at: string
+          id: string
+          is_read: boolean
+          message: string
+          title: string
+          type: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          is_read?: boolean
+          message: string
+          title: string
+          type: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          is_read?: boolean
+          message?: string
+          title?: string
+          type?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      password_resets: {
+        Row: {
+          created_at: string
+          expires_at: string
+          id: string
+          is_used: boolean
+          token: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          expires_at?: string
+          id?: string
+          is_used?: boolean
+          token: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          expires_at?: string
+          id?: string
+          is_used?: boolean
+          token?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           created_at: string
@@ -262,11 +319,70 @@ export type Database = {
         }
         Relationships: []
       }
+      user_favorites: {
+        Row: {
+          created_at: string
+          id: string
+          product_id: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          product_id: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          product_id?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      user_sessions: {
+        Row: {
+          created_at: string
+          expires_at: string
+          id: string
+          ip_address: string | null
+          is_active: boolean
+          user_agent: string | null
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          expires_at: string
+          id?: string
+          ip_address?: string | null
+          is_active?: boolean
+          user_agent?: string | null
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          expires_at?: string
+          id?: string
+          ip_address?: string | null
+          is_active?: boolean
+          user_agent?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
+      create_admin: {
+        Args: { admin_email: string; admin_password: string }
+        Returns: string
+      }
+      ensure_admin_privileges: {
+        Args: Record<PropertyKey, never>
+        Returns: undefined
+      }
       is_admin: {
         Args: { user_id: string }
         Returns: boolean
@@ -282,6 +398,7 @@ export type Database = {
     }
     Enums: {
       template_category: "Livres" | "Magazines" | "CV" | "Flyers" | "Rapports"
+      user_role: "customer" | "admin"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -398,6 +515,7 @@ export const Constants = {
   public: {
     Enums: {
       template_category: ["Livres", "Magazines", "CV", "Flyers", "Rapports"],
+      user_role: ["customer", "admin"],
     },
   },
 } as const
