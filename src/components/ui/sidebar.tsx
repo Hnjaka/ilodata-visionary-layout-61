@@ -1,4 +1,3 @@
-
 import * as React from "react"
 import { Slot } from "@radix-ui/react-slot"
 import { VariantProps, cva } from "class-variance-authority"
@@ -197,12 +196,13 @@ const Sidebar = React.forwardRef<
           <SheetContent
             data-sidebar="sidebar"
             data-mobile="true"
+            className="w-[--sidebar-width] bg-sidebar p-0 text-sidebar-foreground [&>button]:hidden"
+            style={
+              {
+                "--sidebar-width": SIDEBAR_WIDTH_MOBILE,
+              } as React.CSSProperties
+            }
             side={side}
-            style={{
-              "--sidebar-width": SIDEBAR_WIDTH_MOBILE,
-              padding: 0,
-            } as React.CSSProperties}
-            className="bg-sidebar text-sidebar-foreground [&>button]:hidden w-[--sidebar-width]"
           >
             <div className="flex h-full w-full flex-col">{children}</div>
           </SheetContent>

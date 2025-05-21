@@ -16,7 +16,7 @@ interface BlogArticleWithCategory extends BlogArticle {
 }
 
 const BlogArticleDisplay = () => {
-  const { slug } = useParams();
+  const { slug } = useParams<{ slug: string }>();
   const [article, setArticle] = useState<BlogArticleWithCategory | null>(null);
   const [loading, setLoading] = useState(true);
   const [notFound, setNotFound] = useState(false);
@@ -154,7 +154,6 @@ const BlogArticleDisplay = () => {
   };
 
   const imageCategory = getImageCategory();
-  const imageCategoryType = imageCategory as "general" | "books" | "tech" | "design" | "writing";
 
   return (
     <ArticleLayout 
@@ -170,7 +169,7 @@ const BlogArticleDisplay = () => {
       
       <div className="mb-8">
         <img 
-          src={getImageWithFallback(article?.image, imageCategoryType)} 
+          src={getImageWithFallback(article?.image, imageCategory as "general" | "books" | "tech" | "design" | "writing")} 
           alt={article?.title || 'Image de l\'article'} 
           className="w-full h-auto rounded-lg shadow-md"
         />
